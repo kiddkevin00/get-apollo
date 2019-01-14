@@ -1,8 +1,9 @@
 {
   "expo": {
     "name": "get-apollo",
+    "description": "",
     "slug": "get-apollo",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "32.0.0",
     "platforms": [
       "ios",
@@ -13,17 +14,26 @@
     "icon": "./assets/images/icon.png",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 5000
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "org.getapollo.app",
+      "supportsTablet": true,
+      "buildNumber": "10",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "org.getapollo.app",
+      "versionCode": 1
     }
   }
 }

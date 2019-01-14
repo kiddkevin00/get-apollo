@@ -1,25 +1,61 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "name": "get-apollo",
+  "version": "0.0.1",
+  "main": "./node_modules/expo/AppEntry.js",
+  "description": "Mobile native app for Get Apollo",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --lan",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    "test": "jest --watchAll",
+    "lint": "eslint --format 'node_modules/eslint-friendly-formatter' --ext .js,.jsx components/ containers/ actionCreators/ actionTypes/ reducers/ store/ utils/ navigation/ constants/ App.js bin/ __tests__/",
+    "debugger": "open 'rndebugger://set-debugger-loc?host=localhost&port=19001'"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@expo/samples": "2.1.1",
-    "expo": "^32.0.0",
+    "axios": "0.18.0",
+    "expo": "32.0.0",
+    "firebase": "5.7.3",
+    "moment": "2.23.0",
+    "native-base": "2.10.0",
+    "prop-types": "15.6.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-navigation": "^3.0.9"
+    "react-navigation": "3.0.9",
+    "react-redux": "6.0.0",
+    "react-redux-firebase": "2.2.6",
+    "redux": "4.0.1",
+    "redux-thunk": "2.3.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0",
-    "jest-expo": "^32.0.0"
+    "jest-expo": "^32.0.0",
+    "prettier": "1.9.2",
+    "eslint": "4.14.0",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-friendly-formatter": "2.0.7",
+    "eslint-import-resolver-webpack": "0.8.3",
+    "eslint-plugin-chai-expect": "1.1.1",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-prettier": "2.4.0",
+    "eslint-plugin-react": "7.4.0",
+    "babel-eslint": "^7.2.3",
+    "jest": "^22.4.2"
+  },
+  "engines": {
+    "node": ">=8.9.4"
+  },
+  "author": "Marcus Hsu",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:GetApollo/getapollo-frontend-mobile-core.git"
   },
   "private": true
 }
