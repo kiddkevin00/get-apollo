@@ -9,11 +9,11 @@
       "ios",
       "android"
     ],
-    "version": "0.1.1",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/splash2.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -21,12 +21,12 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "assets/images/**"
+      "assets/**"
     ],
     "ios": {
       "bundleIdentifier": "io.getapollo.consumer",
       "supportsTablet": true,
-      "buildNumber": "10",
+      "buildNumber": "1",
       "config": {
         "usesNonExemptEncryption": false
       }
