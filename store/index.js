@@ -1,10 +1,10 @@
 import rootReducer from '../reducers/';
-import firebaseClient from '../utils/firebaseClient';
-import { reactReduxFirebase } from 'react-redux-firebase';
+//import firebaseClient from '../utils/firebaseClient';
+//import { reactReduxFirebase } from 'react-redux-firebase';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-const config = { userProfile: 'users' };
+//const config = { userProfile: 'users' };
 
 const configureStore = initialState => {
   const store = createStore(
@@ -12,7 +12,7 @@ const configureStore = initialState => {
     initialState,
     compose(
       applyMiddleware(thunkMiddleware),
-      reactReduxFirebase(firebaseClient, config),
+      //reactReduxFirebase(firebaseClient, config),
       global.__DEV__ && global.__REDUX_DEVTOOLS_EXTENSION__
         ? global.__REDUX_DEVTOOLS_EXTENSION__()
         : f => f
