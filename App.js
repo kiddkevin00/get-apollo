@@ -39,8 +39,7 @@ export default class App extends Component {
   loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
-        require('./assets/images/robot-dev.png'),
-        require('./assets/images/robot-prod.png'),
+        //require('./assets/images/robot-dev.png'),
       ]),
       Font.loadAsync({
         ...Icon.Ionicons.font,
@@ -75,7 +74,6 @@ export default class App extends Component {
       <Root>
         <Provider store={store}>
           <View style={styles.container}>
-            <StatusBar barStyle="default" hidden={false} />
             <AppNavigator />
           </View>
         </Provider>

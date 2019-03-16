@@ -1,4 +1,5 @@
 import { defaultNavigationOptions } from '../constants/navigation';
+import dimensions from '../constants/dimensions';
 import React from 'react';
 import {
   Image,
@@ -8,103 +9,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  StatusBar,
 } from 'react-native';
-import { WebBrowser } from 'expo';
-
-import { MonoText } from '../components/StyledText';
-
-export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    ...defaultNavigationOptions,
-    title: 'EXPLORED',
-  };
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>Load More</Text>
-        </View>
-      </View>
-    );
-  }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -118,19 +24,18 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     textAlign: 'center',
   },
-  contentContainer: {
-  },
+  contentContainer: {},
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    //marginTop: 10,
+    //marginBottom: 20,
   },
   welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
+    width: dimensions.window.width,
+    height: 200,
+    resizeMode: 'cover',
     marginTop: 3,
-    marginLeft: -10,
+    //marginLeft: -10,
   },
   getStartedContainer: {
     alignItems: 'center',
@@ -193,3 +98,48 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+
+export default class HomeScreen extends React.Component {
+  static navigationOptions = {
+    ...defaultNavigationOptions,
+    title: 'EXPLORED',
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content" />
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <View style={styles.welcomeContainer}>
+            <Image
+              source={require('../assets/images/clubbing4.jpg')}
+              style={styles.welcomeImage}
+            />
+          </View>
+          <View style={styles.welcomeContainer}>
+            <Image
+              source={require('../assets/images/clubbing2.jpeg')}
+              style={styles.welcomeImage}
+            />
+          </View>
+          <View style={styles.welcomeContainer}>
+            <Image
+              source={require('../assets/images/clubbing3.jpeg')}
+              style={styles.welcomeImage}
+            />
+          </View>
+          <View style={styles.welcomeContainer}>
+            <Image
+              source={require('../assets/images/clubbing.jpg')}
+              style={styles.welcomeImage}
+            />
+          </View>
+        </ScrollView>
+
+        <View style={styles.tabBarInfoContainer}>
+          <Text style={styles.tabBarInfoText}>Load More</Text>
+        </View>
+      </View>
+    );
+  }
+}

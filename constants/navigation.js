@@ -1,14 +1,21 @@
 import colors from './colors';
+import { Platform } from 'react-native';
 
 const defaultNavigationOptions = {
   headerStyle: {
     backgroundColor: colors.black,
     borderBottomWidth: 0,
-    height: 60,
-    paddingTop: 35,
+    ...Platform.select({
+      ios: {
+        paddingTop: 35,
+        height: 60,
+      },
+      android: {
+        paddingTop: 0,
+      },
+    }),
   },
   headerTitleStyle: {
-    color: colors.grey,
     fontWeight: 'normal',
   },
   headerTintColor: colors.grey,
