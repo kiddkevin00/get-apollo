@@ -1,5 +1,6 @@
-import { defaultNavigationOptions } from '../constants/navigation';
-import dimensions from '../constants/dimensions';
+import firebaseClient from '../../utils/firebaseClient';
+import { defaultNavigationOptions } from '../../constants/navigation';
+import dimensions from '../../constants/dimensions';
 import React from 'react';
 import {
   Image,
@@ -11,6 +12,32 @@ import {
   View,
   StatusBar,
 } from 'react-native';
+import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+
+const getVenuePosts = async ({ docSnapshot, limit = 4, timestamp, venueId } = {}) => {
+  let collection = firebaseClient
+    .firestore()
+    .collection('venuePosts')
+    .orderBy('timestamp', 'desc');
+
+  if (docSnapshot) {
+    collection = collection.startAfter(docSnapshot);
+  }
+
+  if (timestamp) {
+    collection = collection.startAt(new Date(timestamp));
+  }
+
+  if (venueId) {
+    collection = collection.where('venueId', '==', venueId);
+  }
+
+  const querySnapshot = await collection.limit(limit).get();
+
+  return querySnapshot.docs;
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -99,7 +126,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class HomeScreen extends React.Component {
+class UnconnectedExplore extends React.Component {
   static navigationOptions = {
     ...defaultNavigationOptions,
     title: 'EXPLORED',
@@ -112,25 +139,25 @@ export default class HomeScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
-              source={require('../assets/images/clubbing4.jpg')}
+              source={require('../../assets/images/clubbing4.jpg')}
               style={styles.welcomeImage}
             />
           </View>
           <View style={styles.welcomeContainer}>
             <Image
-              source={require('../assets/images/clubbing2.jpeg')}
+              source={require('../../assets/images/clubbing2.jpeg')}
               style={styles.welcomeImage}
             />
           </View>
           <View style={styles.welcomeContainer}>
             <Image
-              source={require('../assets/images/clubbing3.jpeg')}
+              source={require('../../assets/images/clubbing3.jpeg')}
               style={styles.welcomeImage}
             />
           </View>
           <View style={styles.welcomeContainer}>
             <Image
-              source={require('../assets/images/clubbing.jpg')}
+              source={require('../../assets/images/clubbing.jpg')}
               style={styles.welcomeImage}
             />
           </View>
@@ -143,3 +170,17 @@ export default class HomeScreen extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  auth: state.firebase.auth,
+  venuePosts: state.firestore.ordered.venuePosts,
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+const Explore = compose(
+  firestoreConnect([{ collection: 'venuePosts', limit: 4, orderBy: [['timestamp', 'desc']] }]),
+  connect(mapStateToProps, mapDispatchToProps)
+)(UnconnectedExplore);
+
+export { UnconnectedExplore, Explore as default };
