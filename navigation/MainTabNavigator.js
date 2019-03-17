@@ -5,12 +5,17 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import ExploreScreen from '../containers/Explore/';
-import LinksScreen from '../containers/LinksScreen';
-import SettingsScreen from '../containers/SettingsScreen';
+import HomeScreen from '../containers/LinksScreen';
+import ProfileScreen from '../containers/SettingsScreen';
 
-const ExploreStack = createStackNavigator({
-  Home: ExploreScreen,
-});
+const ExploreStack = createStackNavigator(
+  {
+    explore: ExploreScreen,
+  },
+  {
+    initialRouteName: 'explore',
+  }
+);
 
 ExploreStack.navigationOptions = {
   tabBarLabel: <View />,
@@ -22,11 +27,16 @@ ExploreStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
-});
+const HomeStack = createStackNavigator(
+  {
+    home: HomeScreen,
+  },
+  {
+    initialRouteName: 'home',
+  }
+);
 
-LinksStack.navigationOptions = {
+HomeStack.navigationOptions = {
   tabBarLabel: <View />,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -36,11 +46,16 @@ LinksStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
-});
+const ProfileStack = createStackNavigator(
+  {
+    profile: ProfileScreen,
+  },
+  {
+    initialRouteName: 'profile',
+  }
+);
 
-SettingsStack.navigationOptions = {
+ProfileStack.navigationOptions = {
   tabBarLabel: <View />,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -53,8 +68,8 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator(
   {
     ExploreStack,
-    LinksStack,
-    SettingsStack,
+    HomeStack,
+    ProfileStack,
   },
   {
     tabBarOptions: {
@@ -63,5 +78,6 @@ export default createBottomTabNavigator(
       inactiveTintColor: colors.darkBlue,
       inactiveBackgroundColor: colors.darkBlue,
     },
+    initialRouteName: 'HomeStack',
   }
 );
