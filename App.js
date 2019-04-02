@@ -36,8 +36,8 @@ export default class App extends Component {
     isLoadingComplete: false,
   };
 
-  loadResourcesAsync = async () => {
-    return Promise.all([
+  loadResourcesAsync = async () =>
+    Promise.all([
       Asset.loadAsync([
         //require('./assets/images/robot-dev.png'),
       ]),
@@ -49,7 +49,6 @@ export default class App extends Component {
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
     ]);
-  };
 
   handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });

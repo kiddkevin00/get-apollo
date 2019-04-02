@@ -20,10 +20,7 @@ const ExploreStack = createStackNavigator(
 ExploreStack.navigationOptions = {
   tabBarLabel: <View />,
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-globe' : 'md-globe'}
-    />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-globe' : 'md-globe'} />
   ),
 };
 
@@ -39,10 +36,7 @@ const HomeStack = createStackNavigator(
 HomeStack.navigationOptions = {
   tabBarLabel: <View />,
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'}
-    />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'} />
   ),
 };
 
@@ -58,10 +52,7 @@ const ProfileStack = createStackNavigator(
 ProfileStack.navigationOptions = {
   tabBarLabel: <View />,
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-contact' : 'md-contact'}
-    />
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-contact' : 'md-contact'} />
   ),
 };
 

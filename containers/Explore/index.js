@@ -57,11 +57,69 @@ const getVenuePosts = async ({ docSnapshot, limit = 4, timestamp, venueId } = {}
   return querySnapshot.docs;
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  welcomeContainer: {
+    alignItems: 'center',
+    //marginTop: 10,
+    //marginBottom: 20,
+  },
+  welcomeImage: {
+    width: dimensions.window.width - 20,
+    height: 200,
+    resizeMode: 'cover',
+    marginTop: 10,
+    //marginLeft: -10,
+    borderRadius: 10,
+  },
+  tabBarInfoContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+    alignItems: 'center',
+    backgroundColor: '#fbfbfb',
+    paddingVertical: 0,
+  },
+  tabBarInfoText: {
+    fontSize: 17,
+    color: 'rgba(96,100,109, 1)',
+    textAlign: 'center',
+  },
+});
+
 class UnconnectedExplore extends React.Component {
   static navigationOptions = {
     ...defaultNavigationOptions,
     title: 'EXPLORED',
   };
+
+  static segmentMap = {
+    list: 'LIST',
+    grid: 'GRID',
+  };
+
+  state = { currentSegment: UnconnectedExplore.segmentMap.list };
+
+  onSegmentSelect(targetFilter) {
+    this.setState({
+      currentSegment: targetFilter,
+    });
+  }
 
   renderVenuePost = post => {
     const postedDate = moment(post.timestamp.toDate());
@@ -131,67 +189,100 @@ class UnconnectedExplore extends React.Component {
     );
   };
 
+  renderGridView() {
+    return (
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={require('../../assets/images/clubbing4.jpg')}
+            style={styles.welcomeImage}
+          />
+        </View>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={require('../../assets/images/clubbing2.jpeg')}
+            style={styles.welcomeImage}
+          />
+        </View>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={require('../../assets/images/clubbing3.jpeg')}
+            style={styles.welcomeImage}
+          />
+        </View>
+        <View style={styles.welcomeContainer}>
+          <Image source={require('../../assets/images/clubbing.jpg')} style={styles.welcomeImage} />
+        </View>
 
-  state = { currentSegment: UnconnectedExplore.segmentMap.list };
-
-  static segmentMap = {
-    list: 'LIST',
-    grid: 'GRID',
-  };
-
-  onSegmentSelect(targetFilter) {
-    this.setState({
-      currentSegment: targetFilter,
-    });
+        <View style={styles.tabBarInfoContainer}>
+          <Text style={styles.tabBarInfoText}>Load More</Text>
+        </View>
+      </ScrollView>
+    );
   }
-
 
   render() {
     return (
       <Container style={{ backgroundColor: 'black' }}>
         <StatusBar barStyle="light-content" />
-        <Segment style={ { backgroundColor: 'black', alignSelf: 'center' } }>
+        <Segment style={{ backgroundColor: 'black', alignSelf: 'center' }}>
           <Button
-            first
-            onPress={ this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.list) }
-            style={ {
-              backgroundColor: this.state.currentSegment === UnconnectedExplore.segmentMap.list ? 'white' : 'black',
+            first={true}
+            onPress={this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.list)}
+            style={{
+              backgroundColor:
+                this.state.currentSegment === UnconnectedExplore.segmentMap.list
+                  ? 'white'
+                  : 'black',
               borderColor: 'white',
               paddingLeft: 9,
               paddingRight: 9,
-            } }
+            }}
           >
             <Text
-              style={ {
-                color: this.state.currentSegment === UnconnectedExplore.segmentMap.list ? 'black' : 'white',
+              style={{
+                color:
+                  this.state.currentSegment === UnconnectedExplore.segmentMap.list
+                    ? 'black'
+                    : 'white',
                 fontSize: 12,
-              } }
+              }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ UnconnectedExplore.segmentMap.list }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{UnconnectedExplore.segmentMap.list}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </Text>
           </Button>
           <Button
-            last
-            onPress={ this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.grid) }
-            style={ {
-              backgroundColor: this.state.currentSegment === UnconnectedExplore.segmentMap.grid ? 'white' : 'black',
+            last={true}
+            onPress={this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.grid)}
+            style={{
+              backgroundColor:
+                this.state.currentSegment === UnconnectedExplore.segmentMap.grid
+                  ? 'white'
+                  : 'black',
               borderColor: 'white',
               paddingLeft: 9,
               paddingRight: 9,
-            } }
+            }}
           >
             <Text
-              style={ {
-                color: this.state.currentSegment === UnconnectedExplore.segmentMap.grid ? 'black' : 'white',
+              style={{
+                color:
+                  this.state.currentSegment === UnconnectedExplore.segmentMap.grid
+                    ? 'black'
+                    : 'white',
                 fontSize: 12,
-              } }
+              }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ UnconnectedExplore.segmentMap.grid }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{UnconnectedExplore.segmentMap.grid}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </Text>
           </Button>
         </Segment>
         <Content>
-          <List dataArray={this.props.venuePosts} renderRow={this.renderVenuePost} />
+          {this.state.currentSegment === UnconnectedExplore.segmentMap.list ? (
+            <List dataArray={this.props.venuePosts} renderRow={this.renderVenuePost} />
+          ) : (
+            this.renderGridView()
+          )}
         </Content>
       </Container>
     );
