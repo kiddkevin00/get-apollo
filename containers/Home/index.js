@@ -1,5 +1,5 @@
-import { defaultNavigationOptions } from '../constants/navigation';
-import dimensions from '../constants/dimensions';
+import { defaultNavigationOptions } from '../../constants/navigation';
+import dimensions from '../../constants/dimensions';
 import React from 'react';
 import { ScrollView, StyleSheet, StatusBar, View, Image, Platform, Text } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
@@ -61,25 +61,25 @@ export default class LinksScreen extends React.Component {
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
-              source={require('../assets/images/clubbing4.jpg')}
+              source={require('../../assets/images/clubbing4.jpg')}
               style={styles.welcomeImage}
             />
           </View>
           <View style={styles.welcomeContainer}>
             <Image
-              source={require('../assets/images/clubbing2.jpeg')}
+              source={require('../../assets/images/clubbing2.jpeg')}
               style={styles.welcomeImage}
             />
           </View>
           <View style={styles.welcomeContainer}>
             <Image
-              source={require('../assets/images/clubbing3.jpeg')}
+              source={require('../../assets/images/clubbing3.jpeg')}
               style={styles.welcomeImage}
             />
           </View>
           <View style={styles.welcomeContainer}>
             <Image
-              source={require('../assets/images/clubbing.jpg')}
+              source={require('../../assets/images/clubbing.jpg')}
               style={styles.welcomeImage}
             />
           </View>

@@ -1,4 +1,4 @@
-import { defaultNavigationOptions } from '../constants/navigation';
+import { defaultNavigationOptions } from '../../constants/navigation';
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
 

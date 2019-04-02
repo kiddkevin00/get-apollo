@@ -1,20 +1,37 @@
 import firebaseClient from '../../utils/firebaseClient';
 import { defaultNavigationOptions } from '../../constants/navigation';
 import dimensions from '../../constants/dimensions';
+import {
+  Container,
+  Header,
+  Content,
+  List,
+  ListItem,
+  Card,
+  CardItem,
+  Left,
+  Body,
+  Right,
+  Title,
+  Button,
+  Text,
+  Icon,
+} from 'native-base';
 import React from 'react';
 import {
   Image,
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   StatusBar,
+  Share,
 } from 'react-native';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 const getVenuePosts = async ({ docSnapshot, limit = 4, timestamp, venueId } = {}) => {
   let collection = firebaseClient
@@ -39,147 +56,101 @@ const getVenuePosts = async ({ docSnapshot, limit = 4, timestamp, venueId } = {}
   return querySnapshot.docs;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {},
-  welcomeContainer: {
-    alignItems: 'center',
-    //marginTop: 10,
-    //marginBottom: 20,
-  },
-  welcomeImage: {
-    width: dimensions.window.width,
-    height: 200,
-    resizeMode: 'cover',
-    marginTop: 3,
-    //marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 0,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
-});
-
 class UnconnectedExplore extends React.Component {
   static navigationOptions = {
     ...defaultNavigationOptions,
     title: 'EXPLORED',
   };
 
+  renderVenuePost = post => {
+    const postedDate = moment(post.timestamp.toDate());
+    const displayMonth = postedDate.format('MMM').toUpperCase();
+    const displayDate = postedDate.format('DD');
+    const displayTime = postedDate.format('h:mm A');
+
+    return (
+      <ListItem style={{ borderBottomWidth: 0 }}>
+        <Card>
+          <CardItem>
+            <Left>
+              <Body style={{ flexGrow: 2, justifyContent: 'center', marginLeft: 0 }}>
+                <Text style={{ fontSize: 10.5, color: 'red' }}>&nbsp;{displayMonth}</Text>
+                <Text style={{ fontSize: 22.5 }}>{displayDate}</Text>
+              </Body>
+              <Body style={{ flexGrow: 15 }}>
+                <Text style={{ fontSize: 18, fontWeight: '500' }}>{post.venueName}</Text>
+                <Text style={{ fontSize: 13, color: '#333' }} note={true}>
+                  {displayTime}
+                </Text>
+              </Body>
+            </Left>
+          </CardItem>
+          <CardItem cardBody={true}>
+            <Image
+              style={{ height: dimensions.window.width - 35, width: '100%' }}
+              source={
+                post.type === 'PHOTO'
+                  ? { uri: post.thumbnailURL }
+                  : require('../../assets/images/play.png')
+              }
+            />
+          </CardItem>
+          <CardItem>
+            <Left>
+              <Button iconLeft={true} transparent={true} onPress={() => {}}>
+                <Icon style={{ fontSize: 22, color: '#f96332' }} name="bookmark" />
+                <Text style={{ fontSize: 15, fontWeight: '700', color: '#f96332' }}>Like</Text>
+              </Button>
+              <Text>&nbsp;</Text>
+              <Button
+                iconLeft={true}
+                transparent={true}
+                onPress={() =>
+                  Share.share({
+                    title: post.venueName,
+                    message:
+                      `Check out this venue - ${post.venueName}:\n` +
+                      `GetApollo2019://?event=${global.encodeURIComponent(post.venueId)}\n\n` +
+                      'Click the link below to download Get Apollo:\n' +
+                      'https://itunes.apple.com/us/app/get-apollo/id1440237761?mt=8',
+                  })
+                }
+              >
+                <Icon style={{ fontSize: 22, color: '#f96332' }} name="share" />
+                <Text style={{ fontSize: 15, fontWeight: '700', color: '#f96332' }}>Share</Text>
+              </Button>
+            </Left>
+            <Right>
+              <Icon name="arrow-forward" />
+            </Right>
+          </CardItem>
+          <CardItem style={{ paddingTop: 0.1, paddingBottom: 0.1 }} />
+        </Card>
+      </ListItem>
+    );
+  };
+
   render() {
     return (
-      <View style={styles.container}>
+      <Container>
         <StatusBar barStyle="light-content" />
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={require('../../assets/images/clubbing4.jpg')}
-              style={styles.welcomeImage}
-            />
-          </View>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={require('../../assets/images/clubbing2.jpeg')}
-              style={styles.welcomeImage}
-            />
-          </View>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={require('../../assets/images/clubbing3.jpeg')}
-              style={styles.welcomeImage}
-            />
-          </View>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={require('../../assets/images/clubbing.jpg')}
-              style={styles.welcomeImage}
-            />
-          </View>
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>Load More</Text>
-        </View>
-      </View>
+        <Content>
+          <List dataArray={this.props.venuePosts} renderRow={this.renderVenuePost} />
+        </Content>
+      </Container>
     );
   }
 }
 
 const mapStateToProps = state => ({
   auth: state.firebase.auth,
-  venuePosts: state.firestore.ordered.venuePosts,
+  venuePosts: state.firestore.ordered.venuePosts || [],
 });
 
 const mapDispatchToProps = dispatch => ({});
 
 const Explore = compose(
-  firestoreConnect([{ collection: 'venuePosts', limit: 4, orderBy: [['timestamp', 'desc']] }]),
+  firestoreConnect([{ collection: 'venuePosts', limit: 30, orderBy: [['timestamp', 'desc']] }]),
   connect(mapStateToProps, mapDispatchToProps)
 )(UnconnectedExplore);
 

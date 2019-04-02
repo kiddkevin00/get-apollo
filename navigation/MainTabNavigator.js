@@ -5,8 +5,8 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import ExploreScreen from '../containers/Explore/';
-import HomeScreen from '../containers/LinksScreen';
-import ProfileScreen from '../containers/SettingsScreen';
+import HomeScreen from '../containers/Home/';
+import ProfileScreen from '../containers/Profile/';
 
 const ExploreStack = createStackNavigator(
   {
@@ -67,9 +67,9 @@ ProfileStack.navigationOptions = {
 
 export default createBottomTabNavigator(
   {
-    ExploreStack,
-    HomeStack,
-    ProfileStack,
+    explore: ExploreStack,
+    home: HomeStack,
+    profile: ProfileStack,
   },
   {
     tabBarOptions: {
@@ -78,6 +78,6 @@ export default createBottomTabNavigator(
       inactiveTintColor: colors.darkBlue,
       inactiveBackgroundColor: colors.darkBlue,
     },
-    initialRouteName: 'HomeStack',
+    initialRouteName: 'explore',
   }
 );
