@@ -7,7 +7,7 @@ import { ExpoLinksView } from '@expo/samples';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
   },
   welcomeContainer: {
     alignItems: 'center',
@@ -15,11 +15,12 @@ const styles = StyleSheet.create({
     //marginBottom: 20,
   },
   welcomeImage: {
-    width: dimensions.window.width,
+    width: dimensions.window.width - 20,
     height: 200,
     resizeMode: 'cover',
-    marginTop: 3,
+    marginTop: 10,
     //marginLeft: -10,
+    borderRadius: 10,
   },
   tabBarInfoContainer: {
     position: 'absolute',
