@@ -16,6 +16,7 @@ import {
   Button,
   Text,
   Icon,
+  Segment,
 } from 'native-base';
 import React from 'react';
 import {
@@ -130,10 +131,65 @@ class UnconnectedExplore extends React.Component {
     );
   };
 
+
+  state = { currentSegment: UnconnectedExplore.segmentMap.list };
+
+  static segmentMap = {
+    list: 'LIST',
+    grid: 'GRID',
+  };
+
+  onSegmentSelect(targetFilter) {
+    this.setState({
+      currentSegment: targetFilter,
+    });
+  }
+
+
   render() {
     return (
-      <Container>
+      <Container style={{ backgroundColor: 'black' }}>
         <StatusBar barStyle="light-content" />
+        <Segment style={ { backgroundColor: 'black', alignSelf: 'center' } }>
+          <Button
+            first
+            onPress={ this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.list) }
+            style={ {
+              backgroundColor: this.state.currentSegment === UnconnectedExplore.segmentMap.list ? 'white' : 'black',
+              borderColor: 'white',
+              paddingLeft: 9,
+              paddingRight: 9,
+            } }
+          >
+            <Text
+              style={ {
+                color: this.state.currentSegment === UnconnectedExplore.segmentMap.list ? 'black' : 'white',
+                fontSize: 12,
+              } }
+            >
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ UnconnectedExplore.segmentMap.list }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </Text>
+          </Button>
+          <Button
+            last
+            onPress={ this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.grid) }
+            style={ {
+              backgroundColor: this.state.currentSegment === UnconnectedExplore.segmentMap.grid ? 'white' : 'black',
+              borderColor: 'white',
+              paddingLeft: 9,
+              paddingRight: 9,
+            } }
+          >
+            <Text
+              style={ {
+                color: this.state.currentSegment === UnconnectedExplore.segmentMap.grid ? 'black' : 'white',
+                fontSize: 12,
+              } }
+            >
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ UnconnectedExplore.segmentMap.grid }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </Text>
+          </Button>
+        </Segment>
         <Content>
           <List dataArray={this.props.venuePosts} renderRow={this.renderVenuePost} />
         </Content>
