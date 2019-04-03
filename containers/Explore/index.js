@@ -277,6 +277,7 @@ class UnconnectedExplore extends React.Component {
             </Text>
           </Button>
         </Segment>
+
         <Content>
           {this.state.currentSegment === UnconnectedExplore.segmentMap.list ? (
             <List dataArray={this.props.venuePosts} renderRow={this.renderVenuePost} />
