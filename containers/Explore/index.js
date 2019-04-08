@@ -61,44 +61,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    //marginTop: 10,
-    //marginBottom: 20,
+    marginHorizontal: 2.5,
   },
   welcomeImage: {
-    width: dimensions.window.width - 20,
-    height: 200,
+    width: (dimensions.window.width - 15) / 2,
+    height: (dimensions.window.width - 15) / 2,
     resizeMode: 'cover',
-    marginTop: 10,
-    //marginLeft: -10,
+    marginTop: 5,
+    marginHorizontal: 2.5,
     borderRadius: 10,
   },
   tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
     alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    height: 35,
+    width: dimensions.window.width,
+    backgroundColor: 'black',
   },
   tabBarInfoText: {
-    fontSize: 17,
+    fontSize: 15,
     color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
+    //textAlign: 'center',
   },
 });
 
@@ -113,7 +97,10 @@ class UnconnectedExplore extends React.Component {
     grid: 'GRID',
   };
 
-  state = { currentSegment: UnconnectedExplore.segmentMap.list };
+  state = {
+    currentSegment: UnconnectedExplore.segmentMap.grid,
+    numberOfVisiblePosts: 10,
+  };
 
   onSegmentSelect(targetFilter) {
     this.setState({
@@ -191,32 +178,26 @@ class UnconnectedExplore extends React.Component {
 
   renderGridView() {
     return (
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={require('../../assets/images/clubbing4.jpg')}
-            style={styles.welcomeImage}
-          />
-        </View>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={require('../../assets/images/clubbing2.jpeg')}
-            style={styles.welcomeImage}
-          />
-        </View>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={require('../../assets/images/clubbing3.jpeg')}
-            style={styles.welcomeImage}
-          />
-        </View>
-        <View style={styles.welcomeContainer}>
-          <Image source={require('../../assets/images/clubbing.jpg')} style={styles.welcomeImage} />
-        </View>
+      <ScrollView style={styles.container} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        {this.props.venuePosts.map((post, index) => {
+          if (index > this.state.numberOfVisiblePosts - 1) return null;
 
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>Load More</Text>
-        </View>
+          return (
+            <Image
+              key={index}
+              source={
+                post.type === 'PHOTO'
+                  ? { uri: post.thumbnailURL }
+                  : require('../../assets/images/play.png')
+              }
+              style={styles.welcomeImage}
+            />
+          );
+        })}
+
+        <Button full={true} style={styles.tabBarInfoContainer} onPress={() => this.setState({ numberOfVisiblePosts: this.state.numberOfVisiblePosts + 10 })}>
+          <Text style={styles.tabBarInfoText}>LOAD MORE</Text>
+        </Button>
       </ScrollView>
     );
   }
@@ -228,31 +209,6 @@ class UnconnectedExplore extends React.Component {
         <Segment style={{ backgroundColor: 'black', alignSelf: 'center' }}>
           <Button
             first={true}
-            onPress={this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.list)}
-            style={{
-              backgroundColor:
-                this.state.currentSegment === UnconnectedExplore.segmentMap.list
-                  ? 'white'
-                  : 'black',
-              borderColor: 'white',
-              paddingLeft: 9,
-              paddingRight: 9,
-            }}
-          >
-            <Text
-              style={{
-                color:
-                  this.state.currentSegment === UnconnectedExplore.segmentMap.list
-                    ? 'black'
-                    : 'white',
-                fontSize: 12,
-              }}
-            >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{UnconnectedExplore.segmentMap.list}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </Text>
-          </Button>
-          <Button
-            last={true}
             onPress={this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.grid)}
             style={{
               backgroundColor:
@@ -274,6 +230,31 @@ class UnconnectedExplore extends React.Component {
               }}
             >
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{UnconnectedExplore.segmentMap.grid}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </Text>
+          </Button>
+          <Button
+            last={true}
+            onPress={this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.list)}
+            style={{
+              backgroundColor:
+                this.state.currentSegment === UnconnectedExplore.segmentMap.list
+                  ? 'white'
+                  : 'black',
+              borderColor: 'white',
+              paddingLeft: 9,
+              paddingRight: 9,
+            }}
+          >
+            <Text
+              style={{
+                color:
+                  this.state.currentSegment === UnconnectedExplore.segmentMap.list
+                    ? 'black'
+                    : 'white',
+                fontSize: 12,
+              }}
+            >
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{UnconnectedExplore.segmentMap.list}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </Text>
           </Button>
         </Segment>
@@ -298,7 +279,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({});
 
 const Explore = compose(
-  firestoreConnect([{ collection: 'venuePosts', limit: 30, orderBy: [['timestamp', 'desc']] }]),
+  firestoreConnect([{ collection: 'venuePosts', limit: 100, orderBy: [['timestamp', 'desc']] }]),
   connect(mapStateToProps, mapDispatchToProps)
 )(UnconnectedExplore);
 
