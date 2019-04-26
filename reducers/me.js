@@ -4,14 +4,10 @@ import { combineReducers } from 'redux';
 const { ME } = actionTypes;
 
 const mainInitialState = {
-  airtableId: undefined,
-  displayName: '',
-  firstName: '',
-  lastName: '',
-  phoneNumber: '',
-  photoUrl: undefined,
-  role: undefined,
-  identityConfirmationStatus: undefined,
+  uid: undefined,
+  email: undefined,
+  isAnonymous: undefined,
+  providerData: undefined,
 };
 
 const mainReducer = (state = mainInitialState, action) => {

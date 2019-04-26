@@ -5,23 +5,37 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import ExploreScreen from '../containers/Explore/';
+import PlayerScreen from '../containers/Explore/Player';
 import HomeScreen from '../containers/Home/';
 import ProfileScreen from '../containers/Profile/';
 
 const ExploreStack = createStackNavigator(
   {
     explore: ExploreScreen,
+    player: PlayerScreen,
   },
   {
     initialRouteName: 'explore',
   }
 );
 
-ExploreStack.navigationOptions = {
-  tabBarLabel: <View />,
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-globe' : 'md-globe'} />
-  ),
+ExploreStack.navigationOptions = ({ navigation }) => {
+  const { routeName } = navigation.state.routes[navigation.state.index];
+  let tabBarVisible;
+
+  if (routeName === 'player') {
+    tabBarVisible = false;
+  } else {
+    tabBarVisible = true;
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel: <View />,
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-globe' : 'md-globe'} />
+    ),
+  };
 };
 
 const HomeStack = createStackNavigator(

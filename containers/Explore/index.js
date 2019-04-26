@@ -1,6 +1,7 @@
 import firebaseClient from '../../utils/firebaseClient';
 import { defaultNavigationOptions } from '../../constants/navigation';
 import dimensions from '../../constants/dimensions';
+import { noop } from '../../constants/misc';
 import {
   Container,
   Header,
@@ -93,8 +94,8 @@ class UnconnectedExplore extends React.Component {
   };
 
   static segmentMap = {
-    list: 'LIST',
-    grid: 'GRID',
+    grid: 'ALL',
+    list: 'PHOTO',
   };
 
   state = {
@@ -120,7 +121,7 @@ class UnconnectedExplore extends React.Component {
           <CardItem>
             <Left>
               <Body style={{ flexGrow: 2, justifyContent: 'center', marginLeft: 0 }}>
-                <Text style={{ fontSize: 10.5, color: 'red' }}>&nbsp;{displayMonth}</Text>
+                <Text style={{ fontSize: 10.5, color: 'grey' }}>&nbsp;{displayMonth}</Text>
                 <Text style={{ fontSize: 22.5 }}>{displayDate}</Text>
               </Body>
               <Body style={{ flexGrow: 15 }}>
@@ -144,8 +145,8 @@ class UnconnectedExplore extends React.Component {
           <CardItem>
             <Left>
               <Button iconLeft={true} transparent={true} onPress={() => {}}>
-                <Icon style={{ fontSize: 22, color: '#f96332' }} name="bookmark" />
-                <Text style={{ fontSize: 15, fontWeight: '700', color: '#f96332' }}>Like</Text>
+                <Icon style={{ fontSize: 22, color: 'black' }} name="bookmark" />
+                <Text style={{ fontSize: 15, fontWeight: '700', color: 'black' }}>Like</Text>
               </Button>
               <Text>&nbsp;</Text>
               <Button
@@ -162,8 +163,8 @@ class UnconnectedExplore extends React.Component {
                   })
                 }
               >
-                <Icon style={{ fontSize: 22, color: '#f96332' }} name="share" />
-                <Text style={{ fontSize: 15, fontWeight: '700', color: '#f96332' }}>Share</Text>
+                <Icon style={{ fontSize: 22, color: 'black' }} name="share" />
+                <Text style={{ fontSize: 15, fontWeight: '700', color: 'black' }}>Share</Text>
               </Button>
             </Left>
             <Right>
@@ -177,21 +178,40 @@ class UnconnectedExplore extends React.Component {
   };
 
   renderGridView() {
+    const playlist = [];
+
     return (
       <ScrollView style={styles.container} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         {this.props.venuePosts.map((post, index) => {
+          if (post.type === 'VIDEO') {
+            const postedDate = moment(post.timestamp.toDate());
+            const displayTimestamp = postedDate.format('MMM DD h:mm A');
+
+            playlist.push({
+              id: post.id,
+              mp4LinkUrl: post.assetURL,
+              name: post.venueName,
+              author: displayTimestamp,
+            });
+          }
+
           if (index > this.state.numberOfVisiblePosts - 1) return null;
 
           return (
-            <Image
+            <TouchableOpacity
               key={index}
-              source={
-                post.type === 'PHOTO'
-                  ? { uri: post.thumbnailURL }
-                  : require('../../assets/images/play.png')
-              }
-              style={styles.welcomeImage}
-            />
+              onPress={() => this.props.navigation.push('player', { id: post.id, playlist, })}
+              disabled={post.type !== 'VIDEO'}
+            >
+              <Image
+                source={
+                  post.type === 'PHOTO'
+                    ? { uri: post.thumbnailURL }
+                    : require('../../assets/images/play.png')
+                }
+                style={styles.welcomeImage}
+              />
+            </TouchableOpacity>
           );
         })}
 
@@ -254,14 +274,17 @@ class UnconnectedExplore extends React.Component {
                 fontSize: 12,
               }}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{UnconnectedExplore.segmentMap.list}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;{UnconnectedExplore.segmentMap.list}&nbsp;&nbsp;&nbsp;
             </Text>
           </Button>
         </Segment>
 
         <Content>
           {this.state.currentSegment === UnconnectedExplore.segmentMap.list ? (
-            <List dataArray={this.props.venuePosts} renderRow={this.renderVenuePost} />
+            <List
+              dataArray={this.props.venuePosts.filter(post => post.type === 'PHOTO')}
+              renderRow={this.renderVenuePost}
+            />
           ) : (
             this.renderGridView()
           )}
