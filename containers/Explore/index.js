@@ -183,17 +183,16 @@ class UnconnectedExplore extends React.Component {
     return (
       <ScrollView style={styles.container} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         {this.props.venuePosts.map((post, index) => {
-          if (post.type === 'VIDEO') {
-            const postedDate = moment(post.timestamp.toDate());
-            const displayTimestamp = postedDate.format('MMM DD h:mm A');
+          const postedDate = moment(post.timestamp.toDate());
+          const displayTimestamp = postedDate.format('MMM DD h:mm A');
 
-            playlist.push({
-              id: post.id,
-              mp4LinkUrl: post.assetURL,
-              name: post.venueName,
-              author: displayTimestamp,
-            });
-          }
+          playlist.push({
+            id: post.id,
+            isVideo: post.type === 'VIDEO',
+            assetURL: post.assetURL,
+            name: post.venueName,
+            author: displayTimestamp,
+          });
 
           if (index > this.state.numberOfVisiblePosts - 1) return null;
 
@@ -201,7 +200,6 @@ class UnconnectedExplore extends React.Component {
             <TouchableOpacity
               key={index}
               onPress={() => this.props.navigation.push('player', { id: post.id, playlist, })}
-              disabled={post.type !== 'VIDEO'}
             >
               <Image
                 source={

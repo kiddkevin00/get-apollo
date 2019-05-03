@@ -11,13 +11,15 @@ import {
   Platform,
   Alert,
   StatusBar,
+  Image,
 } from 'react-native';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-//const DEFAULT_MUSIC = 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4';
-const DEFAULT_MUSIC =
-  "https://firebasestorage.googleapis.com/v0/b/get-apollo-staging-ad29c.appspot.com/o/venue-live-posts%2FIkhEPsaSpmrqwe6CAdmb%2Fcf1e60c9-f1eb-464d-a8b1-66830750dac1.mov?alt=media&token=ffecd10d-946f-4545-92f8-2a731ccf056b";
+//const DEFAULT_VIDEO = 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4';
+const DEFAULT_VIDEO =
+  'https://firebasestorage.googleapis.com/v0/b/get-apollo-staging-ad29c.appspot.com/o/venue-live-posts%2FIkhEPsaSpmrqwe6CAdmb%2Fcf1e60c9-f1eb-464d-a8b1-66830750dac1.mov?alt=media&token=ffecd10d-946f-4545-92f8-2a731ccf056b';
+const DEFAULT_ALBUM_IMAGE = require('../../assets/images/icon.png');
 
 const LOOPING_TYPE_ALL = 0;
 const LOOPING_TYPE_ONE = 1;
@@ -155,12 +157,13 @@ export default class Player extends Component {
     super(props);
 
     this.playlist = this.props.navigation.getParam('playlist', [
-      { mp4LinkUrl: DEFAULT_MUSIC },
+      { isVideo: true, assetURL: DEFAULT_VIDEO },
     ]);
-    this.index =
-      this.playlist.findIndex(
-        video => video.id === this.props.navigation.getParam('id', undefined)
-      ) || 0;
+    const videoIndex = this.playlist.findIndex(
+      video => video.id === this.props.navigation.getParam('id', undefined)
+    );
+
+    this.index = videoIndex >= 0 ? videoIndex : 0;
 
     this.isSeeking = false;
     this.shouldPlayAtEndOfSeek = false;
@@ -205,7 +208,9 @@ export default class Player extends Component {
       this.playbackInstance = null;
     }
 
-    const source = { uri: this.playlist[this.index].mp4LinkUrl || DEFAULT_MUSIC };
+    const source = {
+      uri: this.playlist[this.index].isVideo ? this.playlist[this.index].assetURL : DEFAULT_VIDEO,
+    };
     const initialStatus = {
       shouldPlay: playing,
       rate: this.state.rate,
@@ -218,10 +223,20 @@ export default class Player extends Component {
       // androidImplementation: 'MediaPlayer',
     };
 
-    this._video.setOnPlaybackStatusUpdate(this._onPlaybackStatusUpdate);
-    await this._video.loadAsync(source, initialStatus);
-    this.playbackInstance = this._video;
-    await this._video.getStatusAsync();
+    if (this.playlist[this.index].isVideo) {
+      this._video.setOnPlaybackStatusUpdate(this._onPlaybackStatusUpdate);
+      await this._video.loadAsync(source, initialStatus);
+      this.playbackInstance = this._video;
+      await this._video.getStatusAsync();
+    } else {
+      const { sound } = await Audio.Sound.create(
+        source,
+        initialStatus,
+        this._onPlaybackStatusUpdate
+      );
+
+      this.playbackInstance = sound;
+    }
 
     this._updateScreenForLoading(false);
   }
@@ -455,7 +470,7 @@ export default class Player extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="light-content" />
         <View style={{ height: 10 }} />
         <View style={styles.titleContainer}>
           <TouchableOpacity
@@ -471,12 +486,7 @@ export default class Player extends Component {
               }}
             />
           </TouchableOpacity>
-          <Text
-            style={[
-              styles.text,
-              { opacity: this.state.isLoading ? LOADING_OPACITY : 1.0 },
-            ]}
-          >
+          <Text style={[styles.text, { opacity: this.state.isLoading ? LOADING_OPACITY : 1.0 }]}>
             {this.state.playbackInstanceName}
           </Text>
           <View style={{ width: 48 }} />
@@ -489,7 +499,7 @@ export default class Player extends Component {
               styles.video,
               {
                 width: DEVICE_WIDTH,
-                height: this.state.videoHeight,
+                height: this.playlist[this.index].isVideo ? VIDEO_CONTAINER_HEIGHT : 0,
               },
             ]}
             resizeMode={Video.RESIZE_MODE_COVER}
@@ -500,6 +510,21 @@ export default class Player extends Component {
             onFullscreenUpdate={() => {}}
             onReadyForDisplay={this._onReadyForDisplay}
             useNativeControls={this.state.useNativeControls}
+          />
+          <Image
+            style={[
+              styles.video,
+              {
+                width: DEVICE_WIDTH,
+                height: !this.playlist[this.index].isVideo ? VIDEO_CONTAINER_HEIGHT : 0,
+              },
+            ]}
+            source={
+              this.playlist[this.index].assetURL
+                ? { uri: this.playlist[this.index].assetURL }
+                : DEFAULT_ALBUM_IMAGE
+            }
+            resizeMode="cover"
           />
         </View>
 
@@ -609,7 +634,13 @@ export default class Player extends Component {
           </TouchableHighlight>
         </View>
 
-        <View style={[styles.buttonsContainerBase, styles.buttonsContainerMiddleRow, { display: 'none' }]}>
+        <View
+          style={[
+            styles.buttonsContainerBase,
+            styles.buttonsContainerMiddleRow,
+            { display: 'none' },
+          ]}
+        >
           <View style={styles.volumeContainer}>
             <TouchableHighlight underlayColor={BACKGROUND_COLOR} onPress={this._onMutePressed}>
               {this.state.muted ? (
@@ -673,7 +704,9 @@ export default class Player extends Component {
           </TouchableHighlight>
         </View>
 
-        <View style={[styles.buttonsContainerBase, styles.buttonsContainerTextRow, { display: 'none' }]}>
+        <View
+          style={[styles.buttonsContainerBase, styles.buttonsContainerTextRow, { display: 'none' }]}
+        >
           <TouchableOpacity onPress={this._onFullScreenPressed}>
             <View>
               <Text style={styles.text}>Full Screen Mode</Text>
