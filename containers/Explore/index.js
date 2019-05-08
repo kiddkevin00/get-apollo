@@ -116,17 +116,17 @@ class UnconnectedExplore extends React.Component {
     const displayTime = postedDate.format('h:mm A');
 
     return (
-      <ListItem style={{ borderBottomWidth: 0 }}>
-        <Card>
-          <CardItem>
+      <ListItem style={{ marginLeft: 0, paddingTop: 0, paddingRight: 0, paddingBottom: 0, borderBottomWidth: 0 }}>
+        <Card style={{ borderTopWidth: 0, borderRightWidth: 0, borderBottomWidth: 0, borderLeftWidth: 0 }}>
+          <CardItem style={{ backgroundColor: 'black', borderRadius: 0 }}>
             <Left>
               <Body style={{ flexGrow: 2, justifyContent: 'center', marginLeft: 0 }}>
-                <Text style={{ fontSize: 10.5, color: 'grey' }}>&nbsp;{displayMonth}</Text>
-                <Text style={{ fontSize: 22.5 }}>{displayDate}</Text>
+                <Text style={{ fontSize: 10.5, color: '#e5e3e3' }}>&nbsp;{displayMonth}</Text>
+                <Text style={{ fontSize: 22.5, color: 'white' }}>{displayDate}</Text>
               </Body>
               <Body style={{ flexGrow: 15 }}>
-                <Text style={{ fontSize: 18, fontWeight: '500' }}>{post.venueName}</Text>
-                <Text style={{ fontSize: 13, color: '#333' }} note={true}>
+                <Text style={{ fontSize: 18, fontWeight: '500', color: 'white' }}>{post.venueName}</Text>
+                <Text style={{ fontSize: 13, color: 'grey' }} note={true}>
                   {displayTime}
                 </Text>
               </Body>
@@ -142,11 +142,10 @@ class UnconnectedExplore extends React.Component {
               }
             />
           </CardItem>
-          <CardItem>
+          <CardItem style={{ backgroundColor: 'black', borderRadius: 0, paddingTop: 0 }}>
             <Left>
               <Button iconLeft={true} transparent={true} onPress={() => {}}>
-                <Icon style={{ fontSize: 22, color: 'black' }} name="bookmark" />
-                <Text style={{ fontSize: 15, fontWeight: '700', color: 'black' }}>Like</Text>
+                <Icon style={{ fontSize: 22, color: 'white' }} name="bookmark" />
               </Button>
               <Text>&nbsp;</Text>
               <Button
@@ -163,15 +162,11 @@ class UnconnectedExplore extends React.Component {
                   })
                 }
               >
-                <Icon style={{ fontSize: 22, color: 'black' }} name="share" />
-                <Text style={{ fontSize: 15, fontWeight: '700', color: 'black' }}>Share</Text>
+                <Icon style={{ fontSize: 22, color: 'white' }} name="share" />
               </Button>
             </Left>
-            <Right>
-              <Icon name="arrow-forward" />
-            </Right>
+            <Right />
           </CardItem>
-          <CardItem style={{ paddingTop: 0.1, paddingBottom: 0.1 }} />
         </Card>
       </ListItem>
     );
