@@ -1,6 +1,5 @@
 {
   "name": "get-apollo",
-  "main": "./node_modules/expo/AppEntry.js",
   "description": "Mobile native app for Get Apollo",
   "scripts": {
     "start": "expo start --lan -c",
