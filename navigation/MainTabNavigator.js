@@ -10,7 +10,9 @@ import ExploreScreen from '../containers/Explore/';
 import PlayerScreen from '../containers/Explore/Player';
 import HomeScreen from '../containers/Home/';
 import DetailScreen from '../containers/Home/Detail';
-import ProfileScreen from '../containers/Profile/';
+import ProfileScreen from '../containers/Profile/Profile';
+import AboutMeScreen from '../containers/Profile/AboutMe';
+import MusicPreferenceScreen from '../containers/Profile/MusicPreference';
 
 const ExploreStack = createStackNavigator(
   {
@@ -71,6 +73,8 @@ HomeStack.navigationOptions = {
 const ProfileStack = createStackNavigator(
   {
     profile: ProfileScreen,
+    aboutMe: AboutMeScreen,
+    musicPreference: MusicPreferenceScreen,
   },
   {
     initialRouteName: 'profile',

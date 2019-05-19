@@ -33,7 +33,6 @@ export default class SettingsScreen extends React.Component {
     return (
       <Container>
         <StatusBar barStyle="light-content" />
-
         <Content style={{ backgroundColor: '#F0F0F0' }}>
           <List style={{ backgroundColor: 'white' }}>
             <ListItem itemDivider={true}>
