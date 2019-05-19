@@ -7,7 +7,8 @@
     "ios": "expo start --ios",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "lint": "eslint --format 'node_modules/eslint-friendly-formatter' --ext .js,.jsx components/ containers/ actionCreators/ actionTypes/ reducers/ store/ utils/ navigation/ constants/ App.js bin/ __tests__/",
+    "lint":
+      "eslint --format 'node_modules/eslint-friendly-formatter' --ext .js,.jsx components/ containers/ actionCreators/ actionTypes/ reducers/ store/ utils/ navigation/ constants/ App.js bin/ __tests__/",
     "debugger": "open 'rndebugger://set-debugger-loc?host=localhost&port=19001'"
   },
   "jest": {
@@ -23,7 +24,9 @@
     "native-base": "2.8.1",
     "prop-types": "15.6.2",
     "react": "16.3.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "react-native":
+      "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "react-native-progress": "^3.6.0",
     "react-navigation": "3.0.9",
     "react-redux": "5.1.0",
     "react-redux-firebase": "2.2.6",

@@ -1,4 +1,4 @@
-import { defaultNavigationOptions } from '../../constants/navigation';
+import { defaultNavigationOptions } from "../../constants/navigation";
 import {
   Spinner,
   Container,
@@ -11,16 +11,16 @@ import {
   Right,
   Text,
   Button,
-  Icon,
-} from 'native-base';
-import { StatusBar } from 'react-native';
-import { WebBrowser } from 'expo';
-import React from 'react';
+  Icon
+} from "native-base";
+import { StatusBar } from "react-native";
+import { WebBrowser } from "expo";
+import React from "react";
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     ...defaultNavigationOptions,
-    title: 'PROFILE',
+    title: "PROFILE"
   };
 
   goToWebView(url) {
@@ -34,8 +34,8 @@ export default class SettingsScreen extends React.Component {
       <Container>
         <StatusBar barStyle="light-content" />
 
-        <Content style={{ backgroundColor: '#F0F0F0' }}>
-          <List style={{ backgroundColor: 'white' }}>
+        <Content style={{ backgroundColor: "#F0F0F0" }}>
+          <List style={{ backgroundColor: "white" }}>
             <ListItem itemDivider={true}>
               <Text>Account</Text>
             </ListItem>
@@ -56,7 +56,10 @@ export default class SettingsScreen extends React.Component {
             <ListItem
               icon={true}
               button={true}
-              onPress={this.goToWebView.bind(this, 'https://www.getapollo.in/privacy-policy')}
+              onPress={this.goToWebView.bind(
+                this,
+                "https://www.getapollo.in/privacy-policy"
+              )}
             >
               <Left>
                 <Icon active={true} name="paper" />
@@ -71,13 +74,16 @@ export default class SettingsScreen extends React.Component {
             <ListItem
               icon={true}
               button={true}
-              onPress={this.goToWebView.bind(this, 'https://www.getapollo.in/terms-of-service')}
+              onPress={this.goToWebView.bind(
+                this,
+                "https://www.getapollo.in/terms-of-service"
+              )}
             >
               <Left>
                 <Icon active={true} name="paper-plane" />
               </Left>
               <Body>
-              <Text>Terms of Use</Text>
+                <Text>Terms of Use</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />
@@ -86,7 +92,7 @@ export default class SettingsScreen extends React.Component {
             <ListItem
               icon={true}
               button={true}
-              onPress={this.goToWebView.bind(this, 'https://www.getapollo.in/')}
+              onPress={this.goToWebView.bind(this, "https://www.getapollo.in/")}
             >
               <Left>
                 <Icon active={true} name="information-circle" />
@@ -102,13 +108,16 @@ export default class SettingsScreen extends React.Component {
               last={true}
               icon={true}
               button={true}
-              onPress={this.goToWebView.bind(this, 'https://www.getapollo.in/contact-us')}
+              onPress={this.goToWebView.bind(
+                this,
+                "https://www.getapollo.in/contact-us"
+              )}
             >
               <Left>
                 <Icon active={true} name="call" />
               </Left>
               <Body>
-              <Text>Contact Us</Text>
+                <Text>Contact Us</Text>
               </Body>
               <Right>
                 <Icon name="arrow-forward" />
@@ -121,10 +130,7 @@ export default class SettingsScreen extends React.Component {
               last={true}
               icon={true}
               button={true}
-              onPress={this.goToWebView.bind(
-                this,
-                'https://www.getapollo.in/'
-              )}
+              onPress={this.goToWebView.bind(this, "https://www.getapollo.in/")}
             >
               <Left>
                 <Icon active={true} name="more" />
