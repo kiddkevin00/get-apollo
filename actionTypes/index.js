@@ -5,6 +5,9 @@ const actionTypes = {
   },
 };
 
-const namespaces = Object.keys(actionTypes).reduce((acc, type) => ({ ...acc, [type]: type }), {});
+const namespaces = Object.keys(actionTypes).reduce(
+  (acc, type) => ({ ...acc, [type]: type }),
+  {}
+);
 
 export { actionTypes as default, namespaces };

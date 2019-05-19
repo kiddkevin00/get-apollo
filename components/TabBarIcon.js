@@ -1,7 +1,7 @@
-import colors from "../constants/colors";
-import React from "react";
-import { Icon } from "expo";
-import { PropTypes } from "prop-types";
+import colors from '../constants/colors';
+import React from 'react';
+import { Icon } from 'expo';
+import { PropTypes } from 'prop-types';
 
 export default class TabBarIcon extends React.Component {
   static propTypes = {
@@ -9,14 +9,14 @@ export default class TabBarIcon extends React.Component {
     name: PropTypes.string.isRequired,
     size: PropTypes.number,
     style: PropTypes.object,
-    color: PropTypes.string
+    color: PropTypes.string,
   };
 
   static defaultProps = {
-    type: "Ionicons",
+    type: 'Ionicons',
     size: 32,
     style: {},
-    color: "white"
+    color: 'white',
   };
 
   render() {

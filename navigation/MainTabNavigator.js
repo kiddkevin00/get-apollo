@@ -1,24 +1,24 @@
-import colors from "../constants/colors";
-import React from "react";
-import { Platform, View } from "react-native";
+import colors from '../constants/colors';
+import React from 'react';
+import { Platform, View } from 'react-native';
 import {
   createStackNavigator,
-  createBottomTabNavigator
-} from "react-navigation";
-import TabBarIcon from "../components/TabBarIcon";
-import ExploreScreen from "../containers/Explore/";
-import PlayerScreen from "../containers/Explore/Player";
-import HomeScreen from "../containers/Home/";
-import DetailScreen from "../containers/Home/Detail";
-import ProfileScreen from "../containers/Profile/";
+  createBottomTabNavigator,
+} from 'react-navigation';
+import TabBarIcon from '../components/TabBarIcon';
+import ExploreScreen from '../containers/Explore/';
+import PlayerScreen from '../containers/Explore/Player';
+import HomeScreen from '../containers/Home/';
+import DetailScreen from '../containers/Home/Detail';
+import ProfileScreen from '../containers/Profile/';
 
 const ExploreStack = createStackNavigator(
   {
     explore: ExploreScreen,
-    player: PlayerScreen
+    player: PlayerScreen,
   },
   {
-    initialRouteName: "explore"
+    initialRouteName: 'explore',
   }
 );
 
@@ -26,7 +26,7 @@ ExploreStack.navigationOptions = ({ navigation }) => {
   const { routeName } = navigation.state.routes[navigation.state.index];
   let tabBarVisible;
 
-  if (routeName === "player") {
+  if (routeName === 'player') {
     tabBarVisible = false;
   } else {
     tabBarVisible = true;
@@ -40,19 +40,19 @@ ExploreStack.navigationOptions = ({ navigation }) => {
         style={{ marginBottom: -3 }}
         color={focused ? colors.lightBlue : colors.grey}
         focused={focused}
-        name={Platform.OS === "ios" ? "ios-globe" : "md-globe"}
+        name={Platform.OS === 'ios' ? 'ios-globe' : 'md-globe'}
       />
-    )
+    ),
   };
 };
 
 const HomeStack = createStackNavigator(
   {
     home: HomeScreen,
-    detail: DetailScreen
+    detail: DetailScreen,
   },
   {
-    initialRouteName: "home"
+    initialRouteName: 'home',
   }
 );
 
@@ -63,17 +63,17 @@ HomeStack.navigationOptions = {
       style={{ marginBottom: -3 }}
       color={focused ? colors.lightBlue : colors.grey}
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-home" : "md-home"}
+      name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'}
     />
-  )
+  ),
 };
 
 const ProfileStack = createStackNavigator(
   {
-    profile: ProfileScreen
+    profile: ProfileScreen,
   },
   {
-    initialRouteName: "profile"
+    initialRouteName: 'profile',
   }
 );
 
@@ -84,24 +84,24 @@ ProfileStack.navigationOptions = {
       style={{ marginBottom: -3 }}
       color={focused ? colors.lightBlue : colors.grey}
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-contact" : "md-contact"}
+      name={Platform.OS === 'ios' ? 'ios-contact' : 'md-contact'}
     />
-  )
+  ),
 };
 
 export default createBottomTabNavigator(
   {
     explore: ExploreStack,
     home: HomeStack,
-    profile: ProfileStack
+    profile: ProfileStack,
   },
   {
     tabBarOptions: {
       activeTintColor: colors.lightBlue,
       activeBackgroundColor: colors.darkBlue,
       inactiveTintColor: colors.darkBlue,
-      inactiveBackgroundColor: colors.darkBlue
+      inactiveBackgroundColor: colors.darkBlue,
     },
-    initialRouteName: "home"
+    initialRouteName: 'home',
   }
 );

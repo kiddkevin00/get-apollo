@@ -35,7 +35,12 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-const getVenuePosts = async ({ docSnapshot, limit = 4, timestamp, venueId } = {}) => {
+const getVenuePosts = async ({
+  docSnapshot,
+  limit = 4,
+  timestamp,
+  venueId,
+} = {}) => {
   let collection = firebaseClient
     .firestore()
     .collection('venuePosts')
@@ -116,16 +121,41 @@ class UnconnectedExplore extends React.Component {
     const displayTime = postedDate.format('h:mm A');
 
     return (
-      <ListItem style={{ marginLeft: 0, paddingTop: 0, paddingRight: 0, paddingBottom: 0, borderBottomWidth: 0 }}>
-        <Card style={{ borderTopWidth: 0, borderRightWidth: 0, borderBottomWidth: 0, borderLeftWidth: 0 }}>
+      <ListItem
+        style={{
+          marginLeft: 0,
+          paddingTop: 0,
+          paddingRight: 0,
+          paddingBottom: 0,
+          borderBottomWidth: 0,
+        }}
+      >
+        <Card
+          style={{
+            borderTopWidth: 0,
+            borderRightWidth: 0,
+            borderBottomWidth: 0,
+            borderLeftWidth: 0,
+          }}
+        >
           <CardItem style={{ backgroundColor: 'black', borderRadius: 0 }}>
             <Left>
-              <Body style={{ flexGrow: 2, justifyContent: 'center', marginLeft: 0 }}>
-                <Text style={{ fontSize: 10.5, color: '#e5e3e3' }}>&nbsp;{displayMonth}</Text>
-                <Text style={{ fontSize: 22.5, color: 'white' }}>{displayDate}</Text>
+              <Body
+                style={{ flexGrow: 2, justifyContent: 'center', marginLeft: 0 }}
+              >
+                <Text style={{ fontSize: 10.5, color: '#e5e3e3' }}>
+                  &nbsp;{displayMonth}
+                </Text>
+                <Text style={{ fontSize: 22.5, color: 'white' }}>
+                  {displayDate}
+                </Text>
               </Body>
               <Body style={{ flexGrow: 15 }}>
-                <Text style={{ fontSize: 18, fontWeight: '500', color: 'white' }}>{post.venueName}</Text>
+                <Text
+                  style={{ fontSize: 18, fontWeight: '500', color: 'white' }}
+                >
+                  {post.venueName}
+                </Text>
                 <Text style={{ fontSize: 13, color: 'grey' }} note={true}>
                   {displayTime}
                 </Text>
@@ -142,10 +172,15 @@ class UnconnectedExplore extends React.Component {
               }
             />
           </CardItem>
-          <CardItem style={{ backgroundColor: 'black', borderRadius: 0, paddingTop: 0 }}>
+          <CardItem
+            style={{ backgroundColor: 'black', borderRadius: 0, paddingTop: 0 }}
+          >
             <Left>
               <Button iconLeft={true} transparent={true} onPress={() => {}}>
-                <Icon style={{ fontSize: 22, color: 'white' }} name="bookmark" />
+                <Icon
+                  style={{ fontSize: 22, color: 'white' }}
+                  name="bookmark"
+                />
               </Button>
               <Text>&nbsp;</Text>
               <Button
@@ -156,7 +191,9 @@ class UnconnectedExplore extends React.Component {
                     title: post.venueName,
                     message:
                       `Check out this venue - ${post.venueName}:\n` +
-                      `GetApollo2019://?event=${global.encodeURIComponent(post.venueId)}\n\n` +
+                      `GetApollo2019://?event=${global.encodeURIComponent(
+                        post.venueId
+                      )}\n\n` +
                       'Click the link below to download Get Apollo:\n' +
                       'https://itunes.apple.com/us/app/get-apollo/id1440237761?mt=8',
                   })
@@ -176,7 +213,10 @@ class UnconnectedExplore extends React.Component {
     const playlist = [];
 
     return (
-      <ScrollView style={styles.container} contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+      >
         {this.props.venuePosts.map((post, index) => {
           const postedDate = moment(post.timestamp.toDate());
           const displayTimestamp = postedDate.format('MMM DD h:mm A');
@@ -194,7 +234,9 @@ class UnconnectedExplore extends React.Component {
           return (
             <TouchableOpacity
               key={index}
-              onPress={() => this.props.navigation.push('player', { id: post.id, playlist, })}
+              onPress={() =>
+                this.props.navigation.push('player', { id: post.id, playlist })
+              }
             >
               <Image
                 source={
@@ -208,7 +250,15 @@ class UnconnectedExplore extends React.Component {
           );
         })}
 
-        <Button full={true} style={styles.tabBarInfoContainer} onPress={() => this.setState({ numberOfVisiblePosts: this.state.numberOfVisiblePosts + 10 })}>
+        <Button
+          full={true}
+          style={styles.tabBarInfoContainer}
+          onPress={() =>
+            this.setState({
+              numberOfVisiblePosts: this.state.numberOfVisiblePosts + 10,
+            })
+          }
+        >
           <Text style={styles.tabBarInfoText}>LOAD MORE</Text>
         </Button>
       </ScrollView>
@@ -222,7 +272,10 @@ class UnconnectedExplore extends React.Component {
         <Segment style={{ backgroundColor: 'black', alignSelf: 'center' }}>
           <Button
             first={true}
-            onPress={this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.grid)}
+            onPress={this.onSegmentSelect.bind(
+              this,
+              UnconnectedExplore.segmentMap.grid
+            )}
             style={{
               backgroundColor:
                 this.state.currentSegment === UnconnectedExplore.segmentMap.grid
@@ -236,7 +289,8 @@ class UnconnectedExplore extends React.Component {
             <Text
               style={{
                 color:
-                  this.state.currentSegment === UnconnectedExplore.segmentMap.grid
+                  this.state.currentSegment ===
+                  UnconnectedExplore.segmentMap.grid
                     ? 'black'
                     : 'white',
                 fontSize: 12,
@@ -247,7 +301,10 @@ class UnconnectedExplore extends React.Component {
           </Button>
           <Button
             last={true}
-            onPress={this.onSegmentSelect.bind(this, UnconnectedExplore.segmentMap.list)}
+            onPress={this.onSegmentSelect.bind(
+              this,
+              UnconnectedExplore.segmentMap.list
+            )}
             style={{
               backgroundColor:
                 this.state.currentSegment === UnconnectedExplore.segmentMap.list
@@ -261,7 +318,8 @@ class UnconnectedExplore extends React.Component {
             <Text
               style={{
                 color:
-                  this.state.currentSegment === UnconnectedExplore.segmentMap.list
+                  this.state.currentSegment ===
+                  UnconnectedExplore.segmentMap.list
                     ? 'black'
                     : 'white',
                 fontSize: 12,
@@ -275,7 +333,9 @@ class UnconnectedExplore extends React.Component {
         <Content>
           {this.state.currentSegment === UnconnectedExplore.segmentMap.list ? (
             <List
-              dataArray={this.props.venuePosts.filter(post => post.type === 'PHOTO')}
+              dataArray={this.props.venuePosts.filter(
+                post => post.type === 'PHOTO'
+              )}
               renderRow={this.renderVenuePost}
             />
           ) : (
@@ -295,7 +355,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({});
 
 const Explore = compose(
-  firestoreConnect([{ collection: 'venuePosts', limit: 100, orderBy: [['timestamp', 'desc']] }]),
+  firestoreConnect([
+    { collection: 'venuePosts', limit: 100, orderBy: [['timestamp', 'desc']] },
+  ]),
   connect(mapStateToProps, mapDispatchToProps)
 )(UnconnectedExplore);
 
