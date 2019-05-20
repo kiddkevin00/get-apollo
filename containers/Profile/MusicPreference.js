@@ -1,93 +1,133 @@
-import { defaultNavigationOptions } from "../../constants/navigation";
-import React from "react";
-import { musicPreference } from "../../constants/enums";
-import TabBarIcon from "../../components/TabBarIcon";
-import {
-  Container,
-  Header,
-  Content,
-  List,
-  ListItem,
-  Card,
-  CardItem,
-  Left,
-  Body,
-  Right,
-  Title,
-  Button,
-  Text,
-  Icon,
-  Segment,
-  Footer
-} from "native-base";
+import { defaultNavigationOptions } from '../../constants/navigation';
+import React from 'react';
+import { musicPreference } from '../../constants/enums';
 import {
   Image,
   ScrollView,
   StyleSheet,
   StatusBar,
-  ImageBackground,
+  View,
+  Text,
+  TouchableHighlight,
   TouchableOpacity,
-  TouchableWithoutFeedback
-} from "react-native";
+} from 'react-native';
 
 class MusicPreference extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...defaultNavigationOptions,
-      title: "MUSIC"
+      title: 'MUSIC',
     };
   };
 
-  preferenceButtons = () => {
-    return Object.keys();
+  state = {
+    musicPreference: ['HIP_HOP', 'REGGAE'],
   };
-  render() {
-    return (
-      <Container
-        style={{
-          alignItems: "center",
-          backgroundColor: "black",
-          flexDirection: "column",
-          padding: 36
-        }}
-      >
-        <Card
+  renderPreferenceButtons = () => {
+    return Object.keys(musicPreference).map(key => {
+      const title = musicPreference[key];
+      const isSelected = this.state.musicPreference.includes(key);
+      return (
+        <TouchableHighlight
+          key={title}
+          onPress={() => {
+            if (this.state.musicPreference.includes(key)) {
+              this.setState(state => {
+                const musicPreference = state.musicPreference.filter(
+                  item => item !== key
+                );
+                return {
+                  musicPreference,
+                };
+              });
+            } else {
+              this.setState(state => {
+                const musicPreference = state.musicPreference.concat(key);
+                return {
+                  musicPreference,
+                };
+              });
+            }
+          }}
           style={{
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "black",
-            borderColor: "black"
+            width: 120,
+            height: 30,
+            margin: 4,
+            backgroundColor: this.state.musicPreference.includes(key)
+              ? '#017bf6'
+              : 'black',
+            borderRadius: 15,
+            borderColor: '#017bf6',
+            borderWidth: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <Image
+          <Text
             style={{
-              height: 128,
-              marginBottom: 28,
-              marginTop: 16,
-              maxWidth: "100%",
-              resizeMode: "contain",
-              backgroundColor: "black"
-            }}
-            source={require("../../assets/images/music.png")}
-          />
-          <Card
-            style={{
-              padding: 18,
-              width: "100%",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "center"
+              color: this.state.musicPreference.includes(key)
+                ? 'white'
+                : 'grey',
+              fontSize: 14,
             }}
           >
-            {this.preferenceButtons()}
-          </Card>
-        </Card>
-      </Container>
+            {title}
+          </Text>
+        </TouchableHighlight>
+      );
+    });
+  };
+  render() {
+    const { navigation } = this.props;
+    return (
+      <ScrollView
+        style={{
+          minHeight: '100%',
+          backgroundColor: 'black',
+          padding: 36,
+        }}
+      >
+        <StatusBar barStyle="light-content" />
+        <Image
+          style={{
+            height: 128,
+            margin: 26,
+            maxWidth: '100%',
+            resizeMode: 'contain',
+            alignSelf: 'center',
+          }}
+          source={require('../../assets/images/music.png')}
+        />
+        <View
+          style={{
+            padding: 18,
+            width: '100%',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {this.renderPreferenceButtons()}
+        </View>
+        <TouchableOpacity
+          style={{
+            marginTop: 10,
+            width: 120,
+            height: 40,
+            borderRadius: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+            backgroundColor: '#017bf6',
+          }}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={{ color: 'white' }}>Save</Text>
+        </TouchableOpacity>
+      </ScrollView>
     );
   }
 }
-
-const styles = StyleSheet.create({});
 
 export default MusicPreference;
