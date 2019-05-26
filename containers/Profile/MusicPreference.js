@@ -21,39 +21,23 @@ class MusicPreference extends React.Component {
   };
 
   state = {
-    musicPreference: ['HIP_HOP', 'REGGAE'],
+    musicPreferences: ['HIP_HOP', 'REGGAE'],
   };
+
   renderPreferenceButtons = () => {
-    return Object.keys(musicPreference).map(key => {
-      const title = musicPreference[key];
-      const isSelected = this.state.musicPreference.includes(key);
+    return Object.keys(musicPreferences).map(key => {
+      const title = musicPreferences[key];
+      const isSelected = this.state.musicPreferences.includes(key);
+
       return (
         <TouchableHighlight
           key={title}
-          onPress={() => {
-            if (this.state.musicPreference.includes(key)) {
-              this.setState(state => {
-                const musicPreference = state.musicPreference.filter(
-                  item => item !== key
-                );
-                return {
-                  musicPreference,
-                };
-              });
-            } else {
-              this.setState(state => {
-                const musicPreference = state.musicPreference.concat(key);
-                return {
-                  musicPreference,
-                };
-              });
-            }
-          }}
+          onPress={this.handleMusicPreferencesButtonPress}
           style={{
             width: 120,
             height: 30,
             margin: 4,
-            backgroundColor: this.state.musicPreference.includes(key)
+            backgroundColor: this.state.musicPreferences.includes(key)
               ? '#017bf6'
               : 'black',
             borderRadius: 15,
@@ -65,7 +49,7 @@ class MusicPreference extends React.Component {
         >
           <Text
             style={{
-              color: this.state.musicPreference.includes(key)
+              color: this.state.musicPreferences.includes(key)
                 ? 'white'
                 : 'grey',
               fontSize: 14,
@@ -77,8 +61,31 @@ class MusicPreference extends React.Component {
       );
     });
   };
+
+  handleMusicPreferencesButtonPress = () => {
+    if (this.state.musicPreferences.includes(key)) {
+      this.setState(state => {
+        const musicPreferences = state.musicPreferences.filter(
+          item => item !== key
+        );
+
+        return {
+          musicPreferences,
+        };
+      });
+    } else {
+      this.setState(state => {
+        const musicPreferences = state.musicPreferences.concat(key);
+
+        return {
+          musicPreferences,
+        };
+      });
+    }
+  };
   render() {
     const { navigation } = this.props;
+
     return (
       <ScrollView
         style={{

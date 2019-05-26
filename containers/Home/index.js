@@ -97,7 +97,15 @@ class UnconnectedHome extends React.Component {
                 }}
                 source={{ uri: venue.photoURL }}
               >
-                <Text style={{ color: 'white' }}>{venue.name}</Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 30,
+                    fontFamily: 'Roboto',
+                  }}
+                >
+                  {venue.name}
+                </Text>
               </ImageBackground>
             </CardItem>
             <CardItem

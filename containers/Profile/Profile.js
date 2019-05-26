@@ -1,12 +1,15 @@
 import { defaultNavigationOptions } from '../../constants/navigation';
 import TabBarIcon from '../../components/TabBarIcon';
+import GuestProfile from './GuestProfile';
 import React from 'react';
 import QRCode from 'react-native-qrcode';
 import { WebBrowser } from 'expo';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import { Container, Card, Button, Text, CardItem, Content } from 'native-base';
 import { StyleSheet, StatusBar } from 'react-native';
 
-class Profile extends React.Component {
+class UnconnectedProfile extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       ...defaultNavigationOptions,
@@ -14,21 +17,26 @@ class Profile extends React.Component {
     };
   };
 
-  renderViewTermsAndConditions = () => {
+  goToTermsAndConditions = () => {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/terms-of-service');
   };
 
-  renderViewPrivacyPolicy = () => {
+  goToPrivacyPolicy = () => {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/privacy-policy');
   };
 
   render() {
+    if (this.props.auth.isAnonymous) {
+      return <GuestProfile />;
+    }
+
     const displayName = 'Paul Hsu';
     const gender = 'male';
     const relationship = 'Single';
     const musicPreferences = ['HIP_HOP', 'REGGAE'];
     const age = '21';
     const userID = '123456789';
+
     return (
       <Container
         style={{
@@ -124,7 +132,7 @@ class Profile extends React.Component {
             <CardItem
               style={styles.link}
               button={true}
-              onPress={() => this.renderViewTermsAndConditions()}
+              onPress={this.goToTermsAndConditions}
             >
               <Text style={styles.linkText}>Terms & Conditions</Text>
               <TabBarIcon
@@ -138,7 +146,7 @@ class Profile extends React.Component {
             <CardItem
               style={styles.link}
               button={true}
-              onPress={() => this.renderViewPrivacyPolicy()}
+              onPress={this.goToPrivacyPolicy}
             >
               <Text style={styles.linkText}>Privacy Policy</Text>
               <TabBarIcon
@@ -198,4 +206,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+const mapStateToProps = state => ({
+  auth: state.firebase.auth,
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+const Profile = compose(connect(mapStateToProps, mapDispatchToProps))(
+  UnconnectedProfile
+);
+
+export { UnconnectedProfile, Profile as default };
