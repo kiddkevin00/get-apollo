@@ -14,10 +14,6 @@ import { firestoreConnect } from 'react-redux-firebase';
 const styles = StyleSheet.create({});
 
 class UnconnectedDisplayName extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
-
   state = {
     displayName: 'Marcus Hsu',
   };
@@ -74,6 +70,7 @@ class UnconnectedDisplayName extends React.Component {
             backgroundColor: '#017bf6',
             marginTop: 100,
           }}
+          onPress={() => this.props.navigation.push('birthday')}
         >
           <Text style={{ fontSize: 14, color: 'white' }}>Saved</Text>
         </TouchableOpacity>
