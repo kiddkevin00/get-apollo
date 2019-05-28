@@ -1,5 +1,6 @@
 import actionTypes from '../actionTypes';
 import { firebaseAuth, firebaseAuthProviders } from '../utils/firebaseClient';
+import { User } from '../utils/firebase/user';
 import { Facebook } from 'expo';
 import { NavigationActions } from 'react-navigation';
 
@@ -52,7 +53,7 @@ const authActionCreator = {
           errorMessage = errorMsg;
         }
 
-        Alert.alert('Try Again', errorMessage);
+        console.error('Try Again', errorMessage);
 
         dispatch(this.updateDataFailure(errorMsg));
       }
@@ -91,7 +92,41 @@ const authActionCreator = {
         }
         dispatch(this.updateDataSuccess());
       } catch (e) {
-        Alert.alert('Try Again', e.message);
+        console.error('Try Again', e.message);
+        dispatch(this.updateDataFailure(e.message));
+      }
+    };
+  },
+
+  loadProfile() {
+    return async dispatch => {
+      try {
+        dispatch(this.updateDataRequest());
+        const user = await User.getCurrentUser();
+        const profile = await user.profile();
+
+        dispatch(this.setData({ ...profile }));
+        dispatch(this.updateDataSuccess());
+      } catch (e) {
+        console.error('Error', e);
+        dispatch(this.updateDataFailure(e.message));
+      }
+    };
+  },
+
+  saveProfile(profile) {
+    return async dispatch => {
+      try {
+        dispatch(this.updateDataRequest());
+
+        const user = await User.getCurrentUser();
+
+        await user.ref.set(profile, { merge: true });
+
+        dispatch(this.setData({ ...profile }));
+        dispatch(this.updateDataSuccess());
+      } catch (e) {
+        console.error('Error', e);
         dispatch(this.updateDataFailure(e.message));
       }
     };

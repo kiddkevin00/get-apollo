@@ -1,4 +1,5 @@
 import { defaultNavigationOptions } from '../../constants/navigation';
+import { User } from '../../utils/firebase/user';
 import React from 'react';
 import {
   StyleSheet,
@@ -7,7 +8,10 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
+import { connect } from 'react-redux';
+import actionCreator from '../../actionCreators/auth';
 
 const styles = StyleSheet.create({
   paragraph: {
@@ -23,11 +27,16 @@ const styles = StyleSheet.create({
   },
 });
 
-class TermsAndConditions extends React.Component {
+class UnconnectedTermsAndConditions extends React.Component {
   static navigationOptions = {
     ...defaultNavigationOptions,
     title: 'TERMS & CONDITIONS',
   };
+
+  componentDidMount() {
+    StatusBar.setHidden(true);
+    this.props.dispatchLoadProfile();
+  }
 
   goToTermsAndConditions = () => {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/terms-of-service');
@@ -37,12 +46,50 @@ class TermsAndConditions extends React.Component {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/privacy-policy');
   };
 
-  componentDidMount() {
-    StatusBar.setHidden(true);
-  }
+  accept = async () => {
+    console.log('in accept');
+    await this.setTermsAndCondition(true);
+  };
+
+  decline = async () => {
+    await this.setTermsAndCondition(false);
+    Alert.alert(
+      'Error',
+      'Sorry, you must accept our terms of service in order to use the app.',
+      [
+        { text: 'OK' },
+        { text: 'Cancel', onPress: () => this.props.navigation.goBack() },
+      ]
+    );
+  };
+
+  setTermsAndCondition = async accepted => {
+    const profile = { termsAndConditions: true };
+    try {
+      await this.props.dispatchSaveProfile(profile);
+      this.props.navigation.push('displayName');
+    } catch (e) {
+      console.log('error', e);
+    }
+  };
 
   render() {
     const { navigation } = this.props;
+
+    if (this.props.isUpdating) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'black',
+          }}
+        >
+          <Text style={{ color: 'black' }}>Pouring drinks...</Text>
+        </View>
+      );
+    }
 
     return (
       <ScrollView
@@ -93,7 +140,7 @@ class TermsAndConditions extends React.Component {
             alignItems: 'center',
             backgroundColor: '#017bf6',
           }}
-          onPress={() => this.props.navigation.push('displayName')}
+          onPress={this.accept}
         >
           <Text style={{ color: 'white', fontSize: 14 }}>Accept</Text>
         </TouchableOpacity>
@@ -109,6 +156,7 @@ class TermsAndConditions extends React.Component {
             backgroundColor: 'black',
             marginTop: 10,
           }}
+          onPress={this.decline}
         >
           <Text style={{ color: 'grey', fontSize: 14 }}>Decline</Text>
         </TouchableOpacity>
@@ -117,4 +165,22 @@ class TermsAndConditions extends React.Component {
   }
 }
 
-export default TermsAndConditions;
+const mapStateToProps = state => ({
+  auth: state.firebase.auth,
+  isUpdating: state.auth.isUpdatingData,
+});
+
+const mapDispatchToProps = dispatch => ({
+  dispatchSaveProfile(profile) {
+    dispatch(actionCreator.saveProfile(profile));
+  },
+  dispatchLoadProfile() {
+    dispatch(actionCreator.loadProfile());
+  },
+});
+
+const TermsAndConditions = connect(mapStateToProps, mapDispatchToProps)(
+  UnconnectedTermsAndConditions
+);
+
+export { UnconnectedTermsAndConditions, TermsAndConditions as default };

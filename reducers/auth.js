@@ -6,6 +6,12 @@ const { AUTH } = actionTypes;
 const mainInitialState = {
   uid: undefined,
   email: undefined,
+  displayName: undefined,
+  birthday: undefined,
+  musicPreference: undefined,
+  termsAndConditions: undefined,
+  relationship: undefined,
+  gender: undefined,
   isAnonymous: undefined,
   providerData: undefined,
   isUpdatingData: false,

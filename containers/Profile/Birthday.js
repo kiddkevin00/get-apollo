@@ -5,11 +5,9 @@ import React from 'react';
 import {
   StyleSheet,
   Image,
-  StatusBar,
   View,
   Picker,
   Text,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
