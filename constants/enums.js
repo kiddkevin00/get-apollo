@@ -1,16 +1,16 @@
-export const gender = {
+export const genders = {
   MALE: 'Male',
   FEMALE: 'Female',
-  OTHER: 'Other',
+  UNSPECIFIED: 'Unspecified',
 };
 
-export const relationship = {
+export const relationships = {
   SINGLE: 'Single',
   TAKEN: 'Taken',
   COMPLICATED: 'Complicated',
 };
 
-export const musicPreference = {
+export const musicPreferences = {
   EDM: 'House/EDM',
   HIP_HOP: 'Hip Hop',
   RNB: 'R&B',
@@ -22,7 +22,7 @@ export const musicPreference = {
   POP: 'Pop',
 };
 
-export const monthes = {
+export const months = {
   JAN: 'January',
   FEB: 'February',
   MAR: 'March',

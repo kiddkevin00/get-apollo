@@ -11,9 +11,11 @@ import {
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
-const styles = StyleSheet.create({});
-
 class UnconnectedDisplayName extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   state = {
     displayName: 'Marcus Hsu',
   };
@@ -23,8 +25,6 @@ class UnconnectedDisplayName extends React.Component {
   }
 
   render() {
-    const { navigation } = this.props;
-
     return (
       <View
         style={{
@@ -79,9 +79,7 @@ class UnconnectedDisplayName extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.firebase.auth,
-});
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({});
 

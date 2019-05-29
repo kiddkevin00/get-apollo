@@ -1,3 +1,5 @@
+// TODO Remove this file
+
 import firebaseClient from '../firebaseClient';
 
 export class User {
@@ -19,7 +21,7 @@ export class User {
     }
 
     this.userID = user.uid;
-    this.displayName = user.displayName;
+    //this.displayName = user.displayName;
   }
 
   set userID(userID) {
@@ -30,7 +32,7 @@ export class User {
       .firestore()
       .collection('users')
       .doc(userID);
-    this.profile();
+    //this.profile();
   }
 
   profile = async () => {
@@ -38,6 +40,7 @@ export class User {
       return null;
     }
     const userDoc = await this.ref.get();
+
     if (!userDoc.exists) {
       return null;
     }
@@ -50,6 +53,7 @@ export class User {
 
   completedSignUpFlow = async () => {
     const data = await this.profile();
+
     return (
       data &&
       data.termsAndConditions &&

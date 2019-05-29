@@ -1,5 +1,6 @@
+import actionCreator from '../../actionCreators/auth';
 import { defaultNavigationOptions } from '../../constants/navigation';
-import { User } from '../../utils/firebase/user';
+import { WebBrowser } from 'expo';
 import React from 'react';
 import {
   StyleSheet,
@@ -11,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
-import actionCreator from '../../actionCreators/auth';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   paragraph: {
@@ -29,53 +30,50 @@ const styles = StyleSheet.create({
 
 class UnconnectedTermsAndConditions extends React.Component {
   static navigationOptions = {
-    ...defaultNavigationOptions,
-    title: 'TERMS & CONDITIONS',
+    header: null,
+  };
+
+  static propTypes = {
+    isUpdating: PropTypes.bool.isRequired,
+
+    dispatchLoadUserInfo: PropTypes.func.isRequired,
+    dispatchSaveUserInfo: PropTypes.func.isRequired,
+
+    navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
   componentDidMount() {
     StatusBar.setHidden(true);
-    this.props.dispatchLoadProfile();
+
+    this.props.dispatchLoadUserInfo();
   }
 
-  goToTermsAndConditions = () => {
+  goToTermsAndConditionsView = () => {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/terms-of-service');
   };
 
-  goToviewPrivacyPolicy = () => {
+  goToPrivacyPolicyView = () => {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/privacy-policy');
   };
 
-  accept = async () => {
-    console.log('in accept');
-    await this.setTermsAndCondition(true);
-  };
-
-  decline = async () => {
-    await this.setTermsAndCondition(false);
-    Alert.alert(
-      'Error',
-      'Sorry, you must accept our terms of service in order to use the app.',
-      [
-        { text: 'OK' },
-        { text: 'Cancel', onPress: () => this.props.navigation.goBack() },
-      ]
-    );
-  };
-
-  setTermsAndCondition = async accepted => {
-    const profile = { termsAndConditions: true };
+  handleAccept = async () => {
     try {
-      await this.props.dispatchSaveProfile(profile);
+      await this.props.dispatchSaveUserInfo({ termsAndConditions: true });
+
       this.props.navigation.push('displayName');
-    } catch (e) {
-      console.log('error', e);
+    } catch ({ message: errorMsg }) {
+      Alert.alert('Try Again', errorMsg);
     }
   };
 
-  render() {
-    const { navigation } = this.props;
+  handleDecline = async () => {
+    Alert.alert('Error', 'Sorry, you must accept our terms of service in order to use the app.', [
+      { text: 'OK' },
+      { text: 'Cancel', onPress: () => this.props.navigation.goBack() },
+    ]);
+  };
 
+  render() {
     if (this.props.isUpdating) {
       return (
         <View
@@ -107,29 +105,25 @@ class UnconnectedTermsAndConditions extends React.Component {
         >
           <Text style={styles.paragraph}>Hi there!</Text>
           <Text style={styles.paragraph}>
-            Thanks for using our service and application. We wouldn’t be here if
-            it weren’t for your support. The goal of this page is to protect and
-            inform you as our user on our platform.
+            Thanks for using our service and application. We wouldn’t be here if it weren’t for your support. The goal of this page is to protect and inform you as our user on our platform.
           </Text>
           <Text style={styles.paragraph}>Enjoy!</Text>
         </View>
         <Text style={styles.paragraph}>
-          Please review Get Apollo's Privacy Policy and Terms & Conditions by
-          clicking on the links below.
+          Please review Get Apollo{"'"}s Privacy Policy and Terms & Conditions by clicking on the links below.
         </Text>
         <TouchableOpacity>
-          <Text style={styles.link} onPress={this.goToviewPrivacyPolicy}>
+          <Text style={styles.link} onPress={this.goToPrivacyPolicyView}>
             Privacy Policy
           </Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={styles.link} onPress={this.goToTermsAndConditions}>
+          <Text style={styles.link} onPress={this.goToTermsAndConditionsView}>
             Terms & Conditions
           </Text>
         </TouchableOpacity>
         <Text style={[styles.paragraph, { marginTop: 40 }]}>
-          By clicking "Accept", you have read and agreed to our Privacy Policy
-          and Terms & Conditions.
+          By clicking {'"'}Accept{'"'}, you have read and agreed to our Privacy Policy and Terms & Conditions.
         </Text>
         <TouchableOpacity
           style={{
@@ -140,7 +134,7 @@ class UnconnectedTermsAndConditions extends React.Component {
             alignItems: 'center',
             backgroundColor: '#017bf6',
           }}
-          onPress={this.accept}
+          onPress={this.handleAccept}
         >
           <Text style={{ color: 'white', fontSize: 14 }}>Accept</Text>
         </TouchableOpacity>
@@ -156,7 +150,7 @@ class UnconnectedTermsAndConditions extends React.Component {
             backgroundColor: 'black',
             marginTop: 10,
           }}
-          onPress={this.decline}
+          onPress={this.handleDecline}
         >
           <Text style={{ color: 'grey', fontSize: 14 }}>Decline</Text>
         </TouchableOpacity>
@@ -166,16 +160,16 @@ class UnconnectedTermsAndConditions extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.firebase.auth,
   isUpdating: state.auth.isUpdatingData,
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchSaveProfile(profile) {
-    dispatch(actionCreator.saveProfile(profile));
+  dispatchSaveUserInfo(userInfo) {
+    dispatch(actionCreator.saveUserInfo(userInfo));
   },
-  dispatchLoadProfile() {
-    dispatch(actionCreator.loadProfile());
+
+  dispatchLoadUserInfo() {
+    dispatch(actionCreator.loadUserInfo());
   },
 });
 

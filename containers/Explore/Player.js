@@ -17,8 +17,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 //const DEFAULT_VIDEO = 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4';
-const DEFAULT_VIDEO =
-  'https://firebasestorage.googleapis.com/v0/b/get-apollo-staging-ad29c.appspot.com/o/venue-live-posts%2FIkhEPsaSpmrqwe6CAdmb%2Fcf1e60c9-f1eb-464d-a8b1-66830750dac1.mov?alt=media&token=ffecd10d-946f-4545-92f8-2a731ccf056b';
+const DEFAULT_VIDEO = 'https://bit.ly/2EG8FTA';
 const DEFAULT_ALBUM_IMAGE = require('../../assets/images/icon.png');
 
 const LOOPING_TYPE_ALL = 0;

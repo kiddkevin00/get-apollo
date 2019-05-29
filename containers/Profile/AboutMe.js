@@ -1,6 +1,6 @@
 import { defaultNavigationOptions } from '../../constants/navigation';
 import React from 'react';
-import { gender, relationship } from '../../constants/enums';
+import { genders, relationships } from '../../constants/enums';
 import TabBarIcon from '../../components/TabBarIcon';
 import {
   Image,
@@ -13,38 +13,42 @@ import {
 } from 'react-native';
 
 class AboutMe extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      ...defaultNavigationOptions,
-      title: 'ABOUT ME',
-    };
+  static navigationOptions = {
+    ...defaultNavigationOptions,
+    title: 'ABOUT ME',
   };
 
   state = {
-    gender: gender.MALE,
-    relationship: relationship.SINGLE,
+    gender: genders.UNSPECIFIED,
+    relationship: relationships.SINGLE,
   };
 
   renderGenderButtons = () => {
-    return Object.keys(gender).map(key => {
-      let iconName, iconColor;
-      const title = gender[key];
+    return Object.keys(genders).map(key => {
+      const title = genders[key];
+      let iconName;
+
       switch (title) {
-        case gender.FEMALE:
+        case genders.FEMALE:
           iconName = 'ios-female';
           break;
-        case gender.MALE:
+        case genders.MALE:
           iconName = 'ios-male';
           break;
-        case gender.OTHER:
+        case genders.UNSPECIFIED:
+        default:
           iconName = 'ios-transgender';
           break;
       }
+
+      let iconColor;
+
       if (this.state.gender === title) {
         iconColor = '#017bf6';
       } else {
         iconColor = 'grey';
       }
+
       return (
         <TouchableHighlight
           key={title}
@@ -66,8 +70,9 @@ class AboutMe extends React.Component {
   };
 
   renderRelationshipButtons = () => {
-    return Object.keys(relationship).map(key => {
-      const title = relationship[key];
+    return Object.keys(relationships).map(key => {
+      const title = relationships[key];
+      
       return (
         <TouchableHighlight
           key={title}
@@ -98,9 +103,6 @@ class AboutMe extends React.Component {
     });
   };
   render() {
-    const { navigation } = this.props;
-    const gender = navigation.getParam('gender', '');
-    const relationship = navigation.getParam('relationship', '');
     return (
       <ScrollView
         style={{
@@ -150,7 +152,7 @@ class AboutMe extends React.Component {
             alignSelf: 'center',
             backgroundColor: '#017bf6',
           }}
-          onPress={() => navigation.goBack()}
+          onPress={() => this.props.navigation.goBack()}
         >
           <Text style={{ color: 'white' }}>Save</Text>
         </TouchableOpacity>

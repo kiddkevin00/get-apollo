@@ -1,6 +1,6 @@
 import { defaultNavigationOptions } from '../../constants/navigation';
 import React from 'react';
-import { musicPreference } from '../../constants/enums';
+import { musicPreferences as musics } from '../../constants/enums';
 import {
   Image,
   ScrollView,
@@ -13,11 +13,9 @@ import {
 } from 'react-native';
 
 class MusicPreference extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      ...defaultNavigationOptions,
-      title: 'MUSIC',
-    };
+  static navigationOptions = {
+    ...defaultNavigationOptions,
+    title: 'MUSIC',
   };
 
   state = {
@@ -25,21 +23,19 @@ class MusicPreference extends React.Component {
   };
 
   renderPreferenceButtons = () => {
-    return Object.keys(musicPreferences).map(key => {
-      const title = musicPreferences[key];
+    return Object.keys(musics).map(key => {
+      const title = musics[key];
       const isSelected = this.state.musicPreferences.includes(key);
 
       return (
         <TouchableHighlight
           key={title}
-          onPress={this.handleMusicPreferencesButtonPress}
+          onPress={this.handleMusicPreferencesButtonPress.bind(this, key)}
           style={{
             width: 120,
             height: 30,
             margin: 4,
-            backgroundColor: this.state.musicPreferences.includes(key)
-              ? '#017bf6'
-              : 'black',
+            backgroundColor: isSelected ? '#017bf6' : 'black',
             borderRadius: 15,
             borderColor: '#017bf6',
             borderWidth: 1,
@@ -49,9 +45,7 @@ class MusicPreference extends React.Component {
         >
           <Text
             style={{
-              color: this.state.musicPreferences.includes(key)
-                ? 'white'
-                : 'grey',
+              color: isSelected ? 'white' : 'grey',
               fontSize: 14,
             }}
           >
@@ -62,7 +56,7 @@ class MusicPreference extends React.Component {
     });
   };
 
-  handleMusicPreferencesButtonPress = () => {
+  handleMusicPreferencesButtonPress = key => {
     if (this.state.musicPreferences.includes(key)) {
       this.setState(state => {
         const musicPreferences = state.musicPreferences.filter(
@@ -83,9 +77,8 @@ class MusicPreference extends React.Component {
       });
     }
   };
-  render() {
-    const { navigation } = this.props;
 
+  render() {
     return (
       <ScrollView
         style={{
@@ -128,7 +121,7 @@ class MusicPreference extends React.Component {
             alignSelf: 'center',
             backgroundColor: '#017bf6',
           }}
-          onPress={() => navigation.goBack()}
+          onPress={() => this.props.navigation.replace('profile')}
         >
           <Text style={{ color: 'white' }}>Save</Text>
         </TouchableOpacity>

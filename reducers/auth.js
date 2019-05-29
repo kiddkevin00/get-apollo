@@ -1,19 +1,23 @@
 import actionTypes from '../actionTypes';
+import { genders, relationships } from '../constants/enums';
 import { combineReducers } from 'redux';
 
 const { AUTH } = actionTypes;
 
-const mainInitialState = {
-  uid: undefined,
+const initialState = {
+  uid: undefined, // TODO use state.firebase.auth instead
+  isAnonymous: undefined, // TODO use state.firebase.auth instead
+  providerData: undefined, // TODO use state.firebase.auth instead
+
   email: undefined,
-  displayName: undefined,
-  birthday: undefined,
-  musicPreference: undefined,
-  termsAndConditions: undefined,
-  relationship: undefined,
-  gender: undefined,
-  isAnonymous: undefined,
-  providerData: undefined,
+  termsAndConditions: false,
+  displayName: '',
+  birthday: undefined, // TODO default to new Date - 18
+  gender: genders.UNSPECIFIED,
+  relationship: relationships.SINGLE,
+  musicPreferences: [],
+
+  isLoadingData: false,
   isUpdatingData: false,
   error: {
     isVisible: false,
@@ -21,24 +25,32 @@ const mainInitialState = {
   },
 };
 
-const mainReducer = (state = mainInitialState, action) => {
+const authReducer = (state = initialState, action) => {
   const actionType = action.type;
   const actionPayload = action.payload;
 
   switch (actionType) {
     case AUTH.RESET_STATE:
-      return { ...mainInitialState };
+      return { ...initialState };
     case AUTH.SET_DATA:
       return {
         ...state,
         ...actionPayload,
+      };
+    case AUTH.LOAD_DATA.REQUEST:
+      return {
+        ...state,
+        isUpdatingData: true,
+        error: {
+          ...initialState.error,
+        },
       };
     case AUTH.UPDATE_DATA.REQUEST:
       return {
         ...state,
         isUpdatingData: true,
         error: {
-          ...mainInitialState.error,
+          ...initialState.error,
         },
       };
     case AUTH.UPDATE_DATA.SUCCESS:
@@ -59,9 +71,5 @@ const mainReducer = (state = mainInitialState, action) => {
       return state;
   }
 };
-
-const authReducer = combineReducers({
-  main: mainReducer,
-});
 
 export { authReducer as default };
