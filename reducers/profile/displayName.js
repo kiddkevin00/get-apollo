@@ -18,7 +18,7 @@ const authReducer = (state = initialState, action) => {
   switch (actionType) {
     case DISPLAY_NAME.RESET_STATE:
       return { ...initialState };
-    case DISPLAY_NAME.FORM.FORM.SET_FIELD:
+    case DISPLAY_NAME.FORM.SET_FIELD:
       return {
         ...state,
         [`form${actionPayload.field}`]: {
