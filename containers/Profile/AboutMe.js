@@ -1,7 +1,7 @@
 import { defaultNavigationOptions } from '../../constants/navigation';
 import React from 'react';
 import { genders, relationships } from '../../constants/enums';
-import TabBarIcon from '../../components/TabBarIcon';
+import TabBarIcon from '../../components/ExpoIcon';
 import {
   Image,
   View,

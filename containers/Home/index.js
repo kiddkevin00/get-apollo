@@ -1,3 +1,4 @@
+import ExpoIcon from '../../components/ExpoIcon';
 import { defaultNavigationOptions } from '../../constants/navigation';
 import dimensions from '../../constants/dimensions';
 import React from 'react';
@@ -18,17 +19,8 @@ import { StyleSheet, StatusBar, ImageBackground, TouchableOpacity } from 'react-
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import TabBarIcon from '../../components/TabBarIcon';
 
 const styles = StyleSheet.create({
-  iconText: {
-    paddingLeft: 8,
-    paddingRight: 16,
-  },
-  iconTextRight: {
-    paddingLeft: 8,
-    paddingRight: 4,
-  },
   iconText: {
     paddingLeft: 8,
     paddingRight: 16,
@@ -111,7 +103,7 @@ class UnconnectedHome extends React.Component {
           >
             <Left>
               <Button disabled={true} iconLeft={true} transparent={true}>
-                <TabBarIcon size={30} color="white" name="fire" type="MaterialCommunityIcons" />
+                <ExpoIcon size={30} color="white" name="fire" type="MaterialCommunityIcons" />
                 <Text style={styles.iconText}>{venue.litScore}</Text>
               </Button>
             </Left>
@@ -122,13 +114,13 @@ class UnconnectedHome extends React.Component {
                 transparent={true}
                 style={{ justifyContent: 'center' }}
               >
-                <TabBarIcon size={30} color="white" name="time-slot" type="Entypo" />
+                <ExpoIcon size={30} color="white" name="time-slot" type="Entypo" />
                 <Text style={styles.iconText}>{venue.waitTimeMinutes}min</Text>
               </Button>
             </Body>
             <Right>
               <Button disabled={true} iconLeft={true} transparent={true}>
-                <TabBarIcon size={30} color="white" name="wallet" type="Entypo" />
+                <ExpoIcon size={30} color="white" name="wallet" type="Entypo" />
                 <Text style={styles.iconTextRight}>
                   ${venue.coverChargeDollars
                     ? venue.coverChargeDollars

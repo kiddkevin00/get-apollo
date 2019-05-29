@@ -1,5 +1,5 @@
 import { defaultNavigationOptions } from '../../constants/navigation';
-import TabBarIcon from '../../components/TabBarIcon';
+import TabBarIcon from '../../components/ExpoIcon';
 import GuestProfile from './GuestProfile';
 import React from 'react';
 import QRCode from 'react-native-qrcode';

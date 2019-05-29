@@ -3,7 +3,7 @@ import dimensions from '../../constants/dimensions';
 import React from 'react';
 import { Container, Content, Card, CardItem, Left, Body, Right, Button, Text } from 'native-base';
 import { StyleSheet, StatusBar, ImageBackground } from 'react-native';
-import TabBarIcon from '../../components/TabBarIcon';
+import TabBarIcon from '../../components/ExpoIcon';
 import ProgressBar from 'react-native-progress/Bar';
 
 const styles = StyleSheet.create({

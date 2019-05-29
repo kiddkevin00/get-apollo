@@ -1,9 +1,8 @@
-import colors from '../constants/colors';
 import React from 'react';
 import { Icon } from 'expo';
 import { PropTypes } from 'prop-types';
 
-export default class TabBarIcon extends React.Component {
+export default class ExpoIcon extends React.Component {
   static propTypes = {
     type: PropTypes.string,
     name: PropTypes.string.isRequired,

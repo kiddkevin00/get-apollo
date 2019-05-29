@@ -1,8 +1,4 @@
-import colors from '../constants/colors';
-import React from 'react';
-import { Platform, View } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-import TabBarIcon from '../components/TabBarIcon';
+import ExpoIcon from '../components/ExpoIcon';
 import ExploreScreen from '../containers/Explore/';
 import PlayerScreen from '../containers/Explore/Player';
 import LoginScreen from '../containers/Home/Login';
@@ -14,6 +10,10 @@ import MusicPreferenceScreen from '../containers/Profile/MusicPreference';
 import TermsAndConditionsScreen from '../containers/Profile/TermsAndConditions';
 import DisplayNameScreen from '../containers/Profile/DisplayName';
 import BirthdayScreen from '../containers/Profile/Birthday';
+import colors from '../constants/colors';
+import React from 'react';
+import { Platform, View } from 'react-native';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 const ExploreStack = createStackNavigator(
   {
@@ -39,7 +39,7 @@ ExploreStack.navigationOptions = ({ navigation }) => {
     tabBarVisible,
     tabBarLabel: <View />,
     tabBarIcon: ({ focused }) => (
-      <TabBarIcon
+      <ExpoIcon
         style={{ marginBottom: -3 }}
         color={focused ? colors.lightBlue : colors.grey}
         focused={focused}
@@ -73,7 +73,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
     tabBarVisible,
     tabBarLabel: <View />,
     tabBarIcon: ({ focused }) => (
-      <TabBarIcon
+      <ExpoIcon
         style={{ marginBottom: -3 }}
         color={focused ? colors.lightBlue : colors.grey}
         focused={focused}
@@ -115,7 +115,7 @@ ProfileStack.navigationOptions = ({ navigation }) => {
     tabBarVisible,
     tabBarLabel: <View />,
     tabBarIcon: ({ focused }) => (
-      <TabBarIcon
+      <ExpoIcon
         style={{ marginBottom: -3 }}
         color={focused ? colors.lightBlue : colors.grey}
         focused={focused}
