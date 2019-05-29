@@ -23,8 +23,8 @@ class AboutMe extends React.Component {
     relationship: relationships.SINGLE,
   };
 
-  renderGenderButtons = () => {
-    return Object.keys(genders).map(key => {
+  renderGenderButtons = () =>
+    Object.keys(genders).map(key => {
       const title = genders[key];
       let iconName;
 
@@ -50,10 +50,7 @@ class AboutMe extends React.Component {
       }
 
       return (
-        <TouchableHighlight
-          key={title}
-          onPress={() => this.setState({ gender: title })}
-        >
+        <TouchableHighlight key={title} onPress={() => this.setState({ gender: title })}>
           <View
             style={{
               alignItems: 'center',
@@ -67,12 +64,11 @@ class AboutMe extends React.Component {
         </TouchableHighlight>
       );
     });
-  };
 
-  renderRelationshipButtons = () => {
-    return Object.keys(relationships).map(key => {
+  renderRelationshipButtons = () =>
+    Object.keys(relationships).map(key => {
       const title = relationships[key];
-      
+
       return (
         <TouchableHighlight
           key={title}
@@ -86,8 +82,7 @@ class AboutMe extends React.Component {
             borderWidth: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor:
-              this.state.relationship === title ? '#017bf6' : 'black',
+            backgroundColor: this.state.relationship === title ? '#017bf6' : 'black',
           }}
         >
           <Text
@@ -101,7 +96,6 @@ class AboutMe extends React.Component {
         </TouchableHighlight>
       );
     });
-  };
   render() {
     return (
       <ScrollView

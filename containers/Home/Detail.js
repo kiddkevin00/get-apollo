@@ -1,17 +1,7 @@
 import { defaultNavigationOptions } from '../../constants/navigation';
 import dimensions from '../../constants/dimensions';
 import React from 'react';
-import {
-  Container,
-  Content,
-  Card,
-  CardItem,
-  Left,
-  Body,
-  Right,
-  Button,
-  Text,
-} from 'native-base';
+import { Container, Content, Card, CardItem, Left, Body, Right, Button, Text } from 'native-base';
 import { StyleSheet, StatusBar, ImageBackground } from 'react-native';
 import TabBarIcon from '../../components/TabBarIcon';
 import ProgressBar from 'react-native-progress/Bar';
@@ -66,12 +56,10 @@ const styles = StyleSheet.create({
 });
 
 class Detail extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      ...defaultNavigationOptions,
-      title: navigation.getParam('name', 'unknown').toUpperCase(),
-    };
-  };
+  static navigationOptions = ({ navigation }) => ({
+    ...defaultNavigationOptions,
+    title: navigation.getParam('name', 'unknown').toUpperCase(),
+  });
 
   render() {
     const { navigation } = this.props;
@@ -82,19 +70,10 @@ class Detail extends React.Component {
     const maxCapacity = parseInt(navigation.getParam('maxCapacity', 0));
     const headcountMale = parseInt(navigation.getParam('headcountMale', 0));
     const headcountFemale = parseInt(navigation.getParam('headcountFemale', 0));
-    const coverChargeDollars = parseInt(
-      navigation.getParam('coverChargeDollars', 'N/A')
-    );
-    const coverChargeDollarsFemale = navigation.getParam(
-      'coverChargeDollarsFemale',
-      'N/A'
-    );
-    const hoursOfOperation = JSON.parse(
-      navigation.getParam('hoursOfOperation', [])
-    );
-    const musicPreferences = JSON.parse(
-      navigation.getParam('musicPreferences', [])
-    );
+    const coverChargeDollars = parseInt(navigation.getParam('coverChargeDollars', 'N/A'));
+    const coverChargeDollarsFemale = navigation.getParam('coverChargeDollarsFemale', 'N/A');
+    const hoursOfOperation = JSON.parse(navigation.getParam('hoursOfOperation', []));
+    const musicPreferences = JSON.parse(navigation.getParam('musicPreferences', []));
 
     const totalCurrentHeadcount = headcountMale + headcountFemale;
     const d = new Date();
@@ -143,12 +122,7 @@ class Detail extends React.Component {
             <CardItem style={styles.card}>
               <Left>
                 <Button disabled={true} iconLeft={true} transparent={true}>
-                  <TabBarIcon
-                    size={30}
-                    color="white"
-                    name="fire"
-                    type="MaterialCommunityIcons"
-                  />
+                  <TabBarIcon size={30} color="white" name="fire" type="MaterialCommunityIcons" />
                   <Text style={styles.iconText}>{litScore}</Text>
                 </Button>
               </Left>
@@ -159,28 +133,16 @@ class Detail extends React.Component {
                   transparent={true}
                   style={{ justifyContent: 'center' }}
                 >
-                  <TabBarIcon
-                    size={30}
-                    color="white"
-                    name="time-slot"
-                    type="Entypo"
-                  />
+                  <TabBarIcon size={30} color="white" name="time-slot" type="Entypo" />
 
                   <Text style={styles.iconText}>{waitTimeMinutes}min</Text>
                 </Button>
               </Body>
               <Right>
                 <Button disabled={true} iconLeft={true} transparent={true}>
-                  <TabBarIcon
-                    size={30}
-                    color="white"
-                    name="wallet"
-                    type="Entypo"
-                  />
+                  <TabBarIcon size={30} color="white" name="wallet" type="Entypo" />
                   <Text style={styles.iconTextRight}>
-                    ${coverChargeDollars
-                      ? coverChargeDollars
-                      : coverChargeDollarsFemale}
+                    ${coverChargeDollars || coverChargeDollarsFemale}
                   </Text>
                 </Button>
               </Right>
@@ -191,9 +153,9 @@ class Detail extends React.Component {
               <ProgressBar
                 progress={totalCurrentHeadcount / maxCapacity}
                 width={200}
-                borderColor={'#5428BD'}
-                unfilledColor={'#000000'}
-                color={'#a6a2a2'}
+                borderColor="#5428BD"
+                unfilledColor="#000000"
+                color="#a6a2a2"
               />
             </CardItem>
             <CardItem style={styles.card}>
@@ -202,8 +164,8 @@ class Detail extends React.Component {
               <ProgressBar
                 progress={headcountMale / totalCurrentHeadcount}
                 width={200}
-                unfilledColor={'#D87492'}
-                color={'#006FF0'}
+                unfilledColor="#D87492"
+                color="#006FF0"
               />
             </CardItem>
             <CardItem style={styles.card}>
@@ -214,8 +176,7 @@ class Detail extends React.Component {
             <CardItem style={styles.card}>
               <Text style={styles.catagory}>Hours of Operation</Text>
               <Text style={styles.detail}>
-                {hoursOfOperation[currentDay][0]},{' '}
-                {hoursOfOperation[currentDay][1]}
+                {hoursOfOperation[currentDay][0]}, {hoursOfOperation[currentDay][1]}
               </Text>
             </CardItem>
             <CardItem style={styles.card}>
@@ -224,12 +185,7 @@ class Detail extends React.Component {
 
             <CardItem style={[styles.card, styles.tagsContainer]}>
               {musicPreferences.map(name => (
-                <Button
-                  key={name}
-                  transparent
-                  disabled={true}
-                  style={styles.tag}
-                >
+                <Button key={name} transparent={true} disabled={true} style={styles.tag}>
                   <Text style={styles.tagText}>{name}</Text>
                 </Button>
               ))}

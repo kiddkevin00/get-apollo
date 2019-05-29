@@ -22,8 +22,8 @@ class MusicPreference extends React.Component {
     musicPreferences: ['HIP_HOP', 'REGGAE'],
   };
 
-  renderPreferenceButtons = () => {
-    return Object.keys(musics).map(key => {
+  renderPreferenceButtons = () =>
+    Object.keys(musics).map(key => {
       const title = musics[key];
       const isSelected = this.state.musicPreferences.includes(key);
 
@@ -54,14 +54,11 @@ class MusicPreference extends React.Component {
         </TouchableHighlight>
       );
     });
-  };
 
   handleMusicPreferencesButtonPress = key => {
     if (this.state.musicPreferences.includes(key)) {
       this.setState(state => {
-        const musicPreferences = state.musicPreferences.filter(
-          item => item !== key
-        );
+        const musicPreferences = state.musicPreferences.filter(item => item !== key);
 
         return {
           musicPreferences,

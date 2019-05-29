@@ -1,10 +1,7 @@
 import colors from '../constants/colors';
 import React from 'react';
 import { Platform, View } from 'react-native';
-import {
-  createStackNavigator,
-  createBottomTabNavigator,
-} from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import ExploreScreen from '../containers/Explore/';
 import PlayerScreen from '../containers/Explore/Player';

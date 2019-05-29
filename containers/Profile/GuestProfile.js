@@ -47,9 +47,7 @@ class UnconnectedGuestProfile extends React.Component {
             }}
             onPress={() => alert('pressed!')}
           >
-            <Text style={{ fontSize: 14, color: 'grey' }}>
-              Connect using Facebook
-            </Text>
+            <Text style={{ fontSize: 14, color: 'grey' }}>Connect using Facebook</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={{
@@ -65,9 +63,7 @@ class UnconnectedGuestProfile extends React.Component {
             }}
             onPress={() => alert('pressed!')}
           >
-            <Text style={{ fontSize: 14, color: 'grey' }}>
-              Connect using Google
-            </Text>
+            <Text style={{ fontSize: 14, color: 'grey' }}>Connect using Google</Text>
           </TouchableHighlight>
           <Text
             style={{
@@ -96,8 +92,6 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-const GuestProfile = connect(mapStateToProps, mapDispatchToProps)(
-  UnconnectedGuestProfile
-);
+const GuestProfile = connect(mapStateToProps, mapDispatchToProps)(UnconnectedGuestProfile);
 
 export { UnconnectedGuestProfile, GuestProfile as default };

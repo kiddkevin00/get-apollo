@@ -105,12 +105,14 @@ class UnconnectedTermsAndConditions extends React.Component {
         >
           <Text style={styles.paragraph}>Hi there!</Text>
           <Text style={styles.paragraph}>
-            Thanks for using our service and application. We wouldn’t be here if it weren’t for your support. The goal of this page is to protect and inform you as our user on our platform.
+            Thanks for using our service and application. We wouldn’t be here if it weren’t for your
+            support. The goal of this page is to protect and inform you as our user on our platform.
           </Text>
           <Text style={styles.paragraph}>Enjoy!</Text>
         </View>
         <Text style={styles.paragraph}>
-          Please review Get Apollo{"'"}s Privacy Policy and Terms & Conditions by clicking on the links below.
+          Please review Get Apollo{"'"}s Privacy Policy and Terms & Conditions by clicking on the
+          links below.
         </Text>
         <TouchableOpacity>
           <Text style={styles.link} onPress={this.goToPrivacyPolicyView}>
@@ -123,7 +125,8 @@ class UnconnectedTermsAndConditions extends React.Component {
           </Text>
         </TouchableOpacity>
         <Text style={[styles.paragraph, { marginTop: 40 }]}>
-          By clicking {'"'}Accept{'"'}, you have read and agreed to our Privacy Policy and Terms & Conditions.
+          By clicking {'"'}Accept{'"'}, you have read and agreed to our Privacy Policy and Terms &
+          Conditions.
         </Text>
         <TouchableOpacity
           style={{

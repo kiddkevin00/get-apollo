@@ -1,11 +1,8 @@
 import { Linking, Alert, Platform } from 'react-native';
 import moment from 'moment';
 
-const parseDateForDisplay = (
-  date,
-  outFormat = 'MMM D',
-  inFormat = 'YYYY-MM-DD'
-) => moment(date, inFormat).format(outFormat);
+const parseDateForDisplay = (date, outFormat = 'MMM D', inFormat = 'YYYY-MM-DD') =>
+  moment(date, inFormat).format(outFormat);
 
 const openLinkingUrl = async (kind, param) => {
   const urlMap = {
@@ -25,10 +22,7 @@ const openLinkingUrl = async (kind, param) => {
       await Linking.openURL(url);
     }
   } catch (err) {
-    Alert.alert(
-      'Try it again',
-      `Something went wrong while opening map.\n${err.message}`
-    );
+    Alert.alert('Try it again', `Something went wrong while opening map.\n${err.message}`);
   }
 };
 

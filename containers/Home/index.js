@@ -14,12 +14,7 @@ import {
   Button,
   Text,
 } from 'native-base';
-import {
-  StyleSheet,
-  StatusBar,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, StatusBar, ImageBackground, TouchableOpacity } from 'react-native';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -50,121 +45,102 @@ class UnconnectedHome extends React.Component {
     title: 'CLUBS',
   };
 
-  renderVenue = venue => {
-    return (
-      <ListItem
-        style={{
-          marginLeft: 0,
-          paddingTop: 0,
-          paddingRight: 0,
-          paddingBottom: 0,
-          borderBottomWidth: 0,
-        }}
+  renderVenue = venue => (
+    <ListItem
+      style={{
+        marginLeft: 0,
+        paddingTop: 0,
+        paddingRight: 0,
+        paddingBottom: 0,
+        borderBottomWidth: 0,
+      }}
+    >
+      <TouchableOpacity
+        onPress={() =>
+          this.props.navigation.push('detail', {
+            name: venue.name,
+            dressCode: venue.dressCode,
+            headcountFemale: venue.headcountFemale,
+            headcountMale: venue.headcountMale,
+            hoursOfOperation: JSON.stringify(venue.hoursOfOperation),
+            coverChargeDollars: venue.coverChargeDollars,
+            coverChargeDollarsFemale: venue.coverChargeDollarsFemale,
+            waitTimeMinutes: venue.waitTimeMinutes,
+            litScore: venue.litScore,
+            musicPreferences: JSON.stringify(venue.musicPreferences),
+            photoURL: venue.photoURL,
+            maxCapacity: venue.maxCapacity,
+          })
+        }
       >
-        <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.push('detail', {
-              name: venue.name,
-              dressCode: venue.dressCode,
-              headcountFemale: venue.headcountFemale,
-              headcountMale: venue.headcountMale,
-              hoursOfOperation: JSON.stringify(venue.hoursOfOperation),
-              coverChargeDollars: venue.coverChargeDollars,
-              coverChargeDollarsFemale: venue.coverChargeDollarsFemale,
-              waitTimeMinutes: venue.waitTimeMinutes,
-              litScore: venue.litScore,
-              musicPreferences: JSON.stringify(venue.musicPreferences),
-              photoURL: venue.photoURL,
-              maxCapacity: venue.maxCapacity,
-            })
-          }
+        <Card
+          style={{
+            borderTopWidth: 0,
+            borderRightWidth: 0,
+            borderBottomWidth: 0,
+            borderLeftWidth: 0,
+          }}
         >
-          <Card
+          <CardItem cardBody={true}>
+            <ImageBackground
+              style={{
+                height: dimensions.window.width - 35,
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              source={{ uri: venue.photoURL }}
+            >
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 30,
+                  fontFamily: 'Roboto',
+                }}
+              >
+                {venue.name}
+              </Text>
+            </ImageBackground>
+          </CardItem>
+          <CardItem
             style={{
-              borderTopWidth: 0,
-              borderRightWidth: 0,
-              borderBottomWidth: 0,
-              borderLeftWidth: 0,
+              backgroundColor: 'black',
+              borderRadius: 0,
+              paddingTop: 0,
             }}
           >
-            <CardItem cardBody={true}>
-              <ImageBackground
-                style={{
-                  height: dimensions.window.width - 35,
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                source={{ uri: venue.photoURL }}
+            <Left>
+              <Button disabled={true} iconLeft={true} transparent={true}>
+                <TabBarIcon size={30} color="white" name="fire" type="MaterialCommunityIcons" />
+                <Text style={styles.iconText}>{venue.litScore}</Text>
+              </Button>
+            </Left>
+            <Body>
+              <Button
+                disabled={true}
+                iconLeft={true}
+                transparent={true}
+                style={{ justifyContent: 'center' }}
               >
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 30,
-                    fontFamily: 'Roboto',
-                  }}
-                >
-                  {venue.name}
+                <TabBarIcon size={30} color="white" name="time-slot" type="Entypo" />
+                <Text style={styles.iconText}>{venue.waitTimeMinutes}min</Text>
+              </Button>
+            </Body>
+            <Right>
+              <Button disabled={true} iconLeft={true} transparent={true}>
+                <TabBarIcon size={30} color="white" name="wallet" type="Entypo" />
+                <Text style={styles.iconTextRight}>
+                  ${venue.coverChargeDollars
+                    ? venue.coverChargeDollars
+                    : venue.coverChargeDollarsFemale}
                 </Text>
-              </ImageBackground>
-            </CardItem>
-            <CardItem
-              style={{
-                backgroundColor: 'black',
-                borderRadius: 0,
-                paddingTop: 0,
-              }}
-            >
-              <Left>
-                <Button disabled={true} iconLeft={true} transparent={true}>
-                  <TabBarIcon
-                    size={30}
-                    color="white"
-                    name="fire"
-                    type="MaterialCommunityIcons"
-                  />
-                  <Text style={styles.iconText}>{venue.litScore}</Text>
-                </Button>
-              </Left>
-              <Body>
-                <Button
-                  disabled={true}
-                  iconLeft={true}
-                  transparent={true}
-                  style={{ justifyContent: 'center' }}
-                >
-                  <TabBarIcon
-                    size={30}
-                    color="white"
-                    name="time-slot"
-                    type="Entypo"
-                  />
-                  <Text style={styles.iconText}>
-                    {venue.waitTimeMinutes}min
-                  </Text>
-                </Button>
-              </Body>
-              <Right>
-                <Button disabled={true} iconLeft={true} transparent={true}>
-                  <TabBarIcon
-                    size={30}
-                    color="white"
-                    name="wallet"
-                    type="Entypo"
-                  />
-                  <Text style={styles.iconTextRight}>
-                    ${venue.coverChargeDollars
-                      ? venue.coverChargeDollars
-                      : venue.coverChargeDollarsFemale}
-                  </Text>
-                </Button>
-              </Right>
-            </CardItem>
-          </Card>
-        </TouchableOpacity>
-      </ListItem>
-    );
-  };
+              </Button>
+            </Right>
+          </CardItem>
+        </Card>
+      </TouchableOpacity>
+    </ListItem>
+  );
 
   render() {
     return (

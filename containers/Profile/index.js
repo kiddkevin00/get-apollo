@@ -55,10 +55,7 @@ export default class SettingsScreen extends React.Component {
             <ListItem
               icon={true}
               button={true}
-              onPress={this.goToWebView.bind(
-                this,
-                'https://www.getapollo.in/privacy-policy'
-              )}
+              onPress={this.goToWebView.bind(this, 'https://www.getapollo.in/privacy-policy')}
             >
               <Left>
                 <Icon active={true} name="paper" />
@@ -73,10 +70,7 @@ export default class SettingsScreen extends React.Component {
             <ListItem
               icon={true}
               button={true}
-              onPress={this.goToWebView.bind(
-                this,
-                'https://www.getapollo.in/terms-of-service'
-              )}
+              onPress={this.goToWebView.bind(this, 'https://www.getapollo.in/terms-of-service')}
             >
               <Left>
                 <Icon active={true} name="paper-plane" />
@@ -107,10 +101,7 @@ export default class SettingsScreen extends React.Component {
               last={true}
               icon={true}
               button={true}
-              onPress={this.goToWebView.bind(
-                this,
-                'https://www.getapollo.in/contact-us'
-              )}
+              onPress={this.goToWebView.bind(this, 'https://www.getapollo.in/contact-us')}
             >
               <Left>
                 <Icon active={true} name="call" />

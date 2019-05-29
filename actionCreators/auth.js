@@ -11,7 +11,7 @@ const authActionCreator = {
   resetState() {
     return {
       type: AUTH.RESET_STATE,
-    }
+    };
   },
 
   loadDataRequest() {

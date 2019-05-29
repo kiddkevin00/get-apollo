@@ -7,9 +7,7 @@ export class User {
     return new User(user);
   }
 
-  static getCurrentUser = async () => {
-    return new User();
-  };
+  static getCurrentUser = async () => new User();
 
   static signInAnonymously = async () => {
     await firebaseClient.auth().signInAnonymouslyAndRetrieveData();

@@ -13,13 +13,10 @@ const getErrorCodeAndMsg = error => ({
   code: supportedErrorCodes[error.code] || 'UNKNOWN_ERROR',
   message: error.message || JSON.stringify(error),
 });
-const extractErrorFromResponse = error =>
-  (error.response && error.response.data) || error;
+const extractErrorFromResponse = error => (error.response && error.response.data) || error;
 const handleError = error =>
   Promise.reject(
-    instantiateErrorWithCodeAndMsg(
-      getErrorCodeAndMsg(extractErrorFromResponse(error))
-    )
+    instantiateErrorWithCodeAndMsg(getErrorCodeAndMsg(extractErrorFromResponse(error)))
   );
 
 class HttpClient {

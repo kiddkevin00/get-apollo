@@ -78,21 +78,11 @@ class UnconnectedLogin extends React.Component {
           source={require('../../assets/images/apollo.png')}
         />
         <Animated.View style={{ opacity: this.state.fadeAnim }}>
-          <TouchableHighlight
-            style={styles.loginBtn}
-            onPress={this.handleFacebookLogin}
-          >
-            <Text style={{ fontSize: 14, color: 'grey' }}>
-              Connect using Facebook
-            </Text>
+          <TouchableHighlight style={styles.loginBtn} onPress={this.handleFacebookLogin}>
+            <Text style={{ fontSize: 14, color: 'grey' }}>Connect using Facebook</Text>
           </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.loginBtn}
-            onPress={() => alert('pressed!')}
-          >
-            <Text style={{ fontSize: 14, color: 'grey' }}>
-              Connect using Google
-            </Text>
+          <TouchableHighlight style={styles.loginBtn} onPress={() => alert('pressed!')}>
+            <Text style={{ fontSize: 14, color: 'grey' }}>Connect using Google</Text>
           </TouchableHighlight>
           <Text
             style={{

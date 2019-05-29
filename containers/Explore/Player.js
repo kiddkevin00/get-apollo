@@ -208,9 +208,7 @@ export default class Player extends Component {
     }
 
     const source = {
-      uri: this.playlist[this.index].isVideo
-        ? this.playlist[this.index].assetURL
-        : DEFAULT_VIDEO,
+      uri: this.playlist[this.index].isVideo ? this.playlist[this.index].assetURL : DEFAULT_VIDEO,
     };
     const initialStatus = {
       shouldPlay: playing,
@@ -259,9 +257,7 @@ export default class Player extends Component {
     } else {
       const currentMusic = this.playlist[this.index];
       const displayMusicName = currentMusic.name || 'Unknown';
-      const displayArtistName = currentMusic.author
-        ? ` - ${currentMusic.author}`
-        : '';
+      const displayArtistName = currentMusic.author ? ` - ${currentMusic.author}` : '';
 
       this.setState({
         playbackInstanceName: `${displayMusicName}${displayArtistName}`,
@@ -295,15 +291,11 @@ export default class Player extends Component {
   };
 
   _onReadyForDisplay = event => {
-    const widestHeight =
-      DEVICE_WIDTH * event.naturalSize.height / event.naturalSize.width;
+    const widestHeight = DEVICE_WIDTH * event.naturalSize.height / event.naturalSize.width;
 
     if (widestHeight > VIDEO_CONTAINER_HEIGHT) {
       this.setState({
-        videoWidth:
-          VIDEO_CONTAINER_HEIGHT *
-          event.naturalSize.width /
-          event.naturalSize.height,
+        videoWidth: VIDEO_CONTAINER_HEIGHT * event.naturalSize.width / event.naturalSize.height,
         videoHeight: VIDEO_CONTAINER_HEIGHT,
       });
     } else {
@@ -315,9 +307,7 @@ export default class Player extends Component {
   };
 
   _advanceIndex(forward) {
-    this.index =
-      (this.index + (forward ? 1 : this.playlist.length - 1)) %
-      this.playlist.length;
+    this.index = (this.index + (forward ? 1 : this.playlist.length - 1)) % this.playlist.length;
   }
 
   async _updatePlaybackInstanceForIndex(playing) {
@@ -369,9 +359,7 @@ export default class Player extends Component {
 
   _onLoopPressed = () => {
     if (this.playbackInstance != null) {
-      this.playbackInstance.setIsLoopingAsync(
-        this.state.loopingType !== LOOPING_TYPE_ONE
-      );
+      this.playbackInstance.setIsLoopingAsync(this.state.loopingType !== LOOPING_TYPE_ONE);
     }
   };
 
@@ -386,10 +374,7 @@ export default class Player extends Component {
       try {
         await this.playbackInstance.setRateAsync(rate, shouldCorrectPitch);
       } catch (error) {
-        Alert.alert(
-          'Not Supported',
-          'Your device does not support this feature.'
-        );
+        Alert.alert('Not Supported', 'Your device does not support this feature.');
       }
     }
   };
@@ -425,10 +410,7 @@ export default class Player extends Component {
       this.state.playbackInstancePosition != null &&
       this.state.playbackInstanceDuration != null
     ) {
-      return (
-        this.state.playbackInstancePosition /
-        this.state.playbackInstanceDuration
-      );
+      return this.state.playbackInstancePosition / this.state.playbackInstanceDuration;
     }
     return 0;
   }
@@ -503,12 +485,7 @@ export default class Player extends Component {
               }}
             />
           </TouchableOpacity>
-          <Text
-            style={[
-              styles.text,
-              { opacity: this.state.isLoading ? LOADING_OPACITY : 1.0 },
-            ]}
-          >
+          <Text style={[styles.text, { opacity: this.state.isLoading ? LOADING_OPACITY : 1.0 }]}>
             {this.state.playbackInstanceName}
           </Text>
           <View style={{ width: 48 }} />
@@ -521,9 +498,7 @@ export default class Player extends Component {
               styles.video,
               {
                 width: DEVICE_WIDTH,
-                height: this.playlist[this.index].isVideo
-                  ? VIDEO_CONTAINER_HEIGHT
-                  : 0,
+                height: this.playlist[this.index].isVideo ? VIDEO_CONTAINER_HEIGHT : 0,
               },
             ]}
             resizeMode={Video.RESIZE_MODE_COVER}
@@ -540,9 +515,7 @@ export default class Player extends Component {
               styles.video,
               {
                 width: DEVICE_WIDTH,
-                height: !this.playlist[this.index].isVideo
-                  ? VIDEO_CONTAINER_HEIGHT
-                  : 0,
+                height: !this.playlist[this.index].isVideo ? VIDEO_CONTAINER_HEIGHT : 0,
               },
             ]}
             source={
@@ -576,9 +549,7 @@ export default class Player extends Component {
             <Text style={[styles.text, styles.buffering]}>
               {this.state.isBuffering ? '...buffering...' : ''}
             </Text>
-            <Text style={[styles.text, styles.timestamp]}>
-              {this._getTimestamp()}
-            </Text>
+            <Text style={[styles.text, styles.timestamp]}>{this._getTimestamp()}</Text>
           </View>
         </View>
 
@@ -596,11 +567,7 @@ export default class Player extends Component {
             onPress={this._onBackPressed}
             disabled={this.state.isLoading}
           >
-            <Icon
-              name="skip-backward"
-              style={{ color: 'white', fontSize: 35 }}
-              active={true}
-            />
+            <Icon name="skip-backward" style={{ color: 'white', fontSize: 35 }} active={true} />
           </TouchableHighlight>
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
@@ -662,11 +629,7 @@ export default class Player extends Component {
             onPress={this._onForwardPressed}
             disabled={this.state.isLoading}
           >
-            <Icon
-              name="skip-forward"
-              style={{ color: 'white', fontSize: 35 }}
-              active={true}
-            />
+            <Icon name="skip-forward" style={{ color: 'white', fontSize: 35 }} active={true} />
           </TouchableHighlight>
         </View>
 
@@ -678,10 +641,7 @@ export default class Player extends Component {
           ]}
         >
           <View style={styles.volumeContainer}>
-            <TouchableHighlight
-              underlayColor={BACKGROUND_COLOR}
-              onPress={this._onMutePressed}
-            >
+            <TouchableHighlight underlayColor={BACKGROUND_COLOR} onPress={this._onMutePressed}>
               {this.state.muted ? (
                 <Icon
                   name="volume-mute"
@@ -715,16 +675,9 @@ export default class Player extends Component {
               onValueChange={this._onVolumeSliderValueChange}
             />
           </View>
-          <TouchableHighlight
-            underlayColor={BACKGROUND_COLOR}
-            onPress={this._onLoopPressed}
-          >
+          <TouchableHighlight underlayColor={BACKGROUND_COLOR} onPress={this._onLoopPressed}>
             {this.state.loopingType === LOOPING_TYPE_ONE ? (
-              <ExpoIcon.MaterialIcons
-                name="repeat-one"
-                size={35}
-                color="white"
-              />
+              <ExpoIcon.MaterialIcons name="repeat-one" size={35} color="white" />
             ) : (
               <ExpoIcon.MaterialIcons name="repeat" size={35} color="white" />
             )}
@@ -738,9 +691,7 @@ export default class Player extends Component {
             { display: 'none' },
           ]}
         >
-          <TouchableOpacity
-            onPress={() => this._trySetRate(1.0, this.state.shouldCorrectPitch)}
-          >
+          <TouchableOpacity onPress={() => this._trySetRate(1.0, this.state.shouldCorrectPitch)}>
             <View>
               <Text style={styles.text}>Rate:</Text>
             </View>
@@ -753,10 +704,7 @@ export default class Player extends Component {
             value={this.state.rate / RATE_SCALE}
             onSlidingComplete={this._onRateSliderSlidingComplete}
           />
-          <TouchableHighlight
-            onPress={this._onSpeakerPressed}
-            underlayColor={BACKGROUND_COLOR}
-          >
+          <TouchableHighlight onPress={this._onSpeakerPressed} underlayColor={BACKGROUND_COLOR}>
             <ExpoIcon.MaterialIcons
               name={this.state.throughEarpiece ? 'speaker-phone' : 'speaker'}
               size={35}
@@ -766,11 +714,7 @@ export default class Player extends Component {
         </View>
 
         <View
-          style={[
-            styles.buttonsContainerBase,
-            styles.buttonsContainerTextRow,
-            { display: 'none' },
-          ]}
+          style={[styles.buttonsContainerBase, styles.buttonsContainerTextRow, { display: 'none' }]}
         >
           <TouchableOpacity onPress={this._onFullScreenPressed}>
             <View>

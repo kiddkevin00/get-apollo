@@ -2,14 +2,7 @@ import { defaultNavigationOptions } from '../../constants/navigation';
 import { months } from '../../constants/enums';
 import { User } from '../../utils/firebase/user';
 import React from 'react';
-import {
-  StyleSheet,
-  Image,
-  View,
-  Picker,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Image, View, Picker, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
 const TODAY = new Date();
@@ -43,6 +36,7 @@ class UnconnectedBirthday extends React.Component {
       const user = await User.getCurrentUser();
 
       const profile = await user.profile();
+
       if (profile.birthday) {
         this.setState({ birthday: profile.birthday });
       }
@@ -76,18 +70,16 @@ class UnconnectedBirthday extends React.Component {
   };
 
   render() {
-    const monthPickerItems = Object.keys(months).map(key => {
-      return <Picker.Item label={months[key]} value={key} key={key} />;
-    });
+    const monthPickerItems = Object.keys(months).map(key => (
+      <Picker.Item label={months[key]} value={key} key={key} />
+    ));
 
     const startYear = 1900;
     const endYear = new Date().getFullYear() - 18;
     const yearPickerItems = [...Array(endYear - startYear + 1).keys()].map(key => {
       const year = key + startYear;
 
-      return (
-        <Picker.Item label={`${year}`} value={year} key={`Y${year}`} />
-      );
+      return <Picker.Item label={`${year}`} value={year} key={`Y${year}`} />;
     });
 
     const endDate = new Date(
@@ -97,6 +89,7 @@ class UnconnectedBirthday extends React.Component {
     ).getDate();
     const datePickerItems = [...Array(endDate).keys()].map(key => {
       const date = key + 1;
+
       return <Picker.Item label={`${date}`} value={date} key={`D${date}`} />;
     });
 
@@ -154,7 +147,7 @@ class UnconnectedBirthday extends React.Component {
             selectedValue={date}
             style={styles.picker}
             itemStyle={styles.pickerItem}
-            onValueChange={(itemValue) => this.setDate(itemValue)}
+            onValueChange={itemValue => this.setDate(itemValue)}
           >
             {datePickerItems}
           </Picker>
@@ -162,7 +155,7 @@ class UnconnectedBirthday extends React.Component {
             selectedValue={year}
             style={styles.picker}
             itemStyle={styles.pickerItem}
-            onValueChange={(itemValue) => this.setYear(itemValue)}
+            onValueChange={itemValue => this.setYear(itemValue)}
           >
             {yearPickerItems}
           </Picker>
@@ -190,8 +183,6 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({});
 
-const Birthday = connect(mapStateToProps, mapDispatchToProps)(
-  UnconnectedBirthday
-);
+const Birthday = connect(mapStateToProps, mapDispatchToProps)(UnconnectedBirthday);
 
 export { UnconnectedBirthday, Birthday as default };

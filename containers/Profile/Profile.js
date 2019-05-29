@@ -10,12 +10,10 @@ import { Container, Card, Button, Text, CardItem, Content } from 'native-base';
 import { StyleSheet, StatusBar } from 'react-native';
 
 class UnconnectedProfile extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      ...defaultNavigationOptions,
-      title: 'PROFILE',
-    };
-  };
+  static navigationOptions = ({ navigation }) => ({
+    ...defaultNavigationOptions,
+    title: 'PROFILE',
+  });
 
   goToTermsAndConditions = () => {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/terms-of-service');
@@ -61,12 +59,7 @@ class UnconnectedProfile extends React.Component {
                 marginBottom: 8,
               }}
             >
-              <QRCode
-                value={userID}
-                size={120}
-                bgColor="White"
-                fgColor="Black"
-              />
+              <QRCode value={userID} size={120} bgColor="White" fgColor="Black" />
             </CardItem>
             <CardItem
               style={{
@@ -96,8 +89,8 @@ class UnconnectedProfile extends React.Component {
               button={true}
               onPress={() =>
                 this.props.navigation.push('aboutMe', {
-                  gender: gender,
-                  relationship: relationship,
+                  gender,
+                  relationship,
                 })
               }
             >
@@ -129,11 +122,7 @@ class UnconnectedProfile extends React.Component {
                 type="FontAwesome"
               />
             </CardItem>
-            <CardItem
-              style={styles.link}
-              button={true}
-              onPress={this.goToTermsAndConditions}
-            >
+            <CardItem style={styles.link} button={true} onPress={this.goToTermsAndConditions}>
               <Text style={styles.linkText}>Terms & Conditions</Text>
               <TabBarIcon
                 style={{ marginRight: '20%' }}
@@ -143,11 +132,7 @@ class UnconnectedProfile extends React.Component {
                 type="FontAwesome"
               />
             </CardItem>
-            <CardItem
-              style={styles.link}
-              button={true}
-              onPress={this.goToPrivacyPolicy}
-            >
+            <CardItem style={styles.link} button={true} onPress={this.goToPrivacyPolicy}>
               <Text style={styles.linkText}>Privacy Policy</Text>
               <TabBarIcon
                 style={{ marginRight: '20%' }}
@@ -166,7 +151,7 @@ class UnconnectedProfile extends React.Component {
               }}
             >
               <Button
-                primary
+                primary={true}
                 style={{
                   height: 40,
                   width: 240,
@@ -212,8 +197,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({});
 
-const Profile = compose(connect(mapStateToProps, mapDispatchToProps))(
-  UnconnectedProfile
-);
+const Profile = compose(connect(mapStateToProps, mapDispatchToProps))(UnconnectedProfile);
 
 export { UnconnectedProfile, Profile as default };

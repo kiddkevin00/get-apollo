@@ -83,8 +83,6 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({});
 
-const DisplayName = connect(mapStateToProps, mapDispatchToProps)(
-  UnconnectedDisplayName
-);
+const DisplayName = connect(mapStateToProps, mapDispatchToProps)(UnconnectedDisplayName);
 
 export { UnconnectedDisplayName, DisplayName as default };
