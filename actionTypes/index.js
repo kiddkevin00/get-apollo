@@ -13,6 +13,13 @@ const actionTypes = {
       FAILURE: 'AUTH.UPDATE_DATA.FAILURE',
     },
   },
+
+  DISPLAY_NAME: {
+    RESET_STATE: 'DISPLAY_NAME.RESET_STATE',
+    FORM: {
+      SET_FIELD: 'DISPLAY_NAME.FORM.SET_FIELD',
+    },
+  },
 };
 
 const namespaces = Object.keys(actionTypes).reduce((acc, type) => ({ ...acc, [type]: type }), {});

@@ -1,4 +1,4 @@
-import actionTypes from '../actionTypes';
+import actionTypes from '../actionTypes/';
 import { firebaseAuth, firebaseAuthProviders } from '../utils/firebaseClient';
 import { User } from '../utils/firebase/user';
 import { Facebook } from 'expo';
@@ -105,7 +105,7 @@ const authActionCreator = {
           navigation.navigate(
             'profile',
             {},
-            NavigationActions.replace({ routeName: 'termsAndConditions' })
+            NavigationActions.push({ routeName: 'termsAndConditions' })
           );
 
           dispatch(this.updateDataSuccess());
@@ -139,16 +139,16 @@ const authActionCreator = {
     };
   },
 
-  saveUserInfo(profile) {
+  saveUserInfo(userInfo) {
     return async dispatch => {
       try {
         dispatch(this.updateDataRequest());
 
         const user = await User.getCurrentUser(); // TODO Replace this
 
-        await user.ref.set(profile, { merge: true });
+        await user.ref.set(userInfo, { merge: true });
 
-        dispatch(this.setData({ ...profile }));
+        dispatch(this.setData({ ...userInfo }));
 
         dispatch(this.updateDataSuccess());
       } catch ({ message: errorMsg }) {

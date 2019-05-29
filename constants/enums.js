@@ -1,7 +1,7 @@
 export const genders = {
   MALE: 'Male',
   FEMALE: 'Female',
-  UNSPECIFIED: 'Unspecified',
+  OTHER: 'Other',
 };
 
 export const relationships = {

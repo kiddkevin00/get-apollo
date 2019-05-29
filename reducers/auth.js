@@ -1,6 +1,4 @@
-import actionTypes from '../actionTypes';
-import { genders, relationships } from '../constants/enums';
-import { combineReducers } from 'redux';
+import actionTypes from '../actionTypes/';
 
 const { AUTH } = actionTypes;
 
@@ -13,8 +11,8 @@ const initialState = {
   termsAndConditions: false,
   displayName: '',
   birthday: undefined, // TODO default to new Date - 18
-  gender: genders.UNSPECIFIED,
-  relationship: relationships.SINGLE,
+  gender: 'OTHER',
+  relationship: 'SINGLE',
   musicPreferences: [],
 
   isLoadingData: false,
@@ -40,7 +38,20 @@ const authReducer = (state = initialState, action) => {
     case AUTH.LOAD_DATA.REQUEST:
       return {
         ...state,
-        isUpdatingData: true,
+        isLoadingData: true,
+        error: {
+          ...initialState.error,
+        },
+      };
+    case AUTH.LOAD_DATA.SUCCESS:
+      return {
+        ...state,
+        isLoadingData: false,
+      };
+    case AUTH.LOAD_DATA.FAILURE:
+      return {
+        ...state,
+        isLoadingData: false,
         error: {
           ...initialState.error,
         },

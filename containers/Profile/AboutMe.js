@@ -19,7 +19,7 @@ class AboutMe extends React.Component {
   };
 
   state = {
-    gender: genders.UNSPECIFIED,
+    gender: genders.OTHER,
     relationship: relationships.SINGLE,
   };
 
@@ -35,7 +35,7 @@ class AboutMe extends React.Component {
         case genders.MALE:
           iconName = 'ios-male';
           break;
-        case genders.UNSPECIFIED:
+        case genders.OTHER:
         default:
           iconName = 'ios-transgender';
           break;
