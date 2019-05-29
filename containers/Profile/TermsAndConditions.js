@@ -59,7 +59,7 @@ class UnconnectedTermsAndConditions extends React.Component {
   handleAccept = async () => {
     await this.props.dispatchSaveUserInfo({ termsAndConditions: true });
 
-    this.props.navigation.push('displayName');
+    this.props.navigation.push('displayName'); // TODO
   };
 
   handleDecline = async () => {
