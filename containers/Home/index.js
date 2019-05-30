@@ -35,7 +35,9 @@ class UnconnectedHome extends React.Component {
           navigation.replace('venues');
           //if (!userInfo.termsAndConditions || !userInfo.displayName || !userInfo.birthday) {
           //  navigation.replace('login');
-          //}
+          //} else {
+          //   navigation.replace('venues');
+          // }
         } else {
           navigation.replace('venues');
         }

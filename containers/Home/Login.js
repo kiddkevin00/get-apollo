@@ -53,11 +53,11 @@ class UnconnectedLogin extends React.Component {
     }).start();
   }
 
-  handleFacebookLogin = async () => {
+  handleFacebookLogin = () => {
     this.props.dispatchSignInWithFacebook(this.props.navigation);
   };
 
-  handleSignInAnonymously = async () => {
+  handleSignInAnonymously = () => {
     this.props.dispatchSignInAnonymously(this.props.navigation);
   };
 

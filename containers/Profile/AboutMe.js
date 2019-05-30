@@ -96,6 +96,7 @@ class AboutMe extends React.Component {
         </TouchableHighlight>
       );
     });
+
   render() {
     return (
       <ScrollView

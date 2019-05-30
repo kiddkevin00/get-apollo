@@ -1,12 +1,29 @@
-import { defaultNavigationOptions } from '../../constants/navigation';
+import actionCreator from '../../actionCreators/auth';
 import React from 'react';
 import { View, Image, TouchableHighlight, Text, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import { Facebook } from 'expo';
-import { firebaseAuth } from '../../utils/firebaseClient';
-import actionCreator from '../../actionCreators/auth';
+import PropTypes from 'prop-types';
+import { NavigationActions } from 'react-navigation';
 
 class UnconnectedGuestProfile extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
+  static propTypes = {
+    dispatchSignInWithFacebook: PropTypes.func.isRequired,
+
+    navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  };
+
+  handleFacebookLogin = () => {
+    this.props.dispatchSignInWithFacebook(this.props.navigation);
+  };
+
+  handleLogout = () => {
+    this.props.navigation.navigate('home', {}, NavigationActions.navigate({ routeName: 'login' }));
+  };
+
   render() {
     return (
       <View
@@ -16,6 +33,7 @@ class UnconnectedGuestProfile extends React.Component {
           backgroundColor: 'black',
         }}
       >
+        <StatusBar barStyle="light-content" />
         <Image
           style={{
             margin: 0,
@@ -45,7 +63,7 @@ class UnconnectedGuestProfile extends React.Component {
               alignItems: 'center',
               backgroundColor: 'black',
             }}
-            onPress={() => alert('pressed!')}
+            onPress={this.handleFacebookLogin}
           >
             <Text style={{ fontSize: 14, color: 'grey' }}>Connect using Facebook</Text>
           </TouchableHighlight>
@@ -61,7 +79,7 @@ class UnconnectedGuestProfile extends React.Component {
               alignItems: 'center',
               backgroundColor: 'black',
             }}
-            onPress={() => alert('pressed!')}
+            onPress={() => {}}
           >
             <Text style={{ fontSize: 14, color: 'grey' }}>Connect using Google</Text>
           </TouchableHighlight>
@@ -72,7 +90,7 @@ class UnconnectedGuestProfile extends React.Component {
               fontSize: 14,
               color: 'grey',
             }}
-            onPress={() => alert('pressed!')}
+            onPress={this.handleLogout}
           >
             Logout
           </Text>
@@ -82,13 +100,11 @@ class UnconnectedGuestProfile extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.firebase.auth,
-});
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
-  dispatchSignInAnonymously(navigation) {
-    dispatch(actionCreator.signInAnonymously(navigation));
+  dispatchSignInWithFacebook(navigation) {
+    dispatch(actionCreator.signInWithFacebook(navigation));
   },
 });
 

@@ -1,6 +1,4 @@
-import { defaultNavigationOptions } from '../../constants/navigation';
 import TabBarIcon from '../../components/ExpoIcon';
-import GuestProfile from './GuestProfile';
 import React from 'react';
 import QRCode from 'react-native-qrcode';
 import { WebBrowser } from 'expo';
@@ -8,12 +6,31 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Container, Card, Button, Text, CardItem, Content } from 'native-base';
 import { StyleSheet, StatusBar } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
-class UnconnectedProfile extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    ...defaultNavigationOptions,
-    title: 'PROFILE',
-  });
+const styles = StyleSheet.create({
+  linkText: {
+    marginLeft: '20%',
+    color: 'grey',
+  },
+  link: {
+    backgroundColor: 'black',
+    borderColor: 'black',
+    paddingBottom: 0,
+    paddingTop: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    width: '100%',
+    margin: 8,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+});
+
+class UnconnectedMemberProfile extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
 
   goToTermsAndConditions = () => {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/terms-of-service');
@@ -23,12 +40,12 @@ class UnconnectedProfile extends React.Component {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/privacy-policy');
   };
 
-  render() {
-    if (this.props.auth.isAnonymous) {
-      return <GuestProfile />;
-    }
+  handleLogout = () => {
+    this.props.navigation.navigate('home', {}, NavigationActions.navigate({ routeName: 'login' }));
+  };
 
-    const displayName = 'Paul Hsu';
+  render() {
+    const displayName = 'Marcus Hsu';
     const gender = 'male';
     const relationship = 'Single';
     const musicPreferences = ['HIP_HOP', 'REGGAE'];
@@ -161,6 +178,7 @@ class UnconnectedProfile extends React.Component {
                   justifyContent: 'center',
                   backgroundColor: '#017bf6',
                 }}
+                onPress={this.handleLogout}
               >
                 <Text>Logout</Text>
               </Button>
@@ -172,31 +190,10 @@ class UnconnectedProfile extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  linkText: {
-    marginLeft: '20%',
-    color: 'grey',
-  },
-  link: {
-    backgroundColor: 'black',
-    borderColor: 'black',
-    paddingBottom: 0,
-    paddingTop: 0,
-    paddingLeft: 0,
-    paddingRight: 0,
-    width: '100%',
-    margin: 8,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-});
-
-const mapStateToProps = state => ({
-  auth: state.firebase.auth,
-});
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({});
 
-const Profile = compose(connect(mapStateToProps, mapDispatchToProps))(UnconnectedProfile);
+const MemberProfile = compose(connect(mapStateToProps, mapDispatchToProps))(UnconnectedMemberProfile);
 
-export { UnconnectedProfile, Profile as default };
+export { UnconnectedMemberProfile, MemberProfile as default };

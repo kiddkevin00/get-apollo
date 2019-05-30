@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
   container: {
     ...Platform.select({
       android: {
-        paddingTop: StatusBar.currentHeight,
+        //paddingTop: StatusBar.currentHeight,
       },
     }),
     flexGrow: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
   },
 });
 

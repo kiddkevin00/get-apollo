@@ -140,12 +140,12 @@ const authActionCreator = {
             }))
           ));
 
-          navigation.replace('venues'); // TODO
-          //navigation.navigate(
-          //  'profile',
-          //  {},
-          //  NavigationActions.navigate({ routeName: 'termsAndConditions' })
-          //);
+            navigation.replace('venues'); // TODO
+            //navigation.navigate(
+            //  'profile',
+            //  {},
+            //  NavigationActions.navigate({ routeName: 'termsAndConditions' })
+            //);
 
           dispatch(this.updateDataSuccess());
         } else {

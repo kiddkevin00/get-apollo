@@ -5,7 +5,9 @@ import HomeScreen from '../containers/Home/';
 import LoginScreen from '../containers/Home/Login';
 import VenuesScreen from '../containers/Home/Venues';
 import DetailScreen from '../containers/Home/Detail';
-import ProfileScreen from '../containers/Profile/Profile';
+import ProfileScreen from '../containers/Profile/';
+import MemberProfileScreen from '../containers/Profile/MemberProfile';
+import GuestProfileScreen from '../containers/Profile/GuestProfile';
 import AboutMeScreen from '../containers/Profile/AboutMe';
 import MusicPreferenceScreen from '../containers/Profile/MusicPreference';
 import TermsAndConditionsScreen from '../containers/Profile/TermsAndConditions';
@@ -66,7 +68,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
   const { routeName } = navigation.state.routes[navigation.state.index];
   let tabBarVisible;
 
-  if (routeName === 'login') {
+  if (routeName === 'login' || routeName === 'home') {
     tabBarVisible = false;
   } else {
     tabBarVisible = true;
@@ -89,6 +91,8 @@ HomeStack.navigationOptions = ({ navigation }) => {
 const ProfileStack = createStackNavigator(
   {
     profile: ProfileScreen,
+    guestProfile: GuestProfileScreen,
+    memberProfile: MemberProfileScreen,
     aboutMe: AboutMeScreen,
     musicPreference: MusicPreferenceScreen,
     termsAndConditions: TermsAndConditionsScreen,
