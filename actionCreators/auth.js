@@ -1,6 +1,5 @@
 import actionTypes from '../actionTypes/';
-import { firebaseAuth, firebaseAuthProviders } from '../utils/firebaseClient';
-import { User } from '../utils/firebase/user';
+import firebaseClient, { firebaseAuth, firebaseAuthProviders } from '../utils/firebaseClient';
 import { Facebook } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import { Alert } from 'react-native';
@@ -59,14 +58,45 @@ const authActionCreator = {
     };
   },
 
+  loadUserInfo(uid) {
+    return async dispatch => {
+      let userInfo = {};
+
+      try {
+        dispatch(this.loadDataRequest());
+
+        const userDoc = await firebaseClient
+          .firestore()
+          .collection('users')
+          .doc(uid)
+          .get();
+
+        if (userDoc.exists) {
+          userInfo = userDoc.data();
+
+          dispatch(this.setData(userInfo));
+        }
+
+        dispatch(this.loadDataSuccess());
+      } catch ({ message: errorMsg }) {
+        console.log(errorMsg)
+        //Alert.alert('Try Again', errorMsg);
+
+        dispatch(this.loadDataFailure(errorMsg));
+      }
+
+      return userInfo;
+    };
+  },
+
   signInAnonymously(navigation) {
     return async dispatch => {
       try {
         dispatch(this.updateDataRequest());
 
-        await firebaseAuth.signInAnonymouslyAndRetrieveData();
+        await firebaseAuth.signInAnonymously();
 
-        navigation.replace('home');
+        navigation.replace('venues');
 
         dispatch(this.updateDataSuccess());
       } catch ({ code: errorCode, message: errorMsg }) {
@@ -100,59 +130,53 @@ const authActionCreator = {
           const credential = firebaseAuthProviders.FacebookAuthProvider.credential(accessToken);
           const { user } = await firebaseAuth.signInAndRetrieveDataWithCredential(credential);
 
-          dispatch(this.setData({ email: user.email, uid: user.uid }));
+          await dispatch(
+            this.saveUserInfo(user.uid, JSON.parse(JSON.stringify({
+              uid: user.uid,
+              email: user.providerData[0] && user.providerData[0].email,
+              displayName: user.providerData[0] && user.providerData[0].displayName,
+              photoUrl: user.providerData[0] && user.providerData[0].photoURL,
+              providerId: user.providerData[0] && user.providerData[0].providerId,
+            }))
+          ));
 
-          navigation.navigate(
-            'profile',
-            {},
-            NavigationActions.push({ routeName: 'termsAndConditions' })
-          );
+          navigation.replace('venues'); // TODO
+          //navigation.navigate(
+          //  'profile',
+          //  {},
+          //  NavigationActions.navigate({ routeName: 'termsAndConditions' })
+          //);
 
           dispatch(this.updateDataSuccess());
+        } else {
+          dispatch(this.updateDataFailure('Signing-in with Facebook got cancelled'));
         }
-
-        dispatch(this.updateDataFailure('Something went wrong while signing in with Facebook'));
       } catch ({ message: errorMsg }) {
-        Alert.alert('Try Again', errorMsg);
+        console.log(errorMsg)
+        //Alert.alert('Try Again', errorMsg);
 
         dispatch(this.updateDataFailure(errorMsg));
       }
     };
   },
 
-  loadUserInfo() {
-    return async dispatch => {
-      try {
-        dispatch(this.loadDataRequest());
-
-        const user = await User.getCurrentUser(); // TODO Replace this
-        const profile = await user.profile();
-
-        dispatch(this.setData({ ...profile }));
-
-        dispatch(this.loadDataSuccess());
-      } catch ({ message: errorMsg }) {
-        Alert.alert('Try Again', errorMsg);
-
-        dispatch(this.loadDataFailure(errorMsg));
-      }
-    };
-  },
-
-  saveUserInfo(userInfo) {
+  saveUserInfo(uid, userInfo, navigation, route) {
     return async dispatch => {
       try {
         dispatch(this.updateDataRequest());
 
-        const user = await User.getCurrentUser(); // TODO Replace this
+        await firebaseClient
+          .firestore()
+          .collection('users')
+          .doc(uid)
+          .set(userInfo, { merge: true });
 
-        await user.ref.set(userInfo, { merge: true });
-
-        dispatch(this.setData({ ...userInfo }));
+        dispatch(this.setData(userInfo));
 
         dispatch(this.updateDataSuccess());
       } catch ({ message: errorMsg }) {
-        Alert.alert('Try Again', errorMsg);
+        console.log(errorMsg)
+        //Alert.alert('Try Again', errorMsg);
 
         dispatch(this.updateDataFailure(errorMsg));
       }

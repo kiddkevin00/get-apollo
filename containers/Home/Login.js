@@ -1,3 +1,5 @@
+import actionCreator from '../../actionCreators/auth';
+import LoadingPage from '../../components/LoadingPage';
 import React from 'react';
 import {
   View,
@@ -10,7 +12,20 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import actionCreator from '../../actionCreators/auth';
+
+const styles = StyleSheet.create({
+  loginBtn: {
+    margin: 8,
+    width: 240,
+    height: 40,
+    borderRadius: 20,
+    borderColor: '#017bf6',
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+  },
+});
 
 class UnconnectedLogin extends React.Component {
   static navigationOptions = {
@@ -18,17 +33,20 @@ class UnconnectedLogin extends React.Component {
   };
 
   static propTypes = {
-    navigation: PropTypes.object.isRequired,
+    isUpdatingData: PropTypes.bool.isRequired,
+
+    dispatchSignInWithFacebook: PropTypes.func.isRequired,
+    dispatchSignInAnonymously: PropTypes.func.isRequired,
+
+    navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
   state = {
-    fadeAnim: new Animated.Value(0),
+    fadingOpacity: new Animated.Value(0),
   };
 
   componentDidMount() {
-    StatusBar.setHidden(true);
-
-    Animated.timing(this.state.fadeAnim, {
+    Animated.timing(this.state.fadingOpacity, {
       toValue: 1,
       delay: 500,
       duration: 2000,
@@ -44,19 +62,8 @@ class UnconnectedLogin extends React.Component {
   };
 
   render() {
-    if (this.props.isUpdating) {
-      return (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'black',
-          }}
-        >
-          <Text style={{ color: 'black' }}>Pouring drinks...</Text>
-        </View>
-      );
+    if (this.props.isUpdatingData) {
+      return <LoadingPage />;
     }
 
     return (
@@ -67,6 +74,7 @@ class UnconnectedLogin extends React.Component {
           backgroundColor: 'black',
         }}
       >
+        <StatusBar hidden={true} />
         <Image
           style={{
             marginTop: 60,
@@ -77,11 +85,11 @@ class UnconnectedLogin extends React.Component {
           }}
           source={require('../../assets/images/apollo.png')}
         />
-        <Animated.View style={{ opacity: this.state.fadeAnim }}>
+        <Animated.View style={{ opacity: this.state.fadingOpacity }}>
           <TouchableHighlight style={styles.loginBtn} onPress={this.handleFacebookLogin}>
             <Text style={{ fontSize: 14, color: 'grey' }}>Connect using Facebook</Text>
           </TouchableHighlight>
-          <TouchableHighlight style={styles.loginBtn} onPress={() => alert('pressed!')}>
+          <TouchableHighlight style={styles.loginBtn} onPress={() => {}}>
             <Text style={{ fontSize: 14, color: 'grey' }}>Connect using Google</Text>
           </TouchableHighlight>
           <Text
@@ -101,29 +109,15 @@ class UnconnectedLogin extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  loginBtn: {
-    margin: 8,
-    width: 240,
-    height: 40,
-    borderRadius: 20,
-    borderColor: '#017bf6',
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
-  },
-});
-
 const mapStateToProps = state => ({
-  auth: state.firebase.auth,
-  isUpdating: state.auth.isUpdatingData,
+  isUpdatingData: state.auth.isUpdatingData,
 });
 
 const mapDispatchToProps = dispatch => ({
   dispatchSignInAnonymously(navigation) {
     dispatch(actionCreator.signInAnonymously(navigation));
   },
+
   dispatchSignInWithFacebook(navigation) {
     dispatch(actionCreator.signInWithFacebook(navigation));
   },

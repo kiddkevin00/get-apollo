@@ -1,8 +1,9 @@
 import ExpoIcon from '../components/ExpoIcon';
 import ExploreScreen from '../containers/Explore/';
 import PlayerScreen from '../containers/Explore/Player';
-import LoginScreen from '../containers/Home/Login';
 import HomeScreen from '../containers/Home/';
+import LoginScreen from '../containers/Home/Login';
+import VenuesScreen from '../containers/Home/Venues';
 import DetailScreen from '../containers/Home/Detail';
 import ProfileScreen from '../containers/Profile/Profile';
 import AboutMeScreen from '../containers/Profile/AboutMe';
@@ -51,12 +52,13 @@ ExploreStack.navigationOptions = ({ navigation }) => {
 
 const HomeStack = createStackNavigator(
   {
-    login: LoginScreen,
     home: HomeScreen,
+    login: LoginScreen,
+    venues: VenuesScreen,
     detail: DetailScreen,
   },
   {
-    initialRouteName: 'login',
+    initialRouteName: 'home',
   }
 );
 
@@ -69,6 +71,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
   } else {
     tabBarVisible = true;
   }
+
   return {
     tabBarVisible,
     tabBarLabel: <View />,

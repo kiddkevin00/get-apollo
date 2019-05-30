@@ -7,7 +7,7 @@ export default class ExpoIcon extends React.Component {
     type: PropTypes.string,
     name: PropTypes.string.isRequired,
     size: PropTypes.number,
-    style: PropTypes.object,
+    style: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     color: PropTypes.string,
   };
 

@@ -1,6 +1,5 @@
 import { defaultNavigationOptions } from '../../constants/navigation';
 import { months } from '../../constants/enums';
-import { User } from '../../utils/firebase/user';
 import React from 'react';
 import { StyleSheet, Image, View, Picker, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
@@ -31,19 +30,19 @@ class UnconnectedBirthday extends React.Component {
   }
 
   // TODO
-  loadUser = async () => {
-    try {
-      const user = await User.getCurrentUser();
-
-      const profile = await user.profile();
-
-      if (profile.birthday) {
-        this.setState({ birthday: profile.birthday });
-      }
-    } catch (e) {
-      console.log('error', e);
-    }
-  };
+  //loadUser = async () => {
+  //  try {
+  //    const user = await User.getCurrentUser();
+  //
+  //    const profile = await user.profile();
+  //
+  //    if (profile.birthday) {
+  //      this.setState({ birthday: profile.birthday });
+  //    }
+  //  } catch (e) {
+  //    console.log('error', e);
+  //  }
+  //};
 
   setMonth = monthIndex => {
     const newDate = new Date(this.state.birthday);

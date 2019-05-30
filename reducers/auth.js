@@ -2,18 +2,16 @@ import actionTypes from '../actionTypes/';
 
 const { AUTH } = actionTypes;
 
-const initialState = {
-  uid: undefined, // TODO use state.firebase.auth instead
-  isAnonymous: undefined, // TODO use state.firebase.auth instead
-  providerData: undefined, // TODO use state.firebase.auth instead
+const TODAY = new Date();
+const DEFAULT_BIRTHDAY = new Date(TODAY.getFullYear() - 21, TODAY.getMonth(), TODAY.getDate());
 
-  email: undefined,
+const initialState = {
   termsAndConditions: false,
   displayName: '',
-  birthday: undefined, // TODO default to new Date - 18
+  birthday: DEFAULT_BIRTHDAY,
   gender: 'OTHER',
   relationship: 'SINGLE',
-  musicPreferences: [],
+  musicPreference: [],
 
   isLoadingData: false,
   isUpdatingData: false,
@@ -23,6 +21,15 @@ const initialState = {
   },
 };
 
+const setData = (data, currentState) =>
+  Object.keys(data).reduce((accumulator, field) => {
+    if (Object.keys(initialState).includes(field) && data[field]) {
+      return { ...accumulator, [field]: data[field] };
+    }
+    return accumulator;
+  }, { ...currentState });
+
+
 const authReducer = (state = initialState, action) => {
   const actionType = action.type;
   const actionPayload = action.payload;
@@ -31,10 +38,7 @@ const authReducer = (state = initialState, action) => {
     case AUTH.RESET_STATE:
       return { ...initialState };
     case AUTH.SET_DATA:
-      return {
-        ...state,
-        ...actionPayload,
-      };
+      return setData(actionPayload, state);
     case AUTH.LOAD_DATA.REQUEST:
       return {
         ...state,
@@ -53,7 +57,8 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isLoadingData: false,
         error: {
-          ...initialState.error,
+          isVisible: true,
+          message: actionPayload,
         },
       };
     case AUTH.UPDATE_DATA.REQUEST:

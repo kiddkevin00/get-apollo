@@ -1,5 +1,5 @@
 import actionCreator from '../../actionCreators/auth';
-import { defaultNavigationOptions } from '../../constants/navigation';
+import LoadingPage from '../../components/LoadingPage';
 import { WebBrowser } from 'expo';
 import React from 'react';
 import {
@@ -34,7 +34,9 @@ class UnconnectedTermsAndConditions extends React.Component {
   };
 
   static propTypes = {
-    isUpdating: PropTypes.bool.isRequired,
+    auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    isLoadingData: PropTypes.bool.isRequired,
+    isUpdatingData: PropTypes.bool.isRequired,
 
     dispatchLoadUserInfo: PropTypes.func.isRequired,
     dispatchSaveUserInfo: PropTypes.func.isRequired,
@@ -45,7 +47,7 @@ class UnconnectedTermsAndConditions extends React.Component {
   componentDidMount() {
     StatusBar.setHidden(true);
 
-    this.props.dispatchLoadUserInfo();
+    this.props.dispatchLoadUserInfo(this.props.auth.uid);
   }
 
   goToTermsAndConditionsView = () => {
@@ -70,19 +72,8 @@ class UnconnectedTermsAndConditions extends React.Component {
   };
 
   render() {
-    if (this.props.isUpdating) {
-      return (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'black',
-          }}
-        >
-          <Text style={{ color: 'black' }}>Pouring drinks...</Text>
-        </View>
-      );
+    if (this.props.isUpdatingData || this.props.isLoadingData) {
+      return <LoadingPage />;
     }
 
     return (
@@ -159,7 +150,9 @@ class UnconnectedTermsAndConditions extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isUpdating: state.auth.isUpdatingData,
+  auth: state.firebase.auth,
+  isLoadingData: state.auth.isLoadingData,
+  isUpdatingData: state.auth.isUpdatingData,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -167,8 +160,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreator.saveUserInfo(userInfo));
   },
 
-  dispatchLoadUserInfo() {
-    dispatch(actionCreator.loadUserInfo());
+  dispatchLoadUserInfo(uid) {
+    dispatch(actionCreator.loadUserInfo(uid));
   },
 });
 
