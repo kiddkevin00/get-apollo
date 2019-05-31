@@ -101,7 +101,7 @@ class Detail extends React.Component {
                 source={{ uri: photoURL }}
               >
                 <Button
-                  onPress={() => alert('Pressed')}
+                  onPress={() => {}}
                   style={{
                     alignSelf: 'flex-end',
                     shadowOpacity: 0.8,
@@ -115,7 +115,7 @@ class Detail extends React.Component {
                     marginRight: 18,
                   }}
                 >
-                  <Text style={{ color: '#a6a2a2' }}>View All</Text>
+                  <Text style={{ color: '#a6a2a2', fontSize: 12 }}>View All</Text>
                 </Button>
               </ImageBackground>
             </CardItem>

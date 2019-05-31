@@ -1,5 +1,6 @@
 import actionCreator from '../../actionCreators/auth';
 import LoadingPage from '../../components/LoadingPage';
+import { defaultNavigationOptions } from '../../constants/navigation';
 import { WebBrowser } from 'expo';
 import React from 'react';
 import {
@@ -30,7 +31,8 @@ const styles = StyleSheet.create({
 
 class UnconnectedTermsAndConditions extends React.Component {
   static navigationOptions = {
-    header: null,
+    ...defaultNavigationOptions,
+    title: 'TERMS & CONDITIONS',
   };
 
   static propTypes = {
@@ -43,12 +45,6 @@ class UnconnectedTermsAndConditions extends React.Component {
 
     navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
-
-  componentDidMount() {
-    StatusBar.setHidden(true);
-
-    this.props.dispatchLoadUserInfo(this.props.auth.uid);
-  }
 
   goToTermsAndConditionsView = () => {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/terms-of-service');
@@ -72,7 +68,7 @@ class UnconnectedTermsAndConditions extends React.Component {
   };
 
   render() {
-    if (this.props.isUpdatingData || this.props.isLoadingData) {
+    if (this.props.isUpdatingData) {
       return <LoadingPage />;
     }
 
@@ -83,6 +79,7 @@ class UnconnectedTermsAndConditions extends React.Component {
           padding: 36,
         }}
       >
+        <StatusBar hidden={true} />
         <View
           style={{
             borderBottomWidth: 1,
@@ -158,10 +155,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   dispatchSaveUserInfo(userInfo) {
     dispatch(actionCreator.saveUserInfo(userInfo));
-  },
-
-  dispatchLoadUserInfo(uid) {
-    dispatch(actionCreator.loadUserInfo(uid));
   },
 });
 

@@ -1,5 +1,6 @@
 import actionTypes from '../actionTypes/';
 import firebaseClient, { firebaseAuth, firebaseAuthProviders } from '../utils/firebaseClient';
+import { noop } from '../constants/misc';
 import { Facebook } from 'expo';
 import { NavigationActions } from 'react-navigation';
 import { Alert } from 'react-native';
@@ -79,8 +80,7 @@ const authActionCreator = {
 
         dispatch(this.loadDataSuccess());
       } catch ({ message: errorMsg }) {
-        console.log(errorMsg)
-        //Alert.alert('Try Again', errorMsg);
+        Alert.alert('Try Again', errorMsg);
 
         dispatch(this.loadDataFailure(errorMsg));
       }
@@ -96,7 +96,7 @@ const authActionCreator = {
 
         await firebaseAuth.signInAnonymously();
 
-        navigation.replace('venues');
+        navigation.replace('guestProfile');
 
         dispatch(this.updateDataSuccess());
       } catch ({ code: errorCode, message: errorMsg }) {
@@ -131,36 +131,36 @@ const authActionCreator = {
           const { user } = await firebaseAuth.signInAndRetrieveDataWithCredential(credential);
 
           await dispatch(
-            this.saveUserInfo(user.uid, JSON.parse(JSON.stringify({
-              uid: user.uid,
-              email: user.providerData[0] && user.providerData[0].email,
-              displayName: user.providerData[0] && user.providerData[0].displayName,
-              photoUrl: user.providerData[0] && user.providerData[0].photoURL,
-              providerId: user.providerData[0] && user.providerData[0].providerId,
-            }))
-          ));
+            this.saveUserInfo(
+              user.uid,
+              JSON.parse(
+                JSON.stringify({
+                  uid: user.uid,
+                  email: user.providerData[0] && user.providerData[0].email,
+                  displayName: user.providerData[0] && user.providerData[0].displayName,
+                  photoUrl: user.providerData[0] && user.providerData[0].photoURL,
+                  providerId: user.providerData[0] && user.providerData[0].providerId,
+                })
+              )
+            )
+          );
 
-            navigation.replace('venues'); // TODO
-            //navigation.navigate(
-            //  'profile',
-            //  {},
-            //  NavigationActions.navigate({ routeName: 'termsAndConditions' })
-            //);
+          navigation.replace('guestProfile', { uid: user.uid });
+          //navigation.replace('termsAndConditions');
 
           dispatch(this.updateDataSuccess());
         } else {
           dispatch(this.updateDataFailure('Signing-in with Facebook got cancelled'));
         }
       } catch ({ message: errorMsg }) {
-        console.log(errorMsg)
-        //Alert.alert('Try Again', errorMsg);
+        Alert.alert('Try Again', errorMsg);
 
         dispatch(this.updateDataFailure(errorMsg));
       }
     };
   },
 
-  saveUserInfo(uid, userInfo, navigation, route) {
+  saveUserInfo(uid, userInfo, onSuccess = noop) {
     return async dispatch => {
       try {
         dispatch(this.updateDataRequest());
@@ -173,10 +173,11 @@ const authActionCreator = {
 
         dispatch(this.setData(userInfo));
 
+        await onSuccess();
+
         dispatch(this.updateDataSuccess());
       } catch ({ message: errorMsg }) {
-        console.log(errorMsg)
-        //Alert.alert('Try Again', errorMsg);
+        Alert.alert('Try Again', errorMsg);
 
         dispatch(this.updateDataFailure(errorMsg));
       }

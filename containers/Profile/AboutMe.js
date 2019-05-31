@@ -1,3 +1,6 @@
+import actionCreator from '../../actionCreators/profile/aboutMe';
+import authActionCreator from '../../actionCreators/auth';
+import LoadingPage from '../../components/LoadingPage';
 import { defaultNavigationOptions } from '../../constants/navigation';
 import React from 'react';
 import { genders, relationships } from '../../constants/enums';
@@ -11,24 +14,52 @@ import {
   ScrollView,
   StatusBar,
 } from 'react-native';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-class AboutMe extends React.Component {
+class UnconnectedAboutMe extends React.Component {
   static navigationOptions = {
     ...defaultNavigationOptions,
     title: 'ABOUT ME',
   };
 
-  state = {
-    gender: genders.OTHER,
-    relationship: relationships.SINGLE,
+  static propTypes = {
+    isUpdatingData: PropTypes.bool.isRequired,
+    formGender: PropTypes.string.isRequired,
+    formRelationship: PropTypes.string.isRequired,
+
+    dispatchSetFormField: PropTypes.func.isRequired,
+    dispatchSaveUserInfo: PropTypes.func.isRequired,
+
+    navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  };
+
+  handleChange(field, value) {
+    this.props.dispatchSetFormField(field, value);
+  }
+
+  handleSave = () => {
+    this.props.dispatchSaveUserInfo(
+      {
+        gender: this.props.formGender,
+        relationship: this.props.formRelationship,
+      },
+      () => {
+        if (this.props.navigation.getParam('isOnBoarding', false) === true) {
+          this.props.navigation.push('musicPreferences', { isOnBoarding: true });
+        } else {
+          this.props.navigation.goBack();
+        }
+      }
+    );
   };
 
   renderGenderButtons = () =>
-    Object.keys(genders).map(key => {
-      const title = genders[key];
+    Object.keys(genders).map(TITLE => {
+      const displayTitle = genders[TITLE];
       let iconName;
 
-      switch (title) {
+      switch (displayTitle) {
         case genders.FEMALE:
           iconName = 'ios-female';
           break;
@@ -43,14 +74,14 @@ class AboutMe extends React.Component {
 
       let iconColor;
 
-      if (this.state.gender === title) {
+      if (this.props.formGender === TITLE) {
         iconColor = '#017bf6';
       } else {
         iconColor = 'grey';
       }
 
       return (
-        <TouchableHighlight key={title} onPress={() => this.setState({ gender: title })}>
+        <TouchableHighlight key={TITLE} onPress={this.handleChange.bind(this, 'Gender', TITLE)}>
           <View
             style={{
               alignItems: 'center',
@@ -59,20 +90,21 @@ class AboutMe extends React.Component {
             }}
           >
             <TabBarIcon name={iconName} size={48} color={iconColor} />
-            <Text style={{ color: iconColor }}>{title}</Text>
+            <Text style={{ color: iconColor }}>{displayTitle}</Text>
           </View>
         </TouchableHighlight>
       );
     });
 
   renderRelationshipButtons = () =>
-    Object.keys(relationships).map(key => {
-      const title = relationships[key];
+    Object.keys(relationships).map(TITLE => {
+      const displayTitle = relationships[TITLE];
 
       return (
         <TouchableHighlight
-          key={title}
-          onPress={() => this.setState({ relationship: title })}
+          key={TITLE}
+          onPress={this.handleChange.bind(this, 'Relationship', TITLE)}
+        >
           style={{
             margin: 4,
             borderRadius: 15,
@@ -82,22 +114,34 @@ class AboutMe extends React.Component {
             borderWidth: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: this.state.relationship === title ? '#017bf6' : 'black',
+            backgroundColor: this.props.formRelationship === TITLE ? '#017bf6' : 'black',
           }}
-        >
+          >
           <Text
             style={{
-              color: this.state.relationship === title ? 'white' : 'grey',
+              color: this.props.formRelationship === TITLE ? 'white' : 'grey',
               fontSize: 14,
             }}
           >
-            {title}
+            {displayTitle}
           </Text>
         </TouchableHighlight>
       );
     });
 
   render() {
+    if (this.props.isUpdatingData) {
+      return <LoadingPage />;
+    }
+
+    let isStatusBarHidden;
+
+    if (this.props.navigation.getParam('isOnBoarding', false)) {
+      isStatusBarHidden = true;
+    } else {
+      isStatusBarHidden = false;
+    }
+
     return (
       <ScrollView
         style={{
@@ -106,7 +150,7 @@ class AboutMe extends React.Component {
           padding: 36,
         }}
       >
-        <StatusBar barStyle="light-content" />
+        <StatusBar hidden={isStatusBarHidden} barStyle="light-content" />
         <Image
           style={{
             height: 128,
@@ -147,7 +191,7 @@ class AboutMe extends React.Component {
             alignSelf: 'center',
             backgroundColor: '#017bf6',
           }}
-          onPress={() => this.props.navigation.goBack()}
+          onPress={this.handleSave}
         >
           <Text style={{ color: 'white' }}>Save</Text>
         </TouchableOpacity>
@@ -156,4 +200,22 @@ class AboutMe extends React.Component {
   }
 }
 
-export default AboutMe;
+const mapStateToProps = state => ({
+  isUpdatingData: state.auth.isUpdatingData,
+  formGender: state.aboutMe.formGender.value,
+  formRelationship: state.aboutMe.formRelationship.value,
+});
+
+const mapDispatchToProps = dispatch => ({
+  dispatchSetFormField(field, value) {
+    dispatch(actionCreator.setFormField(field, value));
+  },
+
+  dispatchSaveUserInfo(userInfo, onSuccess) {
+    dispatch(authActionCreator.saveUserInfo(userInfo, onSuccess));
+  },
+});
+
+const AboutMe = connect(mapStateToProps, mapDispatchToProps)(UnconnectedAboutMe);
+
+export { UnconnectedAboutMe, AboutMe as default };

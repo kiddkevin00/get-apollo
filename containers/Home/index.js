@@ -3,6 +3,7 @@ import LoadingPage from '../../components/LoadingPage';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 class UnconnectedHome extends React.Component {
   static navigationOptions = {
@@ -34,7 +35,12 @@ class UnconnectedHome extends React.Component {
 
           navigation.replace('venues');
           //if (!userInfo.termsAndConditions || !userInfo.displayName || !userInfo.birthday) {
-          //  navigation.replace('login');
+          //  navigation.navigate(
+          //    NavigationActions.navigate({
+          //      routeName: 'profile',
+          //      action: NavigationActions.navigate({ routeName: 'login' }),
+          //    })
+          //  );
           //} else {
           //   navigation.replace('venues');
           // }
@@ -42,7 +48,12 @@ class UnconnectedHome extends React.Component {
           navigation.replace('venues');
         }
       } else {
-        navigation.replace('login');
+        navigation.navigate(
+          NavigationActions.navigate({
+            routeName: 'profile',
+            action: NavigationActions.navigate({ routeName: 'login' }),
+          })
+        );
       }
     }
   };

@@ -1,11 +1,12 @@
+import actionCreator from '../../actionCreators/profile/birthday';
+import authActionCreator from '../../actionCreators/auth';
+import LoadingPage from '../../components/LoadingPage';
 import { defaultNavigationOptions } from '../../constants/navigation';
 import { months } from '../../constants/enums';
 import React from 'react';
-import { StyleSheet, Image, View, Picker, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, Picker, Text, TouchableOpacity, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-
-const TODAY = new Date();
-const DEFAULT_BIRTHDAY = new Date(TODAY.getFullYear() - 21, TODAY.getMonth(), TODAY.getDate());
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   picker: {
@@ -18,57 +19,59 @@ const styles = StyleSheet.create({
 
 class UnconnectedBirthday extends React.Component {
   static navigationOptions = {
-    header: null,
+    ...defaultNavigationOptions,
+    title: 'BIRTHDAY',
   };
 
-  state = {
-    birthday: DEFAULT_BIRTHDAY,
+  static propTypes = {
+    isUpdatingData: PropTypes.bool.isRequired,
+    formBirthday: PropTypes.instanceOf(Date).isRequired,
+
+    dispatchSetFormField: PropTypes.func.isRequired,
+    dispatchSaveUserInfo: PropTypes.func.isRequired,
+
+    navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
-
-  componentDidMount() {
-    this.loadUser();
-  }
-
-  // TODO
-  //loadUser = async () => {
-  //  try {
-  //    const user = await User.getCurrentUser();
-  //
-  //    const profile = await user.profile();
-  //
-  //    if (profile.birthday) {
-  //      this.setState({ birthday: profile.birthday });
-  //    }
-  //  } catch (e) {
-  //    console.log('error', e);
-  //  }
-  //};
 
   setMonth = monthIndex => {
-    const newDate = new Date(this.state.birthday);
+    const newDate = new Date(this.props.formBirthday);
 
     newDate.setMonth(monthIndex);
 
-    this.setState({ birthday: newDate });
+    this.handleBirthdayChange(newDate);
   };
 
   setYear = year => {
-    const newDate = new Date(this.state.birthday);
+    const newDate = new Date(this.props.formBirthday);
 
     newDate.setFullYear(year);
 
-    this.setState({ birthday: newDate });
+    this.handleBirthdayChange(newDate);
   };
 
   setDate = date => {
-    const newDate = new Date(this.state.birthday);
+    const newDate = new Date(this.props.formBirthday);
 
     newDate.setDate(date);
 
-    this.setState({ birthday: newDate });
+    this.handleBirthdayChange(newDate);
+  };
+
+  handleBirthdayChange(value) {
+    this.props.dispatchSetFormField('Birthday', value);
+  }
+
+  handleSave = () => {
+    this.props.dispatchSaveUserInfo({ formBirthday: this.props.formBirthday }, () => {
+      this.props.navigation.push('aboutMe', { isOnBoarding: true });
+    });
   };
 
   render() {
+    if (this.props.isUpdatingData) {
+      return <LoadingPage />;
+    }
+
     const monthPickerItems = Object.keys(months).map(key => (
       <Picker.Item label={months[key]} value={key} key={key} />
     ));
@@ -82,8 +85,8 @@ class UnconnectedBirthday extends React.Component {
     });
 
     const endDate = new Date(
-      this.state.birthday.getFullYear(),
-      this.state.birthday.getMonth() + 1,
+      this.props.formBirthday.getFullYear(),
+      this.props.formBirthday.getMonth() + 1,
       0
     ).getDate();
     const datePickerItems = [...Array(endDate).keys()].map(key => {
@@ -92,9 +95,9 @@ class UnconnectedBirthday extends React.Component {
       return <Picker.Item label={`${date}`} value={date} key={`D${date}`} />;
     });
 
-    const month = Object.keys(months)[this.state.birthday.getMonth()];
-    const date = this.state.birthday.getDate();
-    const year = this.state.birthday.getFullYear();
+    const month = Object.keys(months)[this.props.formBirthday.getMonth()];
+    const date = this.props.formBirthday.getDate();
+    const year = this.props.formBirthday.getFullYear();
 
     return (
       <View
@@ -105,6 +108,7 @@ class UnconnectedBirthday extends React.Component {
           flex: 1,
         }}
       >
+        <StatusBar hidden={true} />
         <Image
           style={{
             height: 128,
@@ -169,18 +173,29 @@ class UnconnectedBirthday extends React.Component {
             backgroundColor: '#017bf6',
             marginTop: 40,
           }}
-          onPress={() => this.props.navigation.push('musicPreference')}
+          onPress={this.handleSave}
         >
-          <Text style={{ fontSize: 14, color: 'white' }}>Saved</Text>
+          <Text style={{ fontSize: 14, color: 'white' }}>Save</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  isUpdatingData: state.auth.isUpdatingData,
+  formBirthday: state.formBirthday.formBirthday.value,
+});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  dispatchSetFormField(field, value) {
+    dispatch(actionCreator.setFormField(field, value));
+  },
+
+  dispatchSaveUserInfo(userInfo) {
+    dispatch(authActionCreator.saveUserInfo(userInfo));
+  },
+});
 
 const Birthday = connect(mapStateToProps, mapDispatchToProps)(UnconnectedBirthday);
 

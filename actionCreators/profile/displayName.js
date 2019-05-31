@@ -2,7 +2,7 @@ import actionTypes from '../../actionTypes/';
 
 const { DISPLAY_NAME } = actionTypes;
 
-const authActionCreator = {
+const displayNameActionCreator = {
   resetState() {
     return {
       type: DISPLAY_NAME.RESET_STATE,
@@ -17,4 +17,4 @@ const authActionCreator = {
   },
 };
 
-export { authActionCreator as default };
+export { displayNameActionCreator as default };

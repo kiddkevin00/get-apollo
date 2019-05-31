@@ -1,30 +1,48 @@
+import actionCreator from '../../actionCreators/profile/displayName';
+import authActionCreator from '../../actionCreators/auth';
+import LoadingPage from '../../components/LoadingPage';
+import { defaultNavigationOptions } from '../../constants/navigation';
 import React from 'react';
-import {
-  StyleSheet,
-  Image,
-  StatusBar,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { Image, StatusBar, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import PropTypes from 'prop-types';
 
 class UnconnectedDisplayName extends React.Component {
   static navigationOptions = {
-    header: null,
+    ...defaultNavigationOptions,
+    title: '',
   };
 
-  state = {
-    displayName: 'Marcus Hsu',
+  static propTypes = {
+    isUpdatingData: PropTypes.bool.isRequired,
+    formDisplayName: PropTypes.string.isRequired,
+
+    dispatchSetFormField: PropTypes.func.isRequired,
+    dispatchSaveUserInfo: PropTypes.func.isRequired,
+
+    navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
-  componentDidMount() {
-    StatusBar.setHidden(true);
+  handleChange(field, value) {
+    this.props.dispatchSetFormField(field, value);
   }
 
+  handleSave = () => {
+    this.props.dispatchSaveUserInfo(
+      {
+        displayName: this.props.formDisplayName,
+      },
+      () => {
+        this.props.navigation.push('birthday', { isOnBoarding: true });
+      }
+    );
+  };
+
   render() {
+    if (this.props.isUpdatingData) {
+      return <LoadingPage />;
+    }
+
     return (
       <View
         style={{
@@ -34,6 +52,7 @@ class UnconnectedDisplayName extends React.Component {
           flex: 1,
         }}
       >
+        <StatusBar hidden={true} />
         <Image
           style={{
             height: 128,
@@ -54,8 +73,8 @@ class UnconnectedDisplayName extends React.Component {
             borderColor: 'grey',
             borderBottomWidth: 1,
           }}
-          onChangeText={displayName => this.setState({ displayName })}
-          value={this.state.displayName}
+          onChangeText={this.handleChange.bind(this, 'DisplayName')}
+          value={this.props.formDisplayName}
         />
         <Text style={{ fontSize: 10, color: 'grey' }}>
           Note: Your name must match your state ID or passport.
@@ -70,18 +89,29 @@ class UnconnectedDisplayName extends React.Component {
             backgroundColor: '#017bf6',
             marginTop: 100,
           }}
-          onPress={() => this.props.navigation.push('birthday')}
+          onPress={this.handleSave}
         >
-          <Text style={{ fontSize: 14, color: 'white' }}>Saved</Text>
+          <Text style={{ fontSize: 14, color: 'white' }}>Save</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  isUpdatingData: state.auth.isUpdatingData,
+  formDisplayName: state.displayName.formDisplayName.value,
+});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  dispatchSetFormField(field, value) {
+    dispatch(actionCreator.setFormField(field, value));
+  },
+
+  dispatchSaveUserInfo(userInfo) {
+    dispatch(authActionCreator.saveUserInfo(userInfo));
+  },
+});
 
 const DisplayName = connect(mapStateToProps, mapDispatchToProps)(UnconnectedDisplayName);
 

@@ -22,13 +22,15 @@ const initialState = {
 };
 
 const setData = (data, currentState) =>
-  Object.keys(data).reduce((accumulator, field) => {
-    if (Object.keys(initialState).includes(field) && data[field]) {
-      return { ...accumulator, [field]: data[field] };
-    }
-    return accumulator;
-  }, { ...currentState });
-
+  Object.keys(data).reduce(
+    (accumulator, field) => {
+      if (Object.keys(initialState).includes(field) && data[field]) {
+        return { ...accumulator, [field]: data[field] };
+      }
+      return accumulator;
+    },
+    { ...currentState }
+  );
 
 const authReducer = (state = initialState, action) => {
   const actionType = action.type;

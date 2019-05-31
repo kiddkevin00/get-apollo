@@ -28,12 +28,12 @@ class UnconnectedProfile extends React.Component {
     if (auth.isLoaded) {
       if (!auth.isEmpty) {
         if (!auth.isAnonymous) {
-          navigation.replace('memberProfile');
+          navigation.replace('guestProfile');
         } else {
           navigation.replace('guestProfile');
         }
       } else {
-        navigation.navigate('home', {}, NavigationActions.navigate({ routeName: 'login' }));
+        navigation.replace('login');
       }
     }
   };

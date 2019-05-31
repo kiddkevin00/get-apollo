@@ -2,14 +2,14 @@ import ExpoIcon from '../components/ExpoIcon';
 import ExploreScreen from '../containers/Explore/';
 import PlayerScreen from '../containers/Explore/Player';
 import HomeScreen from '../containers/Home/';
-import LoginScreen from '../containers/Home/Login';
+import LoginScreen from '../containers/Profile/Login';
 import VenuesScreen from '../containers/Home/Venues';
 import DetailScreen from '../containers/Home/Detail';
 import ProfileScreen from '../containers/Profile/';
 import MemberProfileScreen from '../containers/Profile/MemberProfile';
 import GuestProfileScreen from '../containers/Profile/GuestProfile';
 import AboutMeScreen from '../containers/Profile/AboutMe';
-import MusicPreferenceScreen from '../containers/Profile/MusicPreference';
+import MusicPreferencesScreen from '../containers/Profile/MusicPreferences';
 import TermsAndConditionsScreen from '../containers/Profile/TermsAndConditions';
 import DisplayNameScreen from '../containers/Profile/DisplayName';
 import BirthdayScreen from '../containers/Profile/Birthday';
@@ -55,7 +55,6 @@ ExploreStack.navigationOptions = ({ navigation }) => {
 const HomeStack = createStackNavigator(
   {
     home: HomeScreen,
-    login: LoginScreen,
     venues: VenuesScreen,
     detail: DetailScreen,
   },
@@ -68,7 +67,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
   const { routeName } = navigation.state.routes[navigation.state.index];
   let tabBarVisible;
 
-  if (routeName === 'login' || routeName === 'home') {
+  if (routeName === 'home') {
     tabBarVisible = false;
   } else {
     tabBarVisible = true;
@@ -91,10 +90,11 @@ HomeStack.navigationOptions = ({ navigation }) => {
 const ProfileStack = createStackNavigator(
   {
     profile: ProfileScreen,
+    login: LoginScreen,
     guestProfile: GuestProfileScreen,
     memberProfile: MemberProfileScreen,
     aboutMe: AboutMeScreen,
-    musicPreference: MusicPreferenceScreen,
+    musicPreferences: MusicPreferencesScreen,
     termsAndConditions: TermsAndConditionsScreen,
     displayName: DisplayNameScreen,
     birthday: BirthdayScreen,
@@ -109,6 +109,8 @@ ProfileStack.navigationOptions = ({ navigation }) => {
   let tabBarVisible;
 
   if (
+    routeName === 'profile' ||
+    routeName === 'login' ||
     routeName === 'termsAndConditions' ||
     routeName === 'displayName' ||
     routeName === 'birthday'

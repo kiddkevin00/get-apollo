@@ -1,9 +1,9 @@
 import actionCreator from '../../actionCreators/auth';
+import LoadingPage from '../../components/LoadingPage';
 import React from 'react';
 import { View, Image, TouchableHighlight, Text, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { NavigationActions } from 'react-navigation';
 
 class UnconnectedGuestProfile extends React.Component {
   static navigationOptions = {
@@ -11,6 +11,8 @@ class UnconnectedGuestProfile extends React.Component {
   };
 
   static propTypes = {
+    isUpdatingData: PropTypes.bool.isRequired,
+
     dispatchSignInWithFacebook: PropTypes.func.isRequired,
 
     navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -21,10 +23,14 @@ class UnconnectedGuestProfile extends React.Component {
   };
 
   handleLogout = () => {
-    this.props.navigation.navigate('home', {}, NavigationActions.navigate({ routeName: 'login' }));
+    this.props.navigation.replace('login');
   };
 
   render() {
+    if (this.props.isUpdatingData) {
+      return <LoadingPage />;
+    }
+
     return (
       <View
         style={{
@@ -100,7 +106,9 @@ class UnconnectedGuestProfile extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  isUpdatingData: state.auth.isUpdatingData,
+});
 
 const mapDispatchToProps = dispatch => ({
   dispatchSignInWithFacebook(navigation) {

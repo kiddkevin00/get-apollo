@@ -1,3 +1,5 @@
+import actionCreator from '../../actionCreators/auth';
+import LoadingPage from '../../components/LoadingPage';
 import TabBarIcon from '../../components/ExpoIcon';
 import React from 'react';
 import QRCode from 'react-native-qrcode';
@@ -6,7 +8,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Container, Card, Button, Text, CardItem, Content } from 'native-base';
 import { StyleSheet, StatusBar } from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   linkText: {
@@ -32,6 +34,21 @@ class UnconnectedMemberProfile extends React.Component {
     header: null,
   };
 
+  static propTypes = {
+    auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+    isLoadingData: PropTypes.bool.isRequired,
+
+    dispatchLoadUserInfo: PropTypes.func.isRequired,
+
+    navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  };
+
+  componentWillMount() {
+    const uid = this.props.navigation.getParam('uid', this.props.auth.uid);
+
+    this.props.dispatchLoadUserInfo(uid);
+  }
+
   goToTermsAndConditions = () => {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/terms-of-service');
   };
@@ -41,16 +58,16 @@ class UnconnectedMemberProfile extends React.Component {
   };
 
   handleLogout = () => {
-    this.props.navigation.navigate('home', {}, NavigationActions.navigate({ routeName: 'login' }));
+    this.props.navigation.replace('login');
   };
 
   render() {
-    const displayName = 'Marcus Hsu';
-    const gender = 'male';
-    const relationship = 'Single';
-    const musicPreferences = ['HIP_HOP', 'REGGAE'];
-    const age = '21';
-    const userID = '123456789';
+    if (this.props.isLoadingData) {
+      return <LoadingPage />;
+    }
+
+    const { uid, displayName, gender, birthday } = this.props;
+    const age = '21'; // TODO
 
     return (
       <Container
@@ -76,7 +93,7 @@ class UnconnectedMemberProfile extends React.Component {
                 marginBottom: 8,
               }}
             >
-              <QRCode value={userID} size={120} bgColor="White" fgColor="Black" />
+              <QRCode value={uid} size={120} bgColor="White" fgColor="Black" />
             </CardItem>
             <CardItem
               style={{
@@ -101,16 +118,7 @@ class UnconnectedMemberProfile extends React.Component {
                 {age} | {gender}
               </Text>
             </CardItem>
-            <CardItem
-              style={styles.link}
-              button={true}
-              onPress={() =>
-                this.props.navigation.push('aboutMe', {
-                  gender,
-                  relationship,
-                })
-              }
-            >
+            <CardItem style={styles.link} button={true} onPress={() => {}}>
               <Text style={styles.linkText}>About Me</Text>
               <TabBarIcon
                 style={{ marginRight: '20%' }}
@@ -120,15 +128,7 @@ class UnconnectedMemberProfile extends React.Component {
                 type="FontAwesome"
               />
             </CardItem>
-            <CardItem
-              style={styles.link}
-              button={true}
-              onPress={() =>
-                this.props.navigation.push('musicPreference', {
-                  musicPreferences: JSON.stringify(musicPreferences),
-                })
-              }
-            >
+            <CardItem style={styles.link} button={true} onPress={() => {}}>
               <Text style={styles.linkText}>Music Preference</Text>
 
               <TabBarIcon
@@ -190,10 +190,22 @@ class UnconnectedMemberProfile extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.firebase.auth,
+  isLoadingData: state.auth.isLoadingData,
+  displayName: state.auth.displayName,
+  formBirthday: state.auth.formBirthday,
+  gender: state.auth.gender,
+});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  dispatchLoadUserInfo(uid) {
+    return dispatch(actionCreator.loadUserInfo(uid));
+  },
+});
 
-const MemberProfile = compose(connect(mapStateToProps, mapDispatchToProps))(UnconnectedMemberProfile);
+const MemberProfile = compose(connect(mapStateToProps, mapDispatchToProps))(
+  UnconnectedMemberProfile
+);
 
 export { UnconnectedMemberProfile, MemberProfile as default };
