@@ -91,13 +91,13 @@ const ProfileStack = createStackNavigator(
   {
     profile: ProfileScreen,
     login: LoginScreen,
-    guestProfile: GuestProfileScreen,
-    memberProfile: MemberProfileScreen,
-    aboutMe: AboutMeScreen,
-    musicPreferences: MusicPreferencesScreen,
     termsAndConditions: TermsAndConditionsScreen,
     displayName: DisplayNameScreen,
     birthday: BirthdayScreen,
+    aboutMe: AboutMeScreen,
+    musicPreferences: MusicPreferencesScreen,
+    guestProfile: GuestProfileScreen,
+    memberProfile: MemberProfileScreen,
   },
   {
     initialRouteName: 'profile',

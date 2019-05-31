@@ -77,9 +77,9 @@ class UnconnectedLogin extends React.Component {
         <StatusBar hidden={true} />
         <Image
           style={{
-            marginTop: 60,
+            marginTop: 100,
             marginBottom: 60,
-            height: 256,
+            height: 160,
             width: 160,
             resizeMode: 'contain',
           }}

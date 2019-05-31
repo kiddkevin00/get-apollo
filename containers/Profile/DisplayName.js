@@ -29,11 +29,12 @@ class UnconnectedDisplayName extends React.Component {
 
   handleSave = () => {
     this.props.dispatchSaveUserInfo(
+      this.props.auth.uid,
       {
         displayName: this.props.formDisplayName,
       },
       () => {
-        this.props.navigation.push('birthday', { isOnBoarding: true });
+        this.props.navigation.push('birthday');
       }
     );
   };
@@ -46,18 +47,17 @@ class UnconnectedDisplayName extends React.Component {
     return (
       <View
         style={{
-          backgroundColor: 'black',
-          padding: 72,
-          alignItems: 'center',
           flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 72,
+          backgroundColor: 'black',
         }}
       >
         <StatusBar hidden={true} />
         <Image
           style={{
-            height: 128,
-            marginTop: 100,
-            maxWidth: '100%',
+            width: '100%',
             resizeMode: 'contain',
           }}
           source={require('../../assets/images/welcome.png')}
@@ -98,9 +98,10 @@ class UnconnectedDisplayName extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
+  auth: state.firebase.auth,
   isUpdatingData: state.auth.isUpdatingData,
-  formDisplayName: state.displayName.formDisplayName.value,
+  formDisplayName: state.displayName.formDisplayName.value || ownProps.auth.displayName,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -108,8 +109,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreator.setFormField(field, value));
   },
 
-  dispatchSaveUserInfo(userInfo) {
-    dispatch(authActionCreator.saveUserInfo(userInfo));
+  dispatchSaveUserInfo(uid, userInfo, onSuccess) {
+    dispatch(authActionCreator.saveUserInfo(uid, userInfo, onSuccess));
   },
 });
 

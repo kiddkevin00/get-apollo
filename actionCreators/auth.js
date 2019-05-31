@@ -109,7 +109,7 @@ const authActionCreator = {
         }
         Alert.alert('Try Again', errorMessage);
 
-        dispatch(this.updateDataFailure(errorMsg));
+        dispatch(this.updateDataFailure(errorMessage));
       }
     };
   },
@@ -145,8 +145,9 @@ const authActionCreator = {
             )
           );
 
-          navigation.replace('guestProfile', { uid: user.uid });
-          //navigation.replace('termsAndConditions');
+          navigation.replace('guestProfile');
+          //navigation.replace('membershipProfile', { uid: user.uid });
+          // navigation.replace('termsAndConditions');
 
           dispatch(this.updateDataSuccess());
         } else {

@@ -35,21 +35,26 @@ class UnconnectedMusicPreferences extends React.Component {
   handleMusicPreferenceButtonPress(TITLE) {
     if (this.props.formMusicPreferences.includes(TITLE)) {
       this.props.dispatchSetFormField(
-        'MusicPreference',
+        'MusicPreferences',
         this.props.formMusicPreferences.filter(PREFERENCE => PREFERENCE !== TITLE)
       );
     } else {
-      this.props.dispatchSetFormField('MusicPreference', this.props.formMusicPreferences.concat(TITLE));
+      this.props.dispatchSetFormField('MusicPreferences', this.props.formMusicPreferences.concat(TITLE));
     }
   }
 
   handleSave = () => {
     this.props.dispatchSaveUserInfo(
+      this.props.auth.uid,
       {
         musicPreference: this.props.formMusicPreferences,
       },
       () => {
-        this.props.navigation.replace('memberProfile');
+        if (this.props.navigation.getParam('isOnBoarding', false) === true) {
+          this.props.navigation.navigate('memberProfile');
+        } else {
+          this.props.navigation.goBack();
+        }
       }
     );
   };
@@ -102,18 +107,14 @@ class UnconnectedMusicPreferences extends React.Component {
 
     return (
       <ScrollView
-        style={{
-          minHeight: '100%',
-          backgroundColor: 'black',
-          padding: 36,
-        }}
+        style={{ backgroundColor: 'black' }}
+        contentContainerStyle={{ padding: 36 }}
       >
         <StatusBar hidden={isStatusBarHidden} barStyle="light-content" />
         <Image
           style={{
-            height: 128,
-            margin: 26,
-            maxWidth: '100%',
+            marginBottom: 26,
+            width: '100%',
             resizeMode: 'contain',
             alignSelf: 'center',
           }}
@@ -152,6 +153,7 @@ class UnconnectedMusicPreferences extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  auth: state.firebase.auth,
   isUpdatingData: state.auth.isUpdatingData,
   formMusicPreferences: state.musicPreferences.formMusicPreferences.value,
 });
@@ -161,8 +163,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreator.setFormField(field, value));
   },
 
-  dispatchSaveUserInfo(userInfo) {
-    dispatch(authactionCreator.saveUserInfo(userInfo));
+  dispatchSaveUserInfo(uid, userInfo, onSuccess) {
+    dispatch(authactionCreator.saveUserInfo(uid, userInfo, onSuccess));
   },
 });
 

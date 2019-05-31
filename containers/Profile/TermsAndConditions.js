@@ -37,10 +37,8 @@ class UnconnectedTermsAndConditions extends React.Component {
 
   static propTypes = {
     auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-    isLoadingData: PropTypes.bool.isRequired,
     isUpdatingData: PropTypes.bool.isRequired,
 
-    dispatchLoadUserInfo: PropTypes.func.isRequired,
     dispatchSaveUserInfo: PropTypes.func.isRequired,
 
     navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
@@ -54,10 +52,8 @@ class UnconnectedTermsAndConditions extends React.Component {
     WebBrowser.openBrowserAsync('https://www.getapollo.in/privacy-policy');
   };
 
-  handleAccept = async () => {
-    await this.props.dispatchSaveUserInfo({ termsAndConditions: true });
-
-    this.props.navigation.push('displayName'); // TODO
+  handleAccept = () => {
+    this.props.dispatchSaveUserInfo(this.props.auth.uid, { termsAndConditions: true }, () => this.props.navigation.push('displayName'));
   };
 
   handleDecline = async () => {
@@ -74,10 +70,8 @@ class UnconnectedTermsAndConditions extends React.Component {
 
     return (
       <ScrollView
-        style={{
-          backgroundColor: 'black',
-          padding: 36,
-        }}
+        style={{ backgroundColor: 'black' }}
+        contentContainerStyle={{ padding: 36 }}
       >
         <StatusBar hidden={true} />
         <View
@@ -148,13 +142,12 @@ class UnconnectedTermsAndConditions extends React.Component {
 
 const mapStateToProps = state => ({
   auth: state.firebase.auth,
-  isLoadingData: state.auth.isLoadingData,
   isUpdatingData: state.auth.isUpdatingData,
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchSaveUserInfo(userInfo) {
-    dispatch(actionCreator.saveUserInfo(userInfo));
+  dispatchSaveUserInfo(uid, userInfo, onSuccess) {
+    dispatch(actionCreator.saveUserInfo(uid, userInfo, onSuccess));
   },
 });
 

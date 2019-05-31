@@ -1,6 +1,7 @@
 import actionCreator from '../../actionCreators/auth';
 import LoadingPage from '../../components/LoadingPage';
 import TabBarIcon from '../../components/ExpoIcon';
+import { defaultNavigationOptions } from '../../constants/navigation';
 import React from 'react';
 import QRCode from 'react-native-qrcode';
 import { WebBrowser } from 'expo';
@@ -31,7 +32,9 @@ const styles = StyleSheet.create({
 
 class UnconnectedMemberProfile extends React.Component {
   static navigationOptions = {
-    header: null,
+    ...defaultNavigationOptions,
+    title: 'PROFILE',
+    headerLeft: null,
   };
 
   static propTypes = {
@@ -79,7 +82,6 @@ class UnconnectedMemberProfile extends React.Component {
         <Content>
           <Card
             style={{
-              marginTop: '12%',
               backgroundColor: 'black',
               borderColor: 'black',
               alignItems: 'center',
@@ -103,14 +105,14 @@ class UnconnectedMemberProfile extends React.Component {
                 paddingBottom: 0,
               }}
             >
-              <Text style={{ color: 'grey', fontSize: 20 }}>{displayName}</Text>
+              <Text style={{ color: 'grey', fontSize: 20 }}>{displayName || 'N/A'}</Text>
             </CardItem>
             <CardItem
               style={{
                 backgroundColor: 'black',
                 alignItems: 'center',
                 borderColor: 'black',
-                marginBottom: 12,
+                marginBottom: 8,
                 paddingTop: 6,
               }}
             >
@@ -130,7 +132,6 @@ class UnconnectedMemberProfile extends React.Component {
             </CardItem>
             <CardItem style={styles.link} button={true} onPress={() => {}}>
               <Text style={styles.linkText}>Music Preference</Text>
-
               <TabBarIcon
                 style={{ marginRight: '20%' }}
                 size={16}
@@ -164,7 +165,8 @@ class UnconnectedMemberProfile extends React.Component {
                 backgroundColor: 'black',
                 alignItems: 'center',
                 borderColor: 'black',
-                paddingTop: 30,
+                paddingTop: 20,
+                paddingBottom: 10,
               }}
             >
               <Button

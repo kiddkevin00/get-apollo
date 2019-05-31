@@ -60,7 +60,7 @@ const getVenuePosts = async ({ docSnapshot, limit = 4, timestamp, venueId } = {}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: 'black',
     marginHorizontal: 2.5,
   },

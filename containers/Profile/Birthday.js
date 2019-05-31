@@ -62,7 +62,7 @@ class UnconnectedBirthday extends React.Component {
   }
 
   handleSave = () => {
-    this.props.dispatchSaveUserInfo({ formBirthday: this.props.formBirthday }, () => {
+    this.props.dispatchSaveUserInfo(this.props.auth.uid, { formBirthday: this.props.formBirthday }, () => {
       this.props.navigation.push('aboutMe', { isOnBoarding: true });
     });
   };
@@ -102,18 +102,16 @@ class UnconnectedBirthday extends React.Component {
     return (
       <View
         style={{
-          backgroundColor: 'black',
-          padding: 36,
-          alignItems: 'center',
           flex: 1,
+          alignItems: 'center',
+          padding: 36,
+          backgroundColor: 'black',
         }}
       >
         <StatusBar hidden={true} />
         <Image
           style={{
-            height: 128,
-            margin: 16,
-            maxWidth: '100%',
+            width: '100%',
             resizeMode: 'contain',
           }}
           source={require('../../assets/images/champagne.png')}
@@ -122,8 +120,8 @@ class UnconnectedBirthday extends React.Component {
           style={{
             textAlign: 'center',
             marginTop: 24,
-            paddingLeft: 36, // TODO why?
-            paddingRight: 36, // TODO why?
+            paddingLeft: 36,
+            paddingRight: 36,
             color: 'grey',
           }}
         >
@@ -135,7 +133,7 @@ class UnconnectedBirthday extends React.Component {
             flex: 1,
             flexWrap: 'wrap',
             alignItems: 'center',
-            justifyContent: 'space-around', // TODO space-bwteen?
+            justifyContent: 'space-between',
           }}
         >
           <Picker
@@ -183,6 +181,7 @@ class UnconnectedBirthday extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  auth: state.firebase.auth,
   isUpdatingData: state.auth.isUpdatingData,
   formBirthday: state.formBirthday.formBirthday.value,
 });
@@ -192,8 +191,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreator.setFormField(field, value));
   },
 
-  dispatchSaveUserInfo(userInfo) {
-    dispatch(authActionCreator.saveUserInfo(userInfo));
+  dispatchSaveUserInfo(uid, userInfo, onSuccess) {
+    dispatch(authActionCreator.saveUserInfo(uid, userInfo, onSuccess));
   },
 });
 

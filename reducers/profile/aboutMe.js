@@ -4,13 +4,13 @@ const { ABOUT_ME } = actionTypes;
 
 const initialState = {
   formGender: {
-    value: 'MALE',
+    value: 'OTHER',
     //isValid: false,
     //isValidating: false,
     //dirty: false,
   },
   formRelationship: {
-    value: 'OTHER',
+    value: 'COMPLICATED',
     //isValid: false,
     //isValidating: false,
     //dirty: false,

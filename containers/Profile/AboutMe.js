@@ -40,6 +40,7 @@ class UnconnectedAboutMe extends React.Component {
 
   handleSave = () => {
     this.props.dispatchSaveUserInfo(
+      this.props.auth.uid,
       {
         gender: this.props.formGender,
         relationship: this.props.formRelationship,
@@ -104,7 +105,6 @@ class UnconnectedAboutMe extends React.Component {
         <TouchableHighlight
           key={TITLE}
           onPress={this.handleChange.bind(this, 'Relationship', TITLE)}
-        >
           style={{
             margin: 4,
             borderRadius: 15,
@@ -116,7 +116,7 @@ class UnconnectedAboutMe extends React.Component {
             alignItems: 'center',
             backgroundColor: this.props.formRelationship === TITLE ? '#017bf6' : 'black',
           }}
-          >
+        >
           <Text
             style={{
               color: this.props.formRelationship === TITLE ? 'white' : 'grey',
@@ -144,18 +144,14 @@ class UnconnectedAboutMe extends React.Component {
 
     return (
       <ScrollView
-        style={{
-          minHeight: '100%',
-          backgroundColor: 'black',
-          padding: 36,
-        }}
+        style={{ backgroundColor: 'black' }}
+        contentContainerStyle={{ padding: 36 }}
       >
         <StatusBar hidden={isStatusBarHidden} barStyle="light-content" />
         <Image
           style={{
-            height: 128,
-            margin: 26,
-            maxWidth: '100%',
+            marginBottom: 26,
+            width: '100%',
             resizeMode: 'contain',
             alignSelf: 'center',
           }}
@@ -173,8 +169,7 @@ class UnconnectedAboutMe extends React.Component {
         </View>
         <View
           style={{
-            width: '100%',
-            padding: 22,
+            paddingVertical: 22,
             justifyContent: 'center',
             alignItems: 'center',
           }}
@@ -201,6 +196,7 @@ class UnconnectedAboutMe extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  auth: state.firebase.auth,
   isUpdatingData: state.auth.isUpdatingData,
   formGender: state.aboutMe.formGender.value,
   formRelationship: state.aboutMe.formRelationship.value,
@@ -211,8 +207,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(actionCreator.setFormField(field, value));
   },
 
-  dispatchSaveUserInfo(userInfo, onSuccess) {
-    dispatch(authActionCreator.saveUserInfo(userInfo, onSuccess));
+  dispatchSaveUserInfo(uid, userInfo, onSuccess) {
+    dispatch(authActionCreator.saveUserInfo(uid, userInfo, onSuccess));
   },
 });
 

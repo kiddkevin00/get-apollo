@@ -1,9 +1,7 @@
-import actionCreator from '../../actionCreators/auth';
 import LoadingPage from '../../components/LoadingPage';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 
 class UnconnectedProfile extends React.Component {
   static navigationOptions = {
@@ -29,6 +27,7 @@ class UnconnectedProfile extends React.Component {
       if (!auth.isEmpty) {
         if (!auth.isAnonymous) {
           navigation.replace('guestProfile');
+          //navigation.replace('memberProfile');
         } else {
           navigation.replace('guestProfile');
         }

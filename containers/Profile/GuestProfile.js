@@ -1,5 +1,6 @@
-import actionCreator from '../../actionCreators/auth';
+import authActionCreator from '../../actionCreators/auth';
 import LoadingPage from '../../components/LoadingPage';
+import { defaultNavigationOptions } from '../../constants/navigation';
 import React from 'react';
 import { View, Image, TouchableHighlight, Text, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
@@ -7,7 +8,8 @@ import PropTypes from 'prop-types';
 
 class UnconnectedGuestProfile extends React.Component {
   static navigationOptions = {
-    header: null,
+    ...defaultNavigationOptions,
+    title: 'PROFILE',
   };
 
   static propTypes = {
@@ -35,6 +37,7 @@ class UnconnectedGuestProfile extends React.Component {
       <View
         style={{
           flex: 1,
+          justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: 'black',
         }}
@@ -42,8 +45,7 @@ class UnconnectedGuestProfile extends React.Component {
         <StatusBar barStyle="light-content" />
         <Image
           style={{
-            margin: 0,
-            height: 256,
+            height: 160,
             width: 160,
             resizeMode: 'contain',
           }}
@@ -51,7 +53,10 @@ class UnconnectedGuestProfile extends React.Component {
         />
         <Text
           style={{
+            marginBottom: 10,
+            width: 220,
             textAlign: 'center',
+            color: 'grey',
           }}
         >
           To get all the live features of Apollo, please sign up or login below.
@@ -112,7 +117,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   dispatchSignInWithFacebook(navigation) {
-    dispatch(actionCreator.signInWithFacebook(navigation));
+    dispatch(authActionCreator.signInWithFacebook(navigation));
   },
 });
 

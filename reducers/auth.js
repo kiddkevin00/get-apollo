@@ -10,7 +10,7 @@ const initialState = {
   displayName: '',
   birthday: DEFAULT_BIRTHDAY,
   gender: 'OTHER',
-  relationship: 'SINGLE',
+  relationship: 'COMPLICATED',
   musicPreference: [],
 
   isLoadingData: false,
