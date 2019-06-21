@@ -2,12 +2,12 @@ import * as firebaseClient from 'firebase';
 import 'firebase/firestore'; // make sure you add this for firestore
 
 const config = {
-  apiKey: 'AIzaSyDsHj_BcB71-6LD5G5VKOCRbE34GdcZp4s',
-  authDomain: 'get-apollo-staging-ad29c.firebaseapp.com',
-  databaseURL: 'https://get-apollo-staging-ad29c.firebaseio.com',
-  projectId: 'get-apollo-staging-ad29c',
-  storageBucket: 'get-apollo-staging-ad29c.appspot.com',
-  messagingSenderId: '130921570547',
+  apiKey: 'YOUR_API_KEY',
+  authDomain: 'your-auth-domain.firebaseapp.com',
+  databaseURL: 'https://your-db-name.firebaseio.com',
+  projectId: 'YOUR_PROJECT_ID',
+  storageBucket: 'your-storage-bucket.appspot.com',
+  messagingSenderId: 'YOUR_SENDER_ID',
 };
 
 firebaseClient.initializeApp(config);
