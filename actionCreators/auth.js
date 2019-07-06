@@ -145,9 +145,7 @@ const authActionCreator = {
             )
           );
 
-          navigation.replace('guestProfile');
-          //navigation.replace('membershipProfile', { uid: user.uid });
-          // navigation.replace('termsAndConditions');
+          navigation.push('termsAndConditions');
 
           dispatch(this.updateDataSuccess());
         } else {

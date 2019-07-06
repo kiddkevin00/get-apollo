@@ -11,7 +11,7 @@ const defaultNavigationOptions = {
         height: 60,
       },
       android: {
-        paddingTop: 0,
+        //paddingTop: 0,
       },
     }),
   },

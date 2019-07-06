@@ -52,7 +52,7 @@ class UnconnectedMusicPreferences extends React.Component {
       () => {
         if (this.props.navigation.getParam('isOnBoarding', false) === true) {
           this.props.navigation.navigate('memberProfile');
-        } else {
+        } else { // [TODO] Might not need `else` block
           this.props.navigation.goBack();
         }
       }

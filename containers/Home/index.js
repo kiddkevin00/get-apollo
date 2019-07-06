@@ -33,17 +33,16 @@ class UnconnectedHome extends React.Component {
         if (!auth.isAnonymous) {
           const userInfo = await this.props.dispatchLoadUserInfo(auth.uid);
 
-          navigation.replace('venues');
-          //if (!userInfo.termsAndConditions || !userInfo.displayName || !userInfo.birthday) {
-          //  navigation.navigate(
-          //    NavigationActions.navigate({
-          //      routeName: 'profile',
-          //      action: NavigationActions.navigate({ routeName: 'login' }),
-          //    })
-          //  );
-          //} else {
-          //   navigation.replace('venues');
-          // }
+          if (!userInfo.termsAndConditions || !userInfo.displayName || !userInfo.birthday) {
+            navigation.navigate(
+              NavigationActions.navigate({
+                routeName: 'profile',
+                action: NavigationActions.navigate({ routeName: 'login' }),
+              })
+            );
+          } else {
+             navigation.replace('venues');
+           }
         } else {
           navigation.replace('venues');
         }

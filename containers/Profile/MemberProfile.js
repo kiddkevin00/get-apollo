@@ -69,8 +69,8 @@ class UnconnectedMemberProfile extends React.Component {
       return <LoadingPage />;
     }
 
-    const { uid, displayName, gender, birthday } = this.props;
-    const age = '21'; // TODO
+    const { uid, displayName, gender, birthday, navigation } = this.props;
+    const age = '21'; // [TODO] Calculate from birthday
 
     return (
       <Container
@@ -120,7 +120,7 @@ class UnconnectedMemberProfile extends React.Component {
                 {age} | {gender}
               </Text>
             </CardItem>
-            <CardItem style={styles.link} button={true} onPress={() => {}}>
+            <CardItem style={styles.link} button={true} onPress={() => navigation.push('aboutMe')}>
               <Text style={styles.linkText}>About Me</Text>
               <TabBarIcon
                 style={{ marginRight: '20%' }}
@@ -130,7 +130,7 @@ class UnconnectedMemberProfile extends React.Component {
                 type="FontAwesome"
               />
             </CardItem>
-            <CardItem style={styles.link} button={true} onPress={() => {}}>
+            <CardItem style={styles.link} button={true} onPress={() => navigation.push('musicPreferences')}>
               <Text style={styles.linkText}>Music Preference</Text>
               <TabBarIcon
                 style={{ marginRight: '20%' }}
