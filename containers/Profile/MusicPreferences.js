@@ -23,6 +23,7 @@ class UnconnectedMusicPreferences extends React.Component {
   };
 
   static propTypes = {
+    auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     isUpdatingData: PropTypes.bool.isRequired,
     formMusicPreferences: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
 

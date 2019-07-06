@@ -40,6 +40,9 @@ class UnconnectedMemberProfile extends React.Component {
   static propTypes = {
     auth: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
     isLoadingData: PropTypes.bool.isRequired,
+    birthday: PropTypes.instanceOf(Date).isRequired,
+    gender: PropTypes.string.isRequired,
+    displayName: PropTypes.string.isRequired,
 
     dispatchLoadUserInfo: PropTypes.func.isRequired,
 
@@ -196,7 +199,7 @@ const mapStateToProps = state => ({
   auth: state.firebase.auth,
   isLoadingData: state.auth.isLoadingData,
   displayName: state.auth.displayName,
-  formBirthday: state.auth.formBirthday,
+  birthday: state.auth.birthday,
   gender: state.auth.gender,
 });
 
